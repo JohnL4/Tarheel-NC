@@ -1,0 +1,187 @@
+# -*- org -*-
+#+TITLE: Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance of Functor
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
+
+* Definition of Functor
+
+  According to /Learn You A Haskell/, ~Functor~ really only requires you define one function, ~fmap~:
+
+  #+BEGIN_SRC haskell
+    class Functor f where
+      fmap :: (a -> b) -> f a -> f b
+  #+END_SRC
+
+  The "f" here is very confusing, and I wish people wouldn't do this, but it basically represents a
+  /type constructor/ taking a single argument.  People use "f" to stand for "functor", which is a
+  typeclass, not a function.
+
+** ~Maybe~ as a ~Functor~
+
+   This is pretty straightforward.
+
+   #+BEGIN_SRC haskell
+     data MMaybe a = NNothing | JJust a
+       deriving Show
+
+     instance Functor MMaybe where
+       fmap f (JJust x) = JJust (f x)
+       fmap _ NNothing = NNothing
+   #+END_SRC
+
+   In /this/ case, "f" represents just a regular old function /f/ (the ~(a -> b)~ part in the
+   definition above.  Note that this is plain old function definition, complete with
+   pattern-matching.
+
+   And, in ~ghci~:
+
+   #+BEGIN_EXAMPLE
+     λ *Main> fmap (*100) (JJust 2)
+     JJust 200
+
+     λ *Main> fmap (*100) NNothing
+     NNothing
+   #+END_EXAMPLE 
+
+* Erroneous Definition of ~Pair a b~ as a Functor
+
+  We define a "pair" type in a straightforward way (you can think of the "N" in "PairN" as standing
+  for "naive"):
+
+  #+BEGIN_SRC haskell
+    newtype PairN a b = PairN { pairN :: (a, b)}
+      deriving Show
+  #+END_SRC 
+
+  Then we try to claim ~PairN~ is a ~Functor~ by implementing ~fmap~.  We only supply one argument
+  to ~PairN~ below because that's the way /Learn You a Haskell/ does it in Chapter 12:
+
+  #+BEGIN_SRC haskell
+    instance Functor (PairN c) where
+      fmap f (PairN (x,y)) = PairN (f x, y)
+  #+END_SRC
+
+  Unfortunately, when we try to compile, we get a faceful of errors.
+
+  Obviously, we did it wrong, because we ignored the way the book does it, but let's entertain
+  ourselves by puzzling out what these errors mean rather than hurrying past them with our eyes
+  averted.
+
+  As usual, we start with only the last error, since that's the proximate cause of the cascade.
+
+* Errors
+
+  #+BEGIN_EXAMPLE
+    /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:35: error:
+        • Couldn't match expected type ‘a’ with actual type ‘c’
+          ‘c’ is a rigid type variable bound by
+            the instance declaration
+            at /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:43:10-26
+  #+END_EXAMPLE
+
+  So, this is the part of the instance declaration where we say ~PairN c~ is a functor.
+
+  What's going on here is we're declaring the /type/ ~(PairN c)~ to be an /instance/ of the
+  /typeclass/ ~Functor~.
+
+  So, the question is: How is ~(PairN c)~ a type?  Isn't it just ~PairN~ that's the type?
+
+  Well, yes, sort of.  The actual type is ~PairN a b~.  If you (comment out the lines that generate
+  the errors and) fire up ~ghci~, you can see it:
+
+  #+BEGIN_EXAMPLE
+    λ *Main> :k Int
+    Int :: *
+
+    λ *Main> :k PairN _ _
+    PairN _ _ :: *
+  #+END_EXAMPLE
+
+  So, what was that?  We asked ~ghci~ to display the /kinds/ of some types.  ~Int~ is a type (plain
+  old integers), and so is ~PairN a b~, in the sense of "type" that you're probably used to (where a
+  ~PairN a b~ is a thing composed of two other things, the first of which is of some type /a/ and
+  the second of which is of some type /b/).  These two kinds are /monomorphic/ or /nullary type
+  constructors/, meaning (sort of) they construct types.  Since they don't take any "arguments",
+  they only construct one type (kind?) of type each (one constructs integer types and the other
+  constructs pair types (presumably)).
+
+  So, what is the kind of ~PairN~ by itself?
+
+  #+BEGIN_EXAMPLE
+    λ *Main> :k PairN
+    PairN :: * -> * -> *
+  #+END_EXAMPLE
+
+  It's kind of a function that takes two types (the ~*~ things) and returns a third type.  And, like
+  all functions in Haskell, it can be curried.
+
+  So, now we know two things:
+
+  1) ~PairN c~ is a function that returns another function mapping one type to another; and
+     
+  2) We are claiming that ~PairN c~ is a ~Functor~ (like we did for ~MMaybe~, above).  This is
+     reasonable, because ~(PairN c)~ is like ~MMaybe~ in that it takes a single type parameter and
+     returns a new type.  ~Maybe Int~ is a certain type, and so is ~(PairN c) Int~.
+
+  The error continues:
+  
+  #+BEGIN_EXAMPLE
+          ‘a’ is a rigid type variable bound by
+            the type signature for:
+              fmap :: forall a b. (a -> b) -> PairN c a -> PairN c b
+            at /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:3-6
+  #+END_EXAMPLE
+
+  So, from the definition of ~Functor~ at the very top, ~fmap~ takes a simple function (~(a -> b)~),
+  and a /functor/ type /f/ that looks like ~f a~ (like ~Maybe a~, but in our case it's ~PairN c a~),
+  and returns a thing of a different type (~Maybe b~ or ~PairN c b~, where we're remembering that
+  ~a~, ~b~, and ~c~ are all type variables, not data variables).
+
+  So, to be clear: we're claiming there's a function from things of type /a/ to things of type /b/,
+  but we handed that function things of type /c/ and ~ghc~ is saying, "Hey, wait a minute, you told
+  me one type and gave me another type".  There's nothing that says types /c/ and /a/ are the same.
+
+  ~ghc~ helps us figure all that out because it very helpfully provides a list of the symbol
+  bindings it had in its head when it encountered this problem:
+
+  #+BEGIN_EXAMPLE
+        • In the first argument of ‘f’, namely ‘x’
+          In the expression: f x
+          In the first argument of ‘PairN’, namely ‘(f x, y)’
+        • Relevant bindings include
+            y :: a
+              (bound at /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:20)
+            x :: c
+              (bound at /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:18)
+            f :: a -> b
+              (bound at /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:8)
+            fmap :: (a -> b) -> PairN c a -> PairN c b
+              (bound at /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:3)
+       |
+    44 |   fmap f (PairN (x,y)) = PairN (f x, y)
+       |                                   ^
+  #+END_EXAMPLE
+  
+  So, we said ~PairN a b~ values are pairs where the first element, /x/, is
+  something of type /a/, and the second element, /y/, is something of type /b/.
+
+  Then, we tried to use a function, /f/, but we handed it things of type /c/ without saying that /c/
+  and /a/ are the same (and really, we can't say that because they're both sort of free-floating
+  types -- they could each be anything).  Maybe if there was a lambda operator for types we could
+  solve this problem, somehow.
+
+  : instance Functor (\c -> PairN _ c) where...
+
+  But what goes in that ~_~?
+
+  : instance Functor ( (PairN) c) where...
+
+  Here I'm trying to turn ~PairN~ into an infix binary operator where the first type parameter is
+  the "floating" argument (attempting to curry the 2nd parameter, I guess), but what if we had a
+  type constructor that took 3 or more arguments?  Eww.
+
+  So, anyway, that's why you have to reverse the /a/ and /b/ in the definition of ~Pair~.
+  Craziness, eh?
+  
