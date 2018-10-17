@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-10-16 Tue 17:09 -->
+<!-- 2018-10-17 Wed 15:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance of Functor</title>
@@ -235,19 +235,19 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge21cf08">1. Definition of Functor</a>
+<li><a href="#org81d7a34">1. Definition of Functor</a>
 <ul>
-<li><a href="#orged1044f">1.1. <code>Maybe</code> as a <code>Functor</code></a></li>
+<li><a href="#org6b6b27e">1.1. <code>Maybe</code> as a <code>Functor</code></a></li>
 </ul>
 </li>
-<li><a href="#orga9404b6">2. Erroneous Definition of <code>Pair a b</code> as a Functor</a></li>
-<li><a href="#org8b11af5">3. Errors</a></li>
+<li><a href="#org405f334">2. Erroneous Definition of <code>Pair a b</code> as a Functor</a></li>
+<li><a href="#org7cb7862">3. Errors</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orge21cf08" class="outline-2">
-<h2 id="orge21cf08"><span class="section-number-2">1</span> Definition of Functor</h2>
+<div id="outline-container-org81d7a34" class="outline-2">
+<h2 id="org81d7a34"><span class="section-number-2">1</span> Definition of Functor</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 According to <i>Learn You A Haskell</i>, <code>Functor</code> really only requires you define one function, <code>fmap</code>:
@@ -266,8 +266,8 @@ typeclass, not a function.
 </p>
 </div>
 
-<div id="outline-container-orged1044f" class="outline-3">
-<h3 id="orged1044f"><span class="section-number-3">1.1</span> <code>Maybe</code> as a <code>Functor</code></h3>
+<div id="outline-container-org6b6b27e" class="outline-3">
+<h3 id="org6b6b27e"><span class="section-number-3">1.1</span> <code>Maybe</code> as a <code>Functor</code></h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 This is pretty straightforward.
@@ -304,8 +304,8 @@ NNothing
 </div>
 </div>
 
-<div id="outline-container-orga9404b6" class="outline-2">
-<h2 id="orga9404b6"><span class="section-number-2">2</span> Erroneous Definition of <code>Pair a b</code> as a Functor</h2>
+<div id="outline-container-org405f334" class="outline-2">
+<h2 id="org405f334"><span class="section-number-2">2</span> Erroneous Definition of <code>Pair a b</code> as a Functor</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 We define a "pair" type in a straightforward way (you can think of the "N" in "PairN" as standing
@@ -345,8 +345,8 @@ As usual, we start with only the last error, since that's the proximate cause of
 </div>
 </div>
 
-<div id="outline-container-org8b11af5" class="outline-2">
-<h2 id="org8b11af5"><span class="section-number-2">3</span> Errors</h2>
+<div id="outline-container-org7cb7862" class="outline-2">
+<h2 id="org7cb7862"><span class="section-number-2">3</span> Errors</h2>
 <div class="outline-text-2" id="text-3">
 <pre class="example">
 /Users/john/Development/Haskell/NewTypeFun/newTypeFun.hs:44:35: error:
@@ -505,7 +505,7 @@ Craziness, eh?
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2018-10-16 Tue 17:09</p>
+<p class="date">Created: 2018-10-17 Wed 15:18</p>
 <p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 25.2.1 (<a href="http://orgmode.org">Org</a> mode 9.1.2)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
