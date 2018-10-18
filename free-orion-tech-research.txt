@@ -1,0 +1,105 @@
+digraph technologies {
+
+# Order in which to research (https://freeorion.org/forum/viewtopic.php?t=9954)
+
+   
+
+   algElegance
+      -> ecol
+      -> md2
+      -> hab
+      -> md3
+      -> robProd
+      -> milRobCtrl
+      -> md4
+      -> nascentAI
+      -> nanoProd
+      -> adaptAuto
+      -> orbConst
+      -> fusGen
+      -> orbGen
+      -> microInd
+      -> actRadar    # Begins mid-game
+      -> laser1
+      -> symbBio
+      -> laser2
+      -> laser3
+      -> indCents
+      -> zortPlat
+      -> laser4
+      [color = "black", style = "bold"]
+
+# Order in which to research (personal)
+
+  edge [color = "DeepSkyBlue3" ]
+  
+  ecol -> hab
+  hab -> ecoManip
+  ecoManip -> terraforming       # *1*
+  terraforming -> algElegance 
+  algElegance -> robProd
+  robProd -> nascentAI           # *2*
+
+  nascentAI -> nanoProd
+  nanoProd -> adaptAuto
+  adaptAuto -> exobots           # *3*
+  exobots -> indCents            # *4*
+  indCents -> ffHarm             # *5*
+  ffHarm -> actRadar             # *6*
+  actRadar -> milRobCtrl         # *7*
+
+
+# Dependencies
+
+  edge [color = "gray"]
+
+  ecol -> hab
+  hab -> ecoManip
+  ecoManip -> terraforming
+
+  algElegance -> robProd
+  robProd -> nascentAI
+  nascentAI -> ffHarm
+
+  robProd -> indCents
+  robProd -> milRobCtrl
+  milRobCtrl -> spatialFluxDrive
+  spatialFluxDrive -> nrMaint
+
+  nanoProd -> adaptAuto
+  adaptAuto -> exobots
+
+  orbConst -> orbGen
+
+# Nodes
+
+   ecol             [label = "0: Planetary Ecology" style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   hab              [label = "Subterranean Habitation"]
+   ecoManip         [label = "Advanced Eco-Manipulation"]
+   terraforming     [label = "1: Terraforming", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   robProd          [label = "Robotic Production"]
+   nanoProd         [label = "Nanotech Production"]
+   algElegance      [label = "Algorithmic Elegance"]
+   nascentAI        [label = "2: Nascent Artificial Intelligence", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   adaptAuto        [label = "Adaptive Automation"]
+   exobots          [label = "3: Exobots", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   indCents         [label = "4: Industrial Centers", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   ffHarm           [label = "5: Force-Field Harmonics", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   actRadar         [label = "6: Active Radar", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   milRobCtrl       [label = "7: Military Robotic Control", style = "bold", color = "DeepSkyBlue4", fontcolor = "DeepSkyBlue4"]
+   orbConst         [label = "Orbital Construction"]
+   orbGen           [label = "Orbital Generation"]
+   spatialFluxDrive [label = "Spatial Flux Drive"]
+   nrMaint          [label = "Nano-Robotic Maintenance"]
+   md2              [label = "Mass Driver 2"]
+   md3              [label = "Mass Driver 3"]
+   md4              [label = "Mass Driver 4"]
+   fusGen           [label = "Fusion Generation"]
+   microInd         [label = "Microgravity Industry"]
+   laser1           [label = "Laser 1"]
+   laser2           [label = "Laser 2"]
+   laser3           [label = "Laser 3"]
+   laser4           [label = "Laser 4"]
+   symbBio          [label = "Symbiotic Biology"]
+   zortPlat         [label = "Zortrium Armor Plating"]
+}
