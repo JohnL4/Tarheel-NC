@@ -42,7 +42,7 @@
 
   Code: ~code~
 
-  =maybe we like equal signs better_3^2= since "code" seems to be fairly loadedin org-mode (implications of execution
+  =maybe we like equal signs better_3^2= since "code" seems to be fairly loaded in org-mode (implications of execution
   and whatnot).
 
 * COMMENT Org-mode explainer
