@@ -17,6 +17,28 @@
 
 * Simplest possible basics
 
+** Set up credentials
+
+*** Download access keys from AWS (if you haven't already)
+
+    You only get one chance to do this, but you can always create new keys if you need to.
+
+    In the AWS (web) console:
+
+    Go to IAM | Users | /specific user/ | Security credentials | Create access key (button)
+
+    After you've done this, you'll have the opportunity to download the keys you just created.
+
+*** Store in AWS credential store
+
+    See https://docs.aws.amazon.com/powershell/latest/userguide/specifying-your-aws-credentials.html#managing-profiles.
+
+    : Set-AWSCredential -AccessKey AKIAIOSFODNN7EXAMPLE -SecretKey wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY -StoreAs MyProfileName
+
+*** Choose a credential for the current session (will expire, so you'll have to do it again the next day)
+    
+    : Set-AWSCredential -ProfileName JohnS3
+
 ** Download a bucket
 
    ~cd~ into the local directory you want to work from.
