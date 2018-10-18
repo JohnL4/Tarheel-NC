@@ -12,12 +12,10 @@
 
 /(HTML generated from org-mode text file.)/
 
-* Overview 
-* Reproduction 
-* Current Architecture/Issues 
-* Fix 
-* Checkin 
-* Notes 
+* Overview
+
+  This is some org-mode garbage.
+
 * COMMENT Org-mode explainer
 
   Text markup.  More stars means lower-level items.  Blank lines between paragraphs.  Indentation doesn't matter (except
