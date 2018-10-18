@@ -3,7 +3,7 @@
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
 #+HUGO_BASE_DIR: .
 
 * Definition of Functor
