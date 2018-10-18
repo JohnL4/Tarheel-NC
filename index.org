@@ -30,8 +30,7 @@
   - [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance
        of Functor
 
-  - [[file:free-orion-tech-research.svg][free-orion-tech-research.svg]] :: An SVG I generated (using GraphViz) of technologies to research in FreeOrion.  (I
-       should find the original ~dot~ file for this.)
+  - [[file:free-orion-tech-research.svg][free-orion-tech-research.svg]] :: An SVG I generated (using GraphViz) of technologies to research in FreeOrion.  Original input is [[file:free-orion-tech-research.txt]].
 
   - SubDir :: A subdirectory
     - [[file:SubDir/another-file.html][another-file.html]] :: Just a random HTML file I hacked up.
