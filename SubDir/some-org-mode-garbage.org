@@ -4,8 +4,7 @@
 # #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
-# #+HTML_HEAD: <script src="/live.js"></script> <!-- For live preview when updating org-mode source -->
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
 #+HUGO_BASE_DIR: .
 
 # See org-mode explainer at the bottom of this file.
