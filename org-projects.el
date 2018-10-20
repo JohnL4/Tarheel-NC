@@ -1,9 +1,9 @@
 (setq org-publish-project-alist
       '(("tarheel-nc"
-         :base-directory "c:/Users/J6L/Documents/AmazonS3/Tarheel-NC"
+         :base-directory "~/Documents/AmazonS3/Tarheel-NC"
          :base-extension any
          :exclude "^\\.git\\|\\(\\\\\\|/\\)#\\|~$\\|template\.org" ;.git subdir, Temp. and backup files.
-         :publishing-directory "c:/Users/J6L/Documents/AmazonS3/Tarheel-NC-published"
+         :publishing-directory "~/Documents/AmazonS3/Tarheel-NC-published"
          :recursive t
          :headline-levels 12
          :with-author nil
