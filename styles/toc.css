@@ -1,0 +1,28 @@
+#toc-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto;
+    border: 3px solid red;
+    background-color: white;
+}
+
+#table-of-contents {            /* ID created by org-mode. */
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#table-of-contents > H2 {
+    margin-left: auto;
+}
+
+#table-of-contents.hidden {
+    display: none;
+}
+
+#toc-toggle {
+    background-color: #ccddff;
+    color: blue;
+    font-style: bold;
+    padding: 0.3em;
+}

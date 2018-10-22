@@ -3,8 +3,10 @@
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
-#+HUGO_BASE_DIR: .
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" >
+#+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 
 # See org-mode explainer at the bottom of this file.
 
