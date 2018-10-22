@@ -25,7 +25,7 @@
        deploying live.js to my S3 bucket and racking up unnecessary charges w/one-second refresh cycle).  Original
        org-mode version is here:  https://www.dropbox.com/s/ji4ziwzxqxu81ei/hugo.org?dl=0
 
-  - [[file:aws-s3-powershell.org][aws-s3-powershell.org]] :: Notes on using PowerShell to keep an AWS S3 bucket up to date.
+  - [[file:aws-s3-powershell-and-cli.org][aws-s3-powershell-and-cli.org]] :: Notes on using PowerShell to keep an AWS S3 bucket up to date.
 
   - [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance
        of Functor
