@@ -88,12 +88,26 @@
     :CUSTOM_ID: cli-sync
     :END:
 
-    : aws s3 sync . s3://tarheel-nc
+    #+BEGIN_SRC powershell
+      ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
+      aws s3 sync . s3://tarheel-nc
+    #+END_SRC
 
     (Assumes you've already set your profile via environment variable export, as above, but, if not,
     add the option =--profile JohnS3=.)
 
     This only copies new and updated files.
+
+**** CLI to totally re-upload a bucket
+
+     If you bollix up the timestamps and want to just start from scratch, do this in the root of the directory you want
+     to publish:
+
+     #+BEGIN_SRC powershell
+       ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
+       aws s3 rm s3://tarheel-nc                         # Blows away the CONTENTS of the bucket
+       aws s3 cp . s3://tarheel-nc --recursive --acl public-read # Don't forget the ACL!
+     #+END_SRC 
 
 
 * DONE Figure out how to exclude ~.git~ subdirectory

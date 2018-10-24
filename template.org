@@ -10,8 +10,6 @@
 
 # See org-mode explainer at the bottom of this file.
 
-/(HTML generated from org-mode text file.)/
-
 * Overview 
 * Reproduction 
 * Current Architecture/Issues 

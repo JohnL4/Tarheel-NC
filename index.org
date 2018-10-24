@@ -10,8 +10,6 @@
 
 # See org-mode explainer at the bottom of this file.
 
-/(HTML generated from org-mode text file.)/
-
 * Overview
 
   So, this is my dumb Amazon S3 static web site bucket.
@@ -21,6 +19,8 @@
 * Stuff Of Interest
 
   (Depending on how you define "interest", of course.)
+
+  - [[file:2018-elections.org][2018-elections.org]] :: Summarization of the [[https://indyweek.com][The Independent]]'s endorsements for the 2018 (U.S.) midterm elections.
 
   - [[file:Orgzly/hugo.html][Orgzly/hugo.html]] :: This is the HTML version of an [[http://www.orgzly.com/][Orgzly]] file I first created on my phone.  It's not necessarily
        up-to-date, since I'm updating HTML manually now (updates to slow, really; plus worried about accidentally
