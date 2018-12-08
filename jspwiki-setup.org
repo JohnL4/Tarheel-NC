@@ -1,0 +1,273 @@
+This file/page/entry is some notes on how I got JSPWiki running on Tomcat8 on an Ubuntu 16.04 LTS
+image running on an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance.
+
+It's an edited version of a question I posted to the users' mailing list.
+
+It's also in my Google Drive root at present.
+
+* Initial Setup: Tomcat 8
+
+** Directory Structure
+  
+  I installed Tomcat8 using apt-get, I wound up with:
+
+  #+BEGIN_EXAMPLE 
+    /etc/default/tomcat8 
+    /etc/init.d/tomcat8
+    /etc/tomcat8
+       Catalina/localhost/{docs,examples,host-manager,manager}.xml
+       (These have docbase pointing to corresponding subdirs of
+       /usr/share.)
+    /usr/share/tomcat8
+    /var/lib/tomcat8, which has a webapps subdir.
+       (Note that the real index.html page seems to be at 
+       /var/lib/tomcat8/webapps/ROOT, 
+       not /usr/share/tomcat8-root/default_root/index.html.
+       I'm not sure why it's set up this way.)
+  #+END_EXAMPLE 
+
+  (For good measure, I chown'd a bunch of directories from root to tomcat8:tomcat8. Basically,
+  whatever I thought the Tomcat process would need to have write permission for.)
+  
+  Here's a breakdown of directory contents, as far as I can tell:
+
+  - /etc/default/tomcat8 :: Shell variables for running =/etc/init.d/tomcat8=.  This is where you
+       turn on =authbind= and set the maximum heap size for the JVM.
+  - /etc/init.d/tomcat8 :: Script run at boot time (and at shutdown time) to fire up (and gracefully
+       shut down) the Tomcat server.  Uses variables set in =/etc/default/tomcat8=.
+  - /etc/tomcat8 :: Various config files for Tomcat, including userid/password for running the
+       manager app.
+    - Catalina/localhost :: Subdirectory containing XML files configuring various context paths for
+         different web apps in Tomcat.  (The "context path" is the part of the URL that comes after
+         the host but before the various nitty-gritty names of web pages and servlets. It's
+         basically the name of the web app, in one sense, and it's what allows different apps to run
+         simultaneously on the same server, since they might have pages with the same name (e.g.,
+         =Login.jsp=).
+  - /usr/share/tomcat8 :: The binaries for the Tomcat server itself.
+  - /var/lib/tomcat8 :: This is basically where Tomcat apps live (unless they're configured with
+       different paths on a per-app basic with the context XMLs in
+       =/etc/tomcat8/Catalina/localhost=, something I don't think you need to worry about to run
+       JSPWiki).
+    - webapps :: Where your war file goes (it should be automatically unzipped as soon as you drop
+         it in there), and is also where your =jspwiki-custom.properties= file goes.
+      - ROOT :: Subdir of =webapps= where you will find your static =index.html= for all of
+           Tomcat8 (the "It works!" page).  You can add links to various apps running on the server
+           (such as your wiki) here if you want.
+
+** =authbind=
+   
+  I also installed =authbind=, in order to bind to ports < 1023 without running as root.  Can't
+  remember where I saw this, but it's pretty much everywhere.
+       
+* JSPWiki
+  
+  So, I downloaded jspwiki.war 2.10.2, renamed it to "wiki.war" (because the context path should
+  really just be "wiki", so I can switch wiki platforms at some point in the future (ha!)), and
+  copied it to /var/lib/tomcat8/webapps, where it promptly got unpacked.
+
+  Now, I can see it in my Tomcat app manager, but when I attempt to start it, I get failures.
+
+  First, I got OutOfMemory errors.
+
+  I assume Tomcat's default -Xmx=128m is way too small, so I bumped it up to 768m in
+  =/etc/default/tomcat8=.  (I've only got a 1GB EC2 instance (t2.micro), so I think 768m is living
+  dangerously, eh?).
+
+  Now I'm getting errors like
+
+  #+BEGIN_EXAMPLE 
+    org.apache.catalina.core.ApplicationContext.log ERROR: Failed to create a Wiki engine: JSPWiki: Unable to load and setup properties from jspwiki.properties. Failed to start. Caused by: Failed to instantiate class org.apache.wiki.PageManager; please check log files for better information.
+   #+END_EXAMPLE
+   
+  (in localhost.2017-01-08.log)
+
+  and
+
+  #+BEGIN_EXAMPLE 
+    java.io.FileNotFoundException: jspwiki.log (Permission denied)
+  #+END_EXAMPLE
+   
+   (in catalina.out)
+
+   and
+
+   #+BEGIN_EXAMPLE 
+     INFO [__DEFAULT__] org.apache.catalina.loader.WebappClassLoaderBase.checkStateForResourceLoading Illegal access: this web application instance has been stopped already. Could not load [net/sf/ehcache/version.properties].
+   #+END_EXAMPLE
+   
+   (in catalina.2017-01-08.log)
+
+   I grabbed jspwiki.properties with:
+
+   : unzip jspwiki-war-2.10.2.jar ini/jspwiki.properties
+
+   renamed it =jspwiki-custom.properties=, modified it as follows:
+
+   #+BEGIN_EXAMPLE
+     --- jspwiki.properties  2017-01-21 05:51:16.428657332 +0000
+     +++ jspwiki-custom.properties   2017-01-21 05:48:36.894315773 +0000
+     @@ -46,7 +46,7 @@
+      #  Example:
+      #  jspwiki.baseURL = http://jspwiki.apache.org/
+      #
+     -jspwiki.baseURL=http://localhost:8080/JSPWiki/
+     +jspwiki.baseURL=http://web.how-hard-can-it-be.com/wiki/
+
+      #
+      #  Which page provider class to use.  Possibilities are:
+     @@ -97,7 +97,7 @@
+      #
+      #  Determines where wiki files are kept for FileSystemProvider i.e.:
+      #
+     -#  jspwiki.fileSystemProvider.pageDir = /p/web/www-data/jspwiki/
+     +jspwiki.fileSystemProvider.pageDir = /usr/share/jspwiki/pages
+      #
+      #  If you're using Windows, then you must duplicate the backslashes.
+      #  For example, use:
+     @@ -117,7 +117,7 @@
+      #  The working directory is used to cache things like Lucene search
+      #  results.
+      #
+     -#jspwiki.workDir =
+     +jspwiki.workDir = /usr/share/jspwiki/work
+
+      #
+      #  ATTACHMENTS:
+     @@ -139,7 +139,7 @@
+      #  If you're using Windows, then you must duplicate the backslashes.
+      #  For example, use:
+      #
+     -#  jspwiki.basicAttachmentProvider.storageDir = C:\\Data\\jspwiki
+     +jspwiki.basicAttachmentProvider.storageDir = /usr/share/jspwiki/attachments
+      #
+      #  If not provided, will default to a "jspwiki-files" directory
+      #  in the user's home folder.
+     @@ -376,6 +376,10 @@
+      jspwiki.specialPage.Preferences = UserPreferences.jsp
+      jspwiki.specialPage.FindPage = FindPage.jsp
+
+     +# From docs on AdminPages (https://jspwiki-wiki.apache.org/Wiki.jsp?page=AdminPages):
+     +jspwiki-x.adminui.enable=true
+     +# jspwiki-x.securityconfig.enable=true
+     +
+      #############################################################################
+      #
+      #  Plugin search paths.
+     @@ -600,7 +604,7 @@
+      #  ok to leave this un-set, as long as users know that their groups could
+      #  "disappear" if the wiki app is ever redeployed.
+
+     -#jspwiki.xmlGroupDatabaseFile = /etc/tomcat/groupdatabase.xml
+     +jspwiki.xmlGroupDatabaseFile = /etc/jspwiki/groupdatabase.xml
+
+      #  USER DATABASE
+      #  User's wiki profiles are stored in a UserDatabase. The default user database
+     @@ -621,7 +625,7 @@
+      #  ok to leave this un-set, as long as users know that their profiles could
+      #  "disappear" if the wiki app is ever redeployed.
+
+     -#jspwiki.xmlUserDatabaseFile = /etc/tomcat/userdatabase.xml
+     +jspwiki.xmlUserDatabaseFile = /etc/jspwiki/userdatabase.xml
+
+      # You can also use a JDBC database for storing user profiles,
+      # to be configured below in the JDBC section. See the online
+     @@ -880,7 +884,7 @@
+      log4j.appender.FileLog = org.apache.log4j.RollingFileAppender
+      log4j.appender.FileLog.MaxFileSize    = 10MB
+      log4j.appender.FileLog.MaxBackupIndex = 14
+     -log4j.appender.FileLog.File = jspwiki.log
+     +log4j.appender.FileLog.File = /var/log/jspwiki/jspwiki.log
+      log4j.appender.FileLog.layout = org.apache.log4j.PatternLayout
+      log4j.appender.FileLog.layout.ConversionPattern=%d [%t] %p %c %x - %m%n
+   #+END_EXAMPLE
+   
+   and copied it to =/var/lib/tomcat8/webapps/wiki/WEB-INF/classes=.
+
+   This is all somewhat counterintuitive, but basically (I think), this directory is on the
+   classpath for the webapp, even though it's empty.  (There's also a =lib= directory that has the
+   webapp's .jar files, as opposed to single .class files.)
+
+   *Note the complete pathname for =jspwiki.log= above.*  Now were I to get a permission error on
+   "jspwiki.log", I'd know what path was being attempted.  As it happens, I made the directory
+   read/write by user:group tomcat8:tomcat8, so I get no errors.
+
+* =catalina.policy= hijinks
+
+  *(NOTE: I am certain this section isn't necessary, or even a good idea, since the specified path
+  doesn't exist.  I'm leaving this note in, though, in case it's useful for somebody else.)*
+
+  Ok, so I added the following to my /etc/tomcat8/policy.d/03catalina.policy file:
+
+  #+BEGIN_EXAMPLE 
+    grant codeBase "file:${catalina.base}/webapps/wiki/-" {
+    permission java.io.FilePermission "file:/usr/share/jspwiki-files/-",
+    "read, write";
+    permission java.security.AllPermission;
+    };
+  #+END_EXAMPLE
+  
+  which (a) doesn't seem to have caused any disasters (yay), but (b) hasn't done anything nice
+  (boo). I did a /etc/init.d/tomcat8 restart. The edits appear in
+  /var/cache/tomcat8/catalina.policy, so I guess that's good.
+
+* Customization of =jspwiki.policy=
+
+  (In /var/lib/tomcat8/webapps/wiki/WEB-INF.)
+
+  Once I got the wiki working, I proceeded to mangle the webapp's policy file to allow a
+  public-facing blog/wiki ("bliki") in which I am the only author.
+
+  One note: Before I did this, I created a login ("john") and a group with special name "Admin"
+  (case-sensitive?) via the public "create your own account!" page.  Once that was done, I was able
+  to close off the wiki with the following edits.
+
+  #+BEGIN_EXAMPLE
+    --- jspwiki.policy.orig 2017-01-21 04:44:47.490238637 +0000
+    +++ jspwiki.policy      2017-01-21 05:22:08.370383295 +0000
+    @@ -49,8 +49,8 @@
+ 
+     grant principal org.apache.wiki.auth.authorize.Role "All" {
+         permission org.apache.wiki.auth.permissions.PagePermission "*:*", "view";
+    -    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editPreferences";
+    -    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editProfile";
+    +//    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editPreferences";
+    +//    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editProfile";
+         permission org.apache.wiki.auth.permissions.WikiPermission "*", "login";
+     };
+ 
+    @@ -66,8 +66,8 @@
+     // allow editing only, then replace "modify" with "edit".
+ 
+     grant principal org.apache.wiki.auth.authorize.Role "Anonymous" {
+    -    permission org.apache.wiki.auth.permissions.PagePermission "*:*", "modify";
+    -    permission org.apache.wiki.auth.permissions.WikiPermission "*", "createPages";
+    +//    permission org.apache.wiki.auth.permissions.PagePermission "*:*", "modify";
+    +//    permission org.apache.wiki.auth.permissions.WikiPermission "*", "createPages";
+     };
+ 
+ 
+    @@ -77,8 +77,8 @@
+     // They can also view the membership list of groups.
+ 
+     grant principal org.apache.wiki.auth.authorize.Role "Asserted" {
+    -    permission org.apache.wiki.auth.permissions.PagePermission "*:*", "modify";
+    -    permission org.apache.wiki.auth.permissions.WikiPermission "*", "createPages";
+    +//    permission org.apache.wiki.auth.permissions.PagePermission "*:*", "modify";
+    +//    permission org.apache.wiki.auth.permissions.WikiPermission "*", "createPages";
+         permission org.apache.wiki.auth.permissions.GroupPermission "*:*", "view";
+     };
+ 
+    @@ -93,6 +93,9 @@
+         permission org.apache.wiki.auth.permissions.GroupPermission "*:*", "view";
+         permission org.apache.wiki.auth.permissions.GroupPermission "*:<groupmember>", "edit";
+         permission org.apache.wiki.auth.permissions.WikiPermission "*", "createPages,createGroups";
+    +       // Permissions xferred from "All" role:
+    +    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editPreferences";
+    +    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editProfile";
+     };
+  #+END_EXAMPLE
+  
+* Operations
+
+  - Restart the daemon :: =/etc/init.d/tomcat8 restart=
+       

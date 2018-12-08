@@ -1,0 +1,384 @@
+Notes on using AWS.  Document is presently in my Google Drive =Development= folder.
+
+* Setting up an AWS instance
+
+  http://aws.amazon.com/
+
+** About spot instance pricing and availability
+
+*** Pricing
+
+    - https://aws.amazon.com/ec2/pricing/
+
+    - https://docs.google.com/spreadsheet/ccc?key=0AqnjUpngCT_SdElFdUNJQXhQZVd1VVVHTnpfVzBoOVE&usp=sharing
+
+    Pricing is per instance-hour (/or fraction thereof/) until instance is stopped (probably the
+    best option if you want to restart it later) or terminated (totally destroyed, not restartable
+    later).
+
+    Reserved instances are cheaper than on-demand, but require 1- or 3-yr commitments (still pretty
+    reasonable in the case of a micro or small instance).
+
+*** Does the spot instance run again when the spot price comes back down?
+
+*** What sort of state preservation (storage) do I need?
+
+    EBS?
+
+    S3?
+    
+** Choosing an EC2 instance type
+   
+   Spot pricing is cheapest, but arbitrary startup/shutdown issues make it more complex, along with
+   the fact that your users simply might not tolerate your web app being down "for a while".
+
+** Launch and connect simple instance
+
+*** On-demand instance -- the more expensive (but simpler) option
+    :PROPERTIES:
+    :CUSTOM_ID: on-demand-instance
+    :END:    
+
+    Launch isn't too hard.  I picked an AMI Linux instance (described below) and fired it up.
+
+    Amazon Linux image I used:
+
+   - amzn-ami-pv-2013.03.1.x86_64-ebs (ami-05355a6c)
+     - Description: Amazon Linux AMI x86_64 PV
+     - Amazon's extended description:  EVS-Backed, PV-GRUB image. Linux 3.4, AWS tools, repository
+       access to multiple versions of MySQL,  PostgreSQL, Python, Ruby, and Tomcat
+     - Platform: Amazon Linux
+
+   Connecting is more of an issue.  I need a =.pem= file, and I need to either (a) find the one I
+   used to create the keypair in the AWS console, or (b) create a new keypair (and matching =.pem=
+   file).  (Note: it turns out you can download a .pem ("privacy-enhanced email" -- the concept is
+   dead but the file format lingers on) when you create a keypair.  Don't lose the .pem file because
+   I don't see how you can download it again.  Your browser will put in the (default) download
+   directory.
+
+*** Spot instance -- cheaper but a little more complex to set up
+
+    *This might be unworkable.* Looks like the persistent volumes (EBS) are allocated per-zone
+     (e.g., us-east-1a), but the spot instance could be launched in any zone, so if it gets
+     relaunched into another zone, the persistent volume won't be available.  Might be better to
+     just use an on-demand instance, until you can figure out (a) how to make a spot instance
+     recover from interruptions, and (b) how to set things up so users can know the spot instance is
+     down for the time being and to be patient.  Note that this last requirement might be stupid,
+     because users simply might not be able to tolerate an instance being down, period.
+
+    As above ([[#on-demand-instance][On-demand instance]]), but...
+
+    When hitting "Launch instance":
+
+    - Use the "Classic dialog" and select "Request Spot Instances".
+    - Mark it a persistent request (which, /I think/ means it'll be re-evaluated when the price goes
+      so high the instance is shut down), and 
+    - In the "Storage Device Configuation" screen, edit the config to turn /off/ the "Delete on
+      termination" flag for the root device.
+
+    Note that this instance will run until you cancel your spot request.  You can't terminate it (if
+    you try, it'll just respawn).  If you want to kill it, you'll have to cancel the spot request
+    itself.
+
+** Routing www2.how-hard-can-it-be.com to the AWS instance
+
+   Consider allocating an Elastic IP address and using your DNS solution (dyndns.org, in my case) to
+   map it to a particular hostname.
+
+** Software installation and configuration
+
+*** Apache
+
+    Install:
+
+    : sudo yum install ...
+
+    Configure to run at boot:
+
+    : sudo chkconfig --add httpd
+    : sudo chkconfig --level 5 httpd on
+
+*** WildFly (JBoss 8)
+
+**** Install
+     
+***** Download .tgz file from http://wildfly.org
+
+    #+BEGIN_SRC sh
+      wildflyTarFile="<path-to-downloaded-image>"
+      cd /opt
+      sudo mkdir -p WildFly
+      cd WildFly
+      tar xvzf $wildflyTarFile
+      cd /opt/WildFly/<installed-directory>/bin
+      sudo ./standalone.sh    # Fire it up!
+    #+END_SRC
+
+***** Open up WildFly to connections from the outside world
+
+    #+BEGIN_SRC xml
+      <interfaces>
+        <interface name="management">
+          <inet-address value="${jboss.bind.address.management:127.0.0.1}"/>
+        </interface>
+        <interface name="public">
+          <!-- <inet-address value="${jboss.bind.address:127.0.0.1}"/> -->  <!-- Commented out -->
+          <any-address/>  <!-- Add this line. -->
+        </interface>
+    #+END_SRC
+
+***** If you want, change the ports from 8080/8443 to 80/443
+
+    #+BEGIN_SRC xml
+      <socket-binding name="http" port="${jboss.http.port:80}"/>     <!-- Was 8080 -->
+      <socket-binding name="https" port="${jboss.https.port:443}"/>  <!-- Was 8443 -->
+    #+END_SRC 
+
+***** Make the host something other than "localhost"?  (Not sure this works yet.)
+
+    #+BEGIN_SRC xml
+      <host name="default-host" alias="how-hard-can-it-be.com">
+          <location name="/" handler="welcome-content"/>
+      </host>
+    #+END_SRC 
+
+***** Add a user for jboss to run under
+
+    : # useradd jboss
+
+**** Run
+
+     #+BEGIN_SRC sh
+       /opt/WildFly/wildfly-8.0.0.Alpha4/bin
+       sudo ./standalone.sh
+     #+END_SRC 
+
+* Server Updates
+
+  : yum update
+
+* App Development
+
+** Git
+   
+*** Global setup
+
+    Files:
+    
+    - =/etc/gitconfig= -- Doesn't seem to be present on my windows/cygwin system.
+    - =~/.gitconfig=
+    - =.git/config= -- Per-repo/per-repo-subdir-specific config.
+
+    Commands:
+    
+    : git config --global user.name "John Doe"
+    : git config --global user.email johndoe@example.com
+    : git config --list
+
+    git uses the last value that it sees
+
+*** Initialize local repository
+
+    Two choices: from scratch or by cloning a remote repository.
+
+**** From scratch (including first local commit)
+     
+     In top directory of project:
+
+     #+BEGIN_SRC sh
+       git init
+       git add <already-existing-file>
+       git commit
+     #+END_SRC
+
+**** Clone remote repo
+
+     #+BEGIN_SRC sh
+       git clone git://github.com/schacon/grit.git
+       git clone user@server:/path.git # Uses SSH
+     #+END_SRC
+     
+     Clones into current local directory.  Without further arguments, names remote repo "origin" and
+     local branch "master".
+
+*** Initialize remote repository
+
+    Do it on http://github.com.
+
+*** Link existing remote repo to existing local repo
+
+    #+BEGIN_SRC sh
+      git remote add origin https://github.com/JohnL4/rc.git
+      git pull                        # Looks like there's no other way to do this.
+    #+END_SRC
+    
+*** Subsequent local checkins
+
+    #+BEGIN_SRC sh
+      git status                      # Get status
+      git add <file>                  # Stage changes
+      git commit
+    #+END_SRC
+
+    
+**** =.gitignore=
+
+     Quoting from http://git-scm.com/book/en/Git-Basics-Recording-Changes-to-the-Repository:
+
+     #+BEGIN_QUOTE
+     The rules for the patterns you can put in the .gitignore file are as follows:
+
+     - Blank lines or lines starting with # are ignored.
+     - Standard glob patterns work.
+     - You can end patterns with a forward slash (/) to specify a directory.
+     - You can negate a pattern by starting it with an exclamation point (!).
+
+     Glob patterns are like simplified regular expressions that shells use. An asterisk (*) matches
+     zero or more characters; [abc] matches any character inside the brackets (in this case a, b, or
+     c); a question mark (?) matches a single character; and brackets enclosing characters separated
+     by a hyphen([0-9]) matches any character in the range (in this case 0 through 9) .
+     
+     Here is another example .gitignore file:
+
+     #+BEGIN_EXAMPLE 
+       # a comment - this is ignored
+       # no .a files
+       ,*.a
+       # but do track lib.a, even though you're ignoring .a files above
+       !lib.a
+       # only ignore the root TODO file, not subdir/TODO
+       /TODO
+       # ignore all files in the build/ directory
+       build/
+       # ignore doc/notes.txt, but not doc/server/arch.txt
+       doc/*.txt
+       # ignore all .txt files in the doc/ directory
+       doc/**/*.txt
+     #+END_EXAMPLE 
+     #+END_QUOTE
+
+     Also:
+
+     #+BEGIN_QUOTE
+     Another useful thing you may want to do is to keep the file in your working tree but remove it
+     from your staging area. In other words, you may want to keep the file on your hard drive but
+     not have Git track it anymore. This is particularly useful if you forgot to add something to
+     your .gitignore file and accidentally staged it, like a large log file or a bunch of .a
+     compiled files. To do this, use the --cached option:
+     
+     : git rm --cached readme.txt
+     #+END_QUOTE
+
+*** Push from local repository to remote repository
+
+    Push from local "master" branch to remote "origin" repo:
+    
+    : git push
+
+*** Pull from remote repository to local repository
+
+    Pull from remote repository (default "origin") into local repository and then merges from local
+    repo into current working branch (default "master"?):
+    
+    : git pull
+
+    Only pull to local repository, no get/merge into local working branch directory:
+    
+    : git fetch
+
+** Maven
+
+** Eclipse
+
+*** Setup
+    
+**** Wildfly
+     :PROPERTIES:
+     :CUSTOM_ID: setup-wildfly
+     :END:
+     
+    If working w/JBoss (WildFly), you'll need to install some tools from RedHat.  It looks like
+    Eclipse comes with JBoss software sites pre-configured, but I recall having done something to
+    install WildFly tools.  Try Window | Preferences | Server | Runtime Environments | Add |
+    Download Additional Server Adapters (a link), and go from there.
+
+**** JDKs and JREs
+     :PROPERTIES:
+     :CUSTOM_ID: eclipse-configure-JDKs-and-JREs
+     :END:
+
+     Window | Preferences | Java | Installed JREs
+
+     Let Eclipse search for JREs, rather than try to configure them yourself.  Restrict the search
+     to directories where you know you have good JREs (e.g., =c:\Java\jdk1.7.0_45=).
+
+**** Web Servers
+
+     Window | Preferences | Server | Runtime Environments
+
+     Again, let Eclipse search for WildFly (after you install it), starting with a known directory
+     (e.g., =c:\usr\local\wildfly-8.0.0.Beta1=).  Associate the server with a JDK JRE (which should
+     have been found in the previous search (in [[#eclipse-configure-JDKs-and-JREs][JDKs and JREs]]).
+     
+**** Maven
+
+     As far as the JBoss Quickstarts are concerned, I don't advise importing the existing projects
+     into Eclipse if you can't make them work from the command line.  Instead, just import the
+     source artifacts (beans.xml, maybe web.xml, static web content, dynamic (Java) web content,
+     etc.)  Then you can select "Run On Server", pick the Wildfly server you set up in [[#setup-wildfly][Wildfly]], and
+     be off to the races.  Hopefully.
+
+** JBoss
+
+*** Stupid JBoss tips
+
+**** Directory permissions
+     
+     If you install to a directory not generally-writable, be sure to run your various admin batch
+     files /as Administrator/.  Or =chown= the directory (recursively) to the userid you'll be
+     running the server as.
+
+**** Shutting down a JBoss instance
+
+     : {JBOSS_HOME}/bin/jboss-cli.sh --connect command=:shutdown
+
+     (Worked for me, Windows 7, Wildfly 8.0 beta1, cygwin)
+     
+** General Java/Javascript web app development
+   
+*** Java
+
+**** DONE CDI -- Context and Dependency Injection
+     CLOSED: [2013-12-05 Thu 20:51]
+     - CLOSING NOTE [2013-12-05 Thu 20:51]
+
+     (See JBoss =helloworld= quickstart.)
+
+     This is basically how to hook up your business-logic classes and servlets w/out going through
+     reams of configuration.
+
+     The CDI spec basically says that every injection point (@Inject) is satisfied by exactly one
+     class or there's an error.
+
+     - [X] The type of the injection point is exactly the same as the type of the class (there's
+       some noise about raw types and parameterized types and types of type parameters,
+       but... /bascially/ identical types), or (See section 4.3 ("Specialization") of the JSR-299
+       CDI spec) a specializing (subclassing) bean can use the *@Specializes* annotation to indicate
+       to the container that it's specializing another bean (e.g., a mock bean can specialize the
+       intended production bean).
+
+       However, don't specialize decorators or interceptors.  The spec says, "If an interceptor or
+       decorator is annotated @Specializes, non-portable behavior results."  I think this means they
+       wash their hands of the matter.
+
+     - [X] Do injectable beans have a default annotation of =@Default=?  (injection /points/ do,
+       unless you give another annotation.)  Yes, if they don't declare a qualifier.  See Section
+       2.3.1. ("Built-in qualifier types") of the JSR-299 CDI spec.
+
+**** IN-PROGRESS JSF
+
+     JSR-344.
+
+     
+
+*** Javascript (GWT, Angular, etc.)
