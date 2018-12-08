@@ -3,12 +3,12 @@
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
-#+HUGO_BASE_DIR: .
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" >
+#+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 
 # See org-mode explainer at the bottom of this file.
-
-/(HTML generated from org-mode text file.)/
 
 * Overview
 
@@ -20,20 +20,25 @@
 
   (Depending on how you define "interest", of course.)
 
+  - [[file:2018-elections.org][2018-elections.org]] :: Summarization of the [[https://indyweek.com][The Independent]]'s endorsements for the 2018 (U.S.) midterm elections.
+
   - [[file:Orgzly/hugo.html][Orgzly/hugo.html]] :: This is the HTML version of an [[http://www.orgzly.com/][Orgzly]] file I first created on my phone.  It's not necessarily
        up-to-date, since I'm updating HTML manually now (updates to slow, really; plus worried about accidentally
        deploying live.js to my S3 bucket and racking up unnecessary charges w/one-second refresh cycle).  Original
        org-mode version is here:  https://www.dropbox.com/s/ji4ziwzxqxu81ei/hugo.org?dl=0
 
-  - [[file:aws-s3-powershell.org][aws-s3-powershell.org]] :: Notes on using PowerShell to keep an AWS S3 bucket up to date.
+  - [[file:aws-s3-powershell-and-cli.org][aws-s3-powershell-and-cli.org]] :: Notes on using PowerShell to keep an AWS S3 bucket up to date.
 
   - [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance
        of Functor
 
-  - [[file:free-orion-tech-research.svg][free-orion-tech-research.svg]] :: An SVG I generated (using GraphViz) of technologies to research in FreeOrion.  Original input is [[file:free-orion-tech-research.txt]].
+  - [[file:free-orion-tech-research.svg][free-orion-tech-research.svg]] :: An SVG I generated (using GraphViz) of technologies to research in FreeOrion.
+       Original input is [[file:free-orion-tech-research.txt]].
 
   - SubDir :: A subdirectory
     - [[file:SubDir/another-file.html][another-file.html]] :: Just a random HTML file I hacked up.
+
+    - [[file:SubDir/some-org-mode-garbage.org][some-org-mode-garbage.org]] :: An org file in a subdirectory.
 
 * Play
 
@@ -41,7 +46,7 @@
 
   Code: ~code~
 
-  =maybe we like equal signs better_3^2= since "code" seems to be fairly loadedin org-mode (implications of execution
+  =maybe we like equal signs better_3^2= since "code" seems to be fairly loaded in org-mode (implications of execution
   and whatnot).
 
 * COMMENT Org-mode explainer

@@ -1,0 +1,120 @@
+# -*- org -*-
+#+TITLE: Notes for 2018 Midterm Elections
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
+
+* Overview
+
+  Notes on who to vote for, from /The Independent/.
+
+  We are in:
+
+  |                     |                          | *Indy endorses* |
+  |---------------------+--------------------------+-----------------|
+  | Precinct            | DAMASCUS                 |                 |
+  | Congress            | CONGRESSIONAL DISTRICT 4 | David Price     |
+  | NC Senate           | NC SENATE DISTRICT 23    | Valerie Foushee |
+  | NC House            | NC HOUSE DISTRICT 56     | Verla Insko     |
+  | Superior Court      | 15B SUPERIOR COURT       |                 |
+  | Judicial            | 15B JUDICIAL             |                 |
+  | Prosecutorial       | 18TH PROSECUTORIAL       |                 |
+  | County Commissioner | COMMISSIONER DISTRICT 1  |                 |
+  | Township            | CHAPEL HILL              |                 |
+  | School              | CHAPEL HILL              |                 |
+  
+  From https://indyweek.com/news/elections/endorsements-our-last-best-hope-to-save-the-republic/
+
+** Constitutional Amendments: No to all six.
+
+** Statewide Court Positions
+
+   | Supreme Court           | Anita Earls     |
+   | Court of Appeals Seat 1 | John Arrowood   |
+   | Court of Appeals Seat 2 | Tobias Hampson  |
+   | Court of Appeals Seat 3 | Allegra Collins |
+
+   Entertaining quote:
+
+   #+BEGIN_QUOTE
+   After Mike Morgan won a seat on the Supreme Court in 2016—likely thanks to Republicans who
+   accidentally voted for him—lawmakers tried to game the system first by requiring candidates to
+   have party identification and then eliminating primaries, thinking that would give incumbent
+   Republican Barbara Jackson a better shot at reelection. Enter Christopher Anglin, a “former”
+   Democrat who changed parties to run as a Republican and, quite possibly, split the Republican
+   vote, thus giving Democrat Anita Earls a clear shot to victory. Republicans then tried to head
+   Anglin off by passing a law that wouldn’t allow him to appear as a Republican on the ballot, but
+   the courts wouldn’t stand for it. So here we are.
+
+   Republicans have good reason to be suspicious of Anglin. Even so, there’s schadenfreude in seeing
+   them hoisted by their own petard. And if Anglin succeeds is paving a path for Earls, he’ll have
+   done the state a favor.
+   #+END_QUOTE
+   
+** Orange County Soil and Water Conservation District Supervisor: Main and Hogan
+
+   FYI, Chris Hogan was in my Disciple Bible study, back in the day, and he was the real estate
+   agent that helped me buy the Durham house.  He's a nice guy.  I don't know about his politics,
+   but I guess they aren't too crazy, because the Indy endorses him (w/out enthusiasm).
+
+** Affordable Housing Bond (Chapel Hill): Yes.
+
+   Pretty sure the town can afford it.
+
+** Fun quotes on Foushee and Insko
+   
+*** Foushee
+
+    #+BEGIN_QUOTE
+    State Senate, District 23: Valerie Foushee
+
+    Valerie Foushee has been a household name in Orange and Chatham Counties for years, having served
+    as a school board member, Orange County commissioner, and a representative in the legislature.
+
+    The Democrat faces Republican Tom Glendinning, a landscaper and founder of the N.C. Composting
+    Council who has held several appointed seats in Chatham County, including positions involved in
+    economic development and planning. His platform centers on economic growth, property rights, and
+    “making the world safer and cleaner” in light of a “breakdown of society.” He advocates for
+    self-defense to protect God-given life until “common decency” is restored. We’re fans of
+    composting, too, but not so much paranoia and religious zeal.
+
+    Foushee, on the other hand, is well-versed in issues facing families and education in North
+    Carolina. Along with Woodard, she sponsored a bill in the Senate to move UNC’s Confederate
+    statue. She’s pushed for paid sick leave and vows to repeal the HB 2 replacement bill[fn:4] as
+    soon as possible. We endorse her for another term.
+    #+END_QUOTE
+
+[fn:4] The "bathroom bill", which makes it illegal for a single city (Charlotte) to pass an ordnance
+allowing places to allow patrons to use the restroom consistent with their gender identity.  Ew, trans
+people.  We hates them.
+
+*** Insko
+
+    #+BEGIN_QUOTE
+    The District 56 race sees longtime Democratic incumbent Verla Inkso against Libertarian Matthew
+    Clements and Republican Matthew Cooke.
+
+    Clements’s website says he is for school choice[fn:1], lower taxes[fn:2], decriminalization of
+    drug possession, and privatization of the ABC system[fn:3]. Cooke, according to a speech he gave
+    at at a recent Second Amendment rights rally in Hillsborough, is a research scientist with the
+    EPA. He didn’t share much about his platform but highlighted the nearby Confederate monument and
+    the Alamance Regulators militia that are “so much a part of our history.” Yep, we just rolled our
+    eyes, too.
+
+    By contrast, Insko was the primary sponsor (along with Meyer) of a bill in May to remove the
+    Confederate statue at UNC known as Silent Sam that has offended students of color for decades. A
+    retired health program administrator, she has also sponsored a host of health-related bills,
+    supporting contraceptive education and telemedicine, as well as a driver’s license designation for
+    the deaf and hard of hearing. Insko has served eleven terms, and we endorse her for number twelve.
+    #+END_QUOTE
+
+[fn:1] This is code language for "rich (white) people get to send their kids whereever they want,
+and poor (black) people get to send their kids whereever they 'want', and the state contributes some
+small amount toward everybody's expenses."  Yay.  If the school is more expensive than what the
+state pays for, well, then it's your "choice".  Also, if your kid has special needs, good luck.
+
+[fn:2] See [fn:1] re the state paying for school.
+
+[fn:3] Drugs and alcohol for /everyone!/ Woo!!  Healthcare?  Toxic coal ash cleanup?  Offshore oil
+drilling?  Solar electricity farms?  Hurricane relief?  Voter rights?  Never mind all that; /pot!/   

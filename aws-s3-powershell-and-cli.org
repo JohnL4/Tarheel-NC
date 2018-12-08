@@ -1,10 +1,12 @@
 # -*- org -*-
-#+TITLE: Notes on Using Amazon AWS PowerShell Cmdlets to Maintain a Static S3 Website
+#+TITLE: Notes on Using Amazon AWS PowerShell Cmdlets (or CLI Commands) to Maintain a Static S3 Website
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
-#+HUGO_BASE_DIR: .
+#+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 
 # See org-mode explainer at the bottom of this file.
 
@@ -14,6 +16,8 @@
 
   Some dumb notes on maintaining a static website as an S3 bucket.  To be refined as I figure out more than just the
   absolute basics.
+
+  Note that "CLI" here means the AWS CLI, which is implemented as a set of Python scripts.
 
 * Simplest possible basics
 
@@ -35,9 +39,21 @@
 
     : Set-AWSCredential -AccessKey AKIAIOSFODNN7EXAMPLE -SecretKey wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY -StoreAs MyProfileName
 
+**** CLI
+
+    : aws configure --profile JohnS3
+
+    You will be prompted for access key and secret access key.  The other parameters can be defaulted.
+
 *** Choose a credential for the current session (will expire, so you'll have to do it again the next day)
     
     : Set-AWSCredential -ProfileName JohnS3
+
+**** CLI
+     
+    For the CLI, set an environment variable:
+
+    : export AWS_PROFILE=JohnS3
 
 ** Download a bucket
 
@@ -49,6 +65,14 @@
 
    *THIS WILL PROBABLY OVERWRITE YOUR CURRENT DIRECTORY CONTENTS* so be sure you know what you're doing.
 
+*** CLI
+
+   : aws cp s3://tarheel-nc . --recursive
+
+   *(UNTESTED)* -- This is /probably/ how it works.  By this point, I'd put the source files into
+   Github and found a scheme to maintain the generated files from the sources in git (org-mode
+   publish, see [[file:~/Dropbox/Orgzly/hugo.org::#org-mode-publish][org-mode "publish" operation]]).
+
 ** Upload a bucket
 
    (Assuming you set up with the download above.)
@@ -59,13 +83,48 @@
 
    *WILL PROBABLY OVERWRITE THE DESTINATION BUCKET*
 
-* TODO Figure out how to exclude ~.git~ subdirectory
+*** CLI (will not overwrite destination)
+    :PROPERTIES:
+    :CUSTOM_ID: cli-sync
+    :END:
+
+    #+BEGIN_SRC powershell
+      ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
+      aws s3 sync . s3://tarheel-nc
+    #+END_SRC
+
+    (Assumes you've already set your profile via environment variable export, as above, but, if not,
+    add the option =--profile JohnS3=.)
+
+    This only copies new and updated files.
+
+**** CLI to totally re-upload a bucket
+
+     If you bollix up the timestamps and want to just start from scratch, do this in the root of the directory you want
+     to publish:
+
+     #+BEGIN_SRC powershell
+       ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
+       aws s3 rm s3://tarheel-nc                         # Blows away the CONTENTS of the bucket
+       aws s3 cp . s3://tarheel-nc --recursive --acl public-read # Don't forget the ACL!
+     #+END_SRC 
+
+
+* DONE Figure out how to exclude ~.git~ subdirectory
+  CLOSED: [2018-10-21 Sun 16:33]
+
+  - CLOSING NOTE [2018-10-21 Sun 16:33]
+  Don't need this if publishing from a source directory to a local destination, and then syncing
+  from that directory to S3, but you can probably do it with some variation of an =--exclude= option
+  to a command.
 
 * TODO Figure out how to only upload what's changed
 
   Based on date?
 
   Based on what git says is uncommitted?  (Means upload before committing.)
+
+  Answer: =sync= CLI action ([[#cli-sync][CLI (will not overwrite destination)]]).
 
 * COMMENT Org-mode explainer
 
