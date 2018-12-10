@@ -19,6 +19,10 @@
 
   Note that "CLI" here means the AWS CLI, which is implemented as a set of Python scripts.
 
+** Documentation
+
+   https://docs.aws.amazon.com/cli/index.html (includes both Python and PowerShell CLIs).
+
 * Simplest possible basics
 
 ** Set up credentials
@@ -44,16 +48,27 @@
     : aws configure --profile JohnS3
 
     You will be prompted for access key and secret access key.  The other parameters can be defaulted.
-
+    
 *** Choose a credential for the current session (will expire, so you'll have to do it again the next day)
     
     : Set-AWSCredential -ProfileName JohnS3
 
 **** CLI
+     :PROPERTIES:
+     :CUSTOM_ID: cli-choose-profile
+     :END:
      
     For the CLI, set an environment variable:
 
     : export AWS_PROFILE=JohnS3
+
+***** DONE Test
+      CLOSED: [2018-12-09 Sun 12:40]
+
+      - CLOSING NOTE [2018-12-09 Sun 12:40]
+      : aws s3 ls s3://tarheel-nc
+
+      (Should result in a directory listing, obviously.)
 
 ** Download a bucket
 
@@ -88,15 +103,22 @@
     :CUSTOM_ID: cli-sync
     :END:
 
-    #+BEGIN_SRC powershell
-      ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
-      aws s3 sync . s3://tarheel-nc
-    #+END_SRC
-
-    (Assumes you've already set your profile via environment variable export, as above, but, if not,
+    (Assumes you've already set your profile via environment variable export, [[#cli-choose-profile][as above]], but, if not,
     add the option =--profile JohnS3=.)
 
     This only copies new and updated files.
+
+    #+BEGIN_SRC powershell
+      ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
+      aws s3 sync . s3://tarheel-nc --acl public-read
+    #+END_SRC
+
+    Or
+
+    #+BEGIN_SRC bash
+      find . -iname '*~' | xargs rm -v
+      aws s3 sync . s3://tarheel-nc --acl public-read
+    #+END_SRC 
 
 **** CLI to totally re-upload a bucket
 
@@ -105,10 +127,9 @@
 
      #+BEGIN_SRC powershell
        ls -rec *~ | rm                                   # Cleanup, because "publish" generates these
-       aws s3 rm s3://tarheel-nc                         # Blows away the CONTENTS of the bucket
+       aws s3 rm s3://tarheel-nc --recursive             # Blows away the CONTENTS of the bucket
        aws s3 cp . s3://tarheel-nc --recursive --acl public-read # Don't forget the ACL!
      #+END_SRC 
-
 
 * DONE Figure out how to exclude ~.git~ subdirectory
   CLOSED: [2018-10-21 Sun 16:33]
@@ -118,8 +139,10 @@
   from that directory to S3, but you can probably do it with some variation of an =--exclude= option
   to a command.
 
-* TODO Figure out how to only upload what's changed
+* DONE Figure out how to only upload what's changed
+  CLOSED: [2018-12-09 Sun 12:41]
 
+  - CLOSING NOTE [2018-12-09 Sun 12:41]
   Based on date?
 
   Based on what git says is uncommitted?  (Means upload before committing.)

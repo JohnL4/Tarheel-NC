@@ -20,6 +20,12 @@
 
   (Depending on how you define "interest", of course.)
 
+  - [[file:static-website.org][static-website.org]] :: Publishing this dumb static web site from source files.
+
+  - [[file:using-aws.org][using-aws.org]] :: AWS hijinks (provisioning an instance, getting it set up for development, etc.)
+
+  - [[file:jspwiki-setup.org][jspwiki-setup.org]] :: Administering my dumb wiki
+       
   - [[file:2018-elections.org][2018-elections.org]] :: Summarization of the [[https://indyweek.com][The Independent]]'s endorsements for the 2018 (U.S.) midterm elections.
 
   - [[file:Orgzly/hugo.html][Orgzly/hugo.html]] :: This is the HTML version of an [[http://www.orgzly.com/][Orgzly]] file I first created on my phone.  It's not necessarily

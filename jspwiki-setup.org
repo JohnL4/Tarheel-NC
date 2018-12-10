@@ -1,3 +1,10 @@
+# -*- org -*-
+#+TITLE: Notes on JSPWiki Setup
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
+
 This file/page/entry is some notes on how I got JSPWiki running on Tomcat8 on an Ubuntu 16.04 LTS
 image running on an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance.
 

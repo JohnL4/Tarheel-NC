@@ -10,7 +10,10 @@
 
 * Overview
 
-  Somehow, I got myself set up with an S3 bucket on Amazon's AWS.
+  Somehow, I got myself set up with an S3 bucket on Amazon's AWS and then forgot how I did
+  it. Typical.
+
+  (See [[file:aws-s3-powershell-and-cli.org][aws-s3-powershell-and-cli.org]] for tips on mucking about with S3 buckets.)
 
 * Publish all =.org= files from emacs
 
@@ -18,9 +21,34 @@
 
 ** Declare current file as part of project
 
-   If you're in a file that should be part of the project but isn't.
+   If you're in a file that should be part of the project but isn't...
 
-   
+   Well, actually, it /should/ be, if you're in the right directory.  [[file:org-projects.el][org-projects.el]] (which you
+   need to eval) defines the project, and if you look at the base directory, that's where you should
+   be.  Or change the base-directory definition.
 
+** Publish
+
+   If you're in the right directory (i.e., your current org file is in the right directory) then the
+   org-mode publish op should proceed properly.
 
 * Push exported html to S3
+
+  As described in [[file:aws-s3-powershell-and-cli.org::#cli-sync][basic operations]].
+
+* Static vs. dynamic web site
+
+  A true wiki is better, because I can simply establish links between topics with just a WikiWord
+  (for the right wiki software).
+
+  However, the wiki I chose (https://jspwiki.apache.org/, deployed at
+  http://web.how-hard-can-it-be.com/wiki/Wiki.jsp?page=Main) is a bit buggy at the version I
+  installed, so it crashes and acts goofy.  It shouldn't, of course, and it's fixable, of course,
+  but until I get around to installing a later version or otherwise debugging the problem, it's a
+  pain.
+
+  Plus, it doesn't handle org-mode files (that's on my dream list of things to code up).
+
+  So, it's easier for me to write big, long org-mode files.  Not the approach I'd prefer, but I
+  already do it (it's my preferred note-taking format), so, here we are.  I'd love to write the same
+  big org-mode files and simply drop them on the wiki, but I'm not there yet, so... static web site.
