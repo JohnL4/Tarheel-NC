@@ -20,6 +20,9 @@
 
   (Depending on how you define "interest", of course.)
 
+  - [[file:Haskell][Haskell]] :: Notes on Haskell, as I re-re-re-re-start my journey of discovery.  And the main
+       reason for the recent flurry of activity on this static web site thing.
+
   - [[file:static-website.org][static-website.org]] :: Publishing this dumb static web site from source files.
 
   - [[file:using-aws.org][using-aws.org]] :: AWS hijinks (provisioning an instance, getting it set up for development, etc.)
@@ -34,9 +37,6 @@
        org-mode version is here:  https://www.dropbox.com/s/ji4ziwzxqxu81ei/hugo.org?dl=0
 
   - [[file:aws-s3-powershell-and-cli.org][aws-s3-powershell-and-cli.org]] :: Notes on using PowerShell to keep an AWS S3 bucket up to date.
-
-  - [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance
-       of Functor
 
   - [[file:free-orion-tech-research.svg][free-orion-tech-research.svg]] :: An SVG I generated (using GraphViz) of technologies to research in FreeOrion.
        Original input is [[file:free-orion-tech-research.txt]].
