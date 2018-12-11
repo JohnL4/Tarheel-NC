@@ -41,11 +41,6 @@
   - [[file:free-orion-tech-research.svg][free-orion-tech-research.svg]] :: An SVG I generated (using GraphViz) of technologies to research in FreeOrion.
        Original input is [[file:free-orion-tech-research.txt]].
 
-  - SubDir :: A subdirectory
-    - [[file:SubDir/another-file.html][another-file.html]] :: Just a random HTML file I hacked up.
-
-    - [[file:SubDir/some-org-mode-garbage.org][some-org-mode-garbage.org]] :: An org file in a subdirectory.
-
 * Play
 
   Verbatim: =verbatim=
@@ -54,6 +49,11 @@
 
   =maybe we like equal signs better_3^2= since "code" seems to be fairly loaded in org-mode (implications of execution
   and whatnot).
+
+  - SubDir :: A subdirectory
+    - [[file:SubDir/another-file.html][another-file.html]] :: Just a random HTML file I hacked up.
+
+    - [[file:SubDir/some-org-mode-garbage.org][some-org-mode-garbage.org]] :: An org file in a subdirectory.
 
 * COMMENT Org-mode explainer
 
