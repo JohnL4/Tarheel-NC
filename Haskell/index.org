@@ -1,0 +1,11 @@
+# -*- org -*-
+#+TITLE: Notes on Haskell
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+Various notes on various Haskell things, as I climb my Mt. Everest and pursue my Moby Dick.
+
+- [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Definition of "Functor" (Notes on Errors Encountered While Trying to
+     Use Newtype to Declare a Type an Instance of Functor)

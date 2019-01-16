@@ -1,4 +1,12 @@
-Notes on using AWS.  Document is presently in my Google Drive =Development= folder.
+# -*- org -*-
+#+TITLE: Notes on Using AWS (provisioning an instance, getting it set up for development, etc.)
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+# #+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+# #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+# #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 
 * Setting up an AWS instance
 
@@ -43,8 +51,8 @@ Notes on using AWS.  Document is presently in my Google Drive =Development= fold
 
     Amazon Linux image I used:
 
-   - amzn-ami-pv-2013.03.1.x86_64-ebs (ami-05355a6c)
-     - Description: Amazon Linux AMI x86_64 PV
+   - =amzn-ami-pv-2013.03.1.x86_64-ebs (ami-05355a6c)=
+     - Description: =Amazon Linux AMI x86_64 PV=
      - Amazon's extended description:  EVS-Backed, PV-GRUB image. Linux 3.4, AWS tools, repository
        access to multiple versions of MySQL,  PostgreSQL, Python, Ruby, and Tomcat
      - Platform: Amazon Linux
@@ -86,6 +94,15 @@ Notes on using AWS.  Document is presently in my Google Drive =Development= fold
    map it to a particular hostname.
 
 ** Software installation and configuration
+
+   *Note:* you probably want to stay far, far away from Wildfly (JBoss) and Eclipse (at
+   least... don't let RedHat get their claws on it, or you will /constantly/ be fighting with it and
+   doing research to figure how to fix the latest weirdness that doesn't work like the docs say it
+   should).  I wouldn't even bother with Apache if you want to do something with a Java server.
+   Just straight Tomcat seems to be the simplest solution.  It's plenty capable of handling all the
+   Java server-side stuff you'll probably want to use.
+
+   See my notes on [[file:jspwiki-setup.org][JspWiki]].
 
 *** Apache
 
