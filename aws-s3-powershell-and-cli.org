@@ -43,6 +43,8 @@
 
     : Set-AWSCredential -AccessKey AKIAIOSFODNN7EXAMPLE -SecretKey wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY -StoreAs MyProfileName
 
+**** TODO How to if you've already done this (PowerShell)
+     
 **** CLI
 
     : aws configure --profile JohnS3
