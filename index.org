@@ -20,6 +20,8 @@
 
   (Depending on how you define "interest", of course.)
 
+  - [[file:article-play.tex][file:article-play.tex]] :: TeX file, document template.  (Generates [[file:article-play.pdf][file:article-play.pdf]].)
+
   - [[file:static-website.org][static-website.org]] :: Publishing this dumb static web site from source files.
 
   - [[file:using-aws.org][using-aws.org]] :: AWS hijinks (provisioning an instance, getting it set up for development, etc.)
