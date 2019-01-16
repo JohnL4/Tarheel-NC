@@ -21,7 +21,7 @@
   (Depending on how you define "interest", of course.)
 
 
-  - [[file:article-play.tex][file:article-play.tex]] :: TeX file, document template.  (Generates [[file:article-play.pdf][file:article-play.pdf]].)
+  - [[file:article-play.tex][article-play.tex]] :: TeX file, document template.  (Generates [[file:article-play.pdf][article-play.pdf]].)
 
   - [[file:Haskell][Haskell]] :: Notes on Haskell, as I re-re-re-re-start my journey of discovery.  And the main
        reason for the recent flurry of activity on this static web site thing.
