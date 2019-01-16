@@ -43,7 +43,13 @@
 
     : Set-AWSCredential -AccessKey AKIAIOSFODNN7EXAMPLE -SecretKey wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY -StoreAs MyProfileName
 
-**** TODO How to if you've already done this (PowerShell)
+**** How to check if you've already done this
+
+***** TODO PowerShell
+
+***** CLI (Python)
+
+      The file =~/.aws/credentials= is a plain-text file that has your credentials (hopefully no one else can read it).
      
 **** CLI
 
