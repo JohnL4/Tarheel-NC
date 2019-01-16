@@ -35,7 +35,7 @@
   - [[file:2018-elections.org][2018-elections.org]] :: Summarization of the [[https://indyweek.com][The Independent]]'s endorsements for the 2018 (U.S.) midterm elections.
 
   - [[file:Orgzly/hugo.html][Orgzly/hugo.html]] :: This is the HTML version of an [[http://www.orgzly.com/][Orgzly]] file I first created on my phone.  It's not necessarily
-       up-to-date, since I'm updating HTML manually now (updates to slow, really; plus worried about accidentally
+       up-to-date, since I'm updating HTML manually now (updates too slow, really; plus worried about accidentally
        deploying live.js to my S3 bucket and racking up unnecessary charges w/one-second refresh cycle).  Original
        org-mode version is here:  https://www.dropbox.com/s/ji4ziwzxqxu81ei/hugo.org?dl=0
 
