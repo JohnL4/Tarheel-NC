@@ -8,6 +8,11 @@
 Various notes on various Haskell things, as I climb my Mt. Everest and pursue my Moby Dick.
 
 # Links must be relative.
+
+- [[file:applicative-monad.org][applicative-monad.org]] :: Exercise in getting Pierre to walk a tightrope from /Learn You a
+     Haskell/, based on an offhand comment in the text about not being able to do it with just
+     applicative functors.
+
 - [[file:../Orgzly/monad-journey.html][../Orgzly/monad-journey.html]] :: Resuming My Journey Toward an Understanding of Haskell Monads (Yet Again)
 
 - [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Definition of "Functor" (Notes on Errors Encountered While Trying to
