@@ -18,7 +18,7 @@
 
 * Stuff Of Interest
 
-  (Depending on how you define "interest", of course.)
+  (Depending on how you define "interest", of course.)  Most recent at top.
 
 
   - [[file:article-play.tex][article-play.tex]] :: TeX file, document template.  (Generates [[file:article-play.pdf][article-play.pdf]].)
