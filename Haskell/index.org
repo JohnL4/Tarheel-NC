@@ -3,10 +3,22 @@
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+#+HTML_HEAD: <link href="/org-mode.css" rel="stylesheet" type="text/css">
+#+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 
 Various notes on various Haskell things, as I climb my Mt. Everest and pursue my Moby Dick.
 
+* Books
+
+- [[http://learnyouahaskell.com/][Learn You a Haskell for Great Good!]] :: This is a great book, light-hearted and yet solid.  When I
+     refer to /Learn You a Haskell/, this is the book I'm referring to.
+- [[http://book.realworldhaskell.org/][Real World Haskell]] :: Another good book that I've tried to work my way through but got lost.  I
+     plan to get back to it when I finish /Learn You a Haskell/.
+
+* Pages
+  
 # Links must be relative.
 
 - [[file:applicative-monad.org][applicative-monad.org]] :: Exercise in getting Pierre to walk a tightrope from /Learn You a
