@@ -21,6 +21,10 @@ Various notes on various Haskell things, as I climb my Mt. Everest and pursue my
   
 # Links must be relative.
 
+- [[file:KnightMoves.pdf][KnightMoves.pdf]] :: A writeup of my attempt to decipher what's going in the /Learn You a Haskell/
+     section named "A knight's quest" treating =List= as a monad in determining where a chess knight
+     can move.
+
 - [[file:applicative-monad.org][applicative-monad.org]] :: Exercise in getting Pierre to walk a tightrope from /Learn You a
      Haskell/, based on an offhand comment in the text about not being able to do it with just
      applicative functors.
