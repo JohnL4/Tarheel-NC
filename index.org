@@ -20,6 +20,8 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:org-mode.org][org-mode.org]] :: My terse notes on =org-mode=, my markup language of choice.  Kind of a cheat
+       sheet for the uninitiated.
 
   - [[file:article-play.tex][article-play.tex]] :: TeX file, document template.  (Generates [[file:article-play.pdf][article-play.pdf]].)
 

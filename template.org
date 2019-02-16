@@ -2,13 +2,11 @@
 #+TITLE: Notes for <Project Foo>
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
-#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
-#+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans">
+#+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
+#+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
 #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
 #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
-
-# See org-mode explainer at the bottom of this file.
 
 * Overview 
 * Reproduction 
@@ -16,67 +14,3 @@
 * Fix 
 * Checkin 
 * Notes 
-* COMMENT Org-mode explainer
-
-  Text markup.  More stars means lower-level items.  Blank lines between paragraphs.  Indentation doesn't matter (except
-  for lists).  *bold* /italic/ ~code~ =verbatim= (probably should use ~code~ instead of =verbatim=).  [[#maintaining-this-file][Internal link]].
-  [[https://google.com][Link to Google]] (although just pasting in a URL works fine, too (see "more info", below)).
-
-  Subscript: H_{2}O (so don't paste in ~code_with_underscores~ w/out surrounding it with ~'s).  (Superscript: E = mc^2.)
-
-  : one-line code sample
-  : ok, maybe two lines
-
-  #+BEGIN_EXAMPLE
-    Multi-line example
-    like maybe a pasted email
-    or something you don't want line-wrapping or other /character interpretation/ applied to
-  #+END_EXAMPLE 
-
-  Bullet lists:
-  
-  - one
-  - two
-    - sub-item (indentation matters here)
-
-  Definitions:
-  
-  - terms :: Can be defined
-
-  Checklists:
-  
-  - [ ] Items can be...
-  - [X] ...checked off
-  - [-] And (dash means "partially completed")
-    - [X] you can have sublists
-    - [ ] if you really want to
-
-  More info:
-  
-  - More info than you ever cared for: https://orgmode.org
-  - If you truly want to go down the rabbit hole: https://melpa.org/#/?q=org-mode
-
-** Maintaining this file without emacs
-   :PROPERTIES:
-   :CUSTOM_ID: maintaining-this-file
-   :END:
-
-   If you want to update the contents of this file and you're not an emacs user (i.e., you're a normal person), you
-   /might/ be able to use pandoc (https://pandoc.org/) to render this text file to whatever format you like.
-
-   See [[*on processing this file with Pandoc][COMMENT on processing this file with Pandoc]].
-
-   (You might also be able to do it by installing emacs and using it as a command-line processor, but I haven't figured
-   that out quite yet.)
-
-   Alternatively, you can just DELETE the generated HTML file (including in any repositories where it exists) and update
-   this text file without attempting to regenerate the HTML.  In the end, it's just text.
-
-* COMMENT on processing this file with Pandoc
-  
-  There is a program, ~pandoc~ (https://pandoc.org/), which can be used to turn this org-mode file into whatever you
-  want.
-
-  If you do use Pandoc, try the following command line:
-
-  : pandoc --from=org --to=html5 --standalone --table-of-contents --toc-depth=6 --variable=secnumdepth:6 --number-sections --include-in-header=pandoc-header-extra.html --output=<output-html-file> <this-file>

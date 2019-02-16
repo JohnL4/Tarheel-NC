@@ -21,6 +21,8 @@ Various notes on various Haskell things, as I climb my Mt. Everest and pursue my
   
 # Links must be relative.
 
+- [[file:beginners-guide-to-haskell.org][beginners-guide-to-haskell.org]] :: Because why not?
+
 - [[file:KnightMoves.pdf][KnightMoves.pdf]] :: A writeup of my attempt to decipher what's going in the /Learn You a Haskell/
      section named "A knight's quest" treating =List= as a monad in determining where a chess knight
      can move.

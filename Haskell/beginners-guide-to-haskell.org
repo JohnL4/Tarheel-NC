@@ -1,0 +1,418 @@
+# -*- org -*-
+#+TITLE: Guide to Haskell for the Absolute Beginner
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans">
+#+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
+#+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+
+* Overview
+
+  So, I got a wild hair and wondered what an introduction to Haskell would look like to someone who
+  doesn't really computer at all, except to use a laptop or smartphone to surf the web and write
+  emails and social media posts.
+
+  Let's go. :)  (Hmm, maybe I should find some emojis for this static web site thingie.)
+
+* Basic Basics
+
+  Wait, before I head into syntax, I should back up a few steps.
+
+  Computers are programmable machines, meaning, they take in input, examine the input, /make
+  decisions/[fn:1], and then produce outputs.  Sometimes the inputs come from other hardware (like
+  an airspeed sensor, say), and the outputs go to more hardware (like a wing flap actuator, say).
+
+  But, also, sometimes the input comes from a human and the output goes back to a human (maybe even
+  the same human).
+
+  The process of making the same machine respond to different inputs in different ways might be
+  referred to as "programming".  (Unless you're a hardware person and you just design the machine to
+  act different in different circumstances [like, say, when the power switch is on, it makes noise,
+  but when the power switch is off, it doesn't], but we don't care about that right now.)
+
+[fn:1] This blew me away when I was a wee nerd in the eighth grade, and it's probably why I got into
+computers in the first place ("computers making decisions!!!"), but it's not like humans make
+decisions.  We anthropomorphize too much.  Outcome of a machine "making decisions" is simply a fork
+in the program based on inputs.  Or a differentiating circuit or something.  It's not like the
+machine /considers/ its choices and comes to a reasoned decision, taking all factors into account.
+Even so, these sorts of things can Make Life Better(tm), so that's another reason I'm into it.
+
+* How a program makes a computer do stuff, at the level of electronics and stuff
+
+  So, a computer's hardware does input and output as a bunch of tiny voltage changes (just "high"
+  and "low" -- we don't even care about the difference between 2.2 volts and 2.3 volts, unless one
+  is "low" and the other is "high") on a bunch of wires.  Those wires get hooked up to more
+  electronics and hardware like the switches under keyboard keys and electrical motors and stuff,
+  but we don't care about that.  We just care about the tiny incoming and outgoing voltages.
+
+  So, the computer has instructions like:
+
+  - Take the current set of (8, say) input voltages and save them on a bunch of other internal
+    electronic circuits called "flip-flops" (because, as long as the circuit has power, the amount
+    of current running through a flip-flop is steady, until another voltage is applied to a part of
+    the circuit, and then the flip-flop changes state, and has, say, NO (or very little) current
+    running through it.  So it flip-flops).
+    - We design these flip-flops to be super-response and fast (which also makes them expensive), and we
+      call them "registers" because they register (save) data.  Like a cash register, which is all
+      mechanical:  you push a key and a flag pops up and stays up, until you push another key to
+      lower the flag.
+
+  SO ANYWAY...
+
+  - Take the current set of 8 input voltages and save them on this register.  Maybe we call the
+    register "A" for no good reason apart from the fact that it's the first letter of the alphabet,
+    but also... "accumulator" starts with "a", huh.
+    - By the way, each of these eight tiny voltages (high or low) is called a "bit", which is a
+      shortening of "binary digit" because (a) who wants to say all that all the time, and (b)
+      really, it's just a bit of data, right?
+      - Also, eight bits is a byte, because who wants to say "eight bits" all the time, when "byte"
+        will do?  Plus, it scares the uninitiated.
+        - Oh, wait, there's [[#binary-math][MATH]].  You can go read that now and then come back here, because it's
+          about to get important.
+  - Take this other set of 8 voltages sitting out in circuits in memory (which is slower and cheaper
+    than registers) and store it another register.  Maybe we call that register "B".  (Incidentally,
+    "base" starts with a "b".)
+  - Subtract B from A (remember the [[#binary-math][MATH]]?), being sure to set flags indicating that we had to do a
+    carry from some imaginary 9th bit.
+  - If we had to carry (i.e., B was bigger than A), skip the next step.
+  - Go to the end of the program (remember, we might be skipping this step).
+  - Send some output voltages that turns on a light.
+  - THE END.  Ta-da!!!
+
+  Except in "real life", it looks more like this:
+
+  #+BEGIN_EXAMPLE
+            INP   A
+            LOAD  B 1000
+            CMP   B
+            JC    END
+            LOAD  C 1001
+            OUTP  C
+    END:
+  #+END_EXAMPLE
+
+  And, man, is /that/ ugly.  Who wants to do that?  (Well, maybe people who write code for fighter
+  jets and washing machines because it has to be as small and fast and tight and cheap as possible,
+  but apart from /those/ guys....)
+
+  That's why we have /compilers/.
+
+* Compilers
+
+  So, we want to write our instructions to the computer in something besides gibberish.  The stuff
+  above is called "machine language" or "assembler language" (there's a difference, but we can take
+  them to be the same for now).  It's low-level, at the level the /machine/ "understands"[fn:2].  We
+  want a higher-level language.  There are lots of them, for various types of problems:
+
+  - BASIC :: For beginners.  A BASIC program to match the above program might look like this:
+             #+BEGIN_EXAMPLE
+               A = INPUT 1
+               B = 152
+               IF A < B THEN OUTPUT 2
+             #+END_EXAMPLE 
+  - FORTRAN :: For science-y number-y type stuff.
+  - COBOL :: For business stuff like accounts receivable and payroll ledgers.
+  - LISP :: For people who think everything is a list and computers can be made to appear
+            intelligent if they can just process all the lists of stuff we have in our heads.
+  - Pascal :: For people who tired of immense blobs of BASIC code.
+  - C :: For people who want to get code working on completely new hardware with a minimum of
+         screwing around with interpreters (like for BASIC) or compilers (for Pascal).  And who also
+         hate Pascal's constant stream of compiler errors when they try to do stuff like subtract a
+         decimal number from an integer.
+  - C++ :: For people who are tired of immense blobs of C code that constantly break when you make
+           one tiny change.
+  - Java :: For people who are tired of all the memory-management errors in C++ programs.
+  - C# :: For people who love Microsoft so much that they can't see anything not invented by
+          Microsoft.  Or whose bosses tell them "we're going with Microsoft because that way, people
+          won't have to know so much to produce results.  Also, it's pretty."
+  - Haskell :: For people who are tired of dealing with errors caused by subroutines that have
+               undocumented side effects, and are also ready to work at a higher level than just
+               slinging data around (they want to try slinging /functions/).
+
+  We call the programs that translate programs written in the above high-level languages into
+  machine language /compilers/, because they /compile/ the code.  Admiral Grace Hopper gets credited
+  with that word, because she had a bunch of subroutines floating around she was constantly
+  compiling into whatever new code she wrote, to be loaded onto the machines she was working with.
+
+[fn:2] Oh, look, more anthropomorphization.
+
+* MATH
+  :PROPERTIES:
+  :CUSTOM_ID: binary-math
+  :END:
+
+  So, uh, collections of 8-bit bytes can be interpreted as numbers and slung around that way.  Get
+  ready for some base-2 (binary) math.
+
+  We interpret a high voltage as a 1 (like, the number 1) and a low voltage as a 0.  If we string 8
+  of them together in order, we get what looks like a number:
+
+  : 10101100
+
+  And, like decimal numbers (ones place, tens place, hundreds place, ...) the order of the digits is
+  important.  And, like decimal, where the ones place is how many ones do you have (and one is just
+  10^0, because anything raised to the 0-th power is just 1 (except 0, maybe, what is 0^0? I
+  dunno)), and the tens place is how many tens do you have (and ten is just 10^1) and the hundreds
+  place is how many hundreds to you have (and a hundred is just 10^2) and so on.  Binary is the same
+  way, except we use 2 as the base instead of 10.
+
+  So, the question is: how many ones do you have (where one is just 2^0) and how many twos do you
+  have (where two is 2^1) and how many fours do you have (where four is 2^2) and how many eights do
+  you have (where eight is 2^3) and how many sixteens do you have, and so on.
+
+  And you can see that every digit can only be 0 or 1, because if it was 2, it would just carry
+  over to the next place, right?  So, like, if we had two ones, that's really just one two (stick
+  with me), and if we had two twos, that's really just one four, and so on, right?
+
+  So, the number above is (and, of course, we have to go backwards, because how else are you going
+  to learn to ride a unicycle?)...
+
+  # Oh, cool, I can do math!
+   
+  #+BEGIN_CENTER
+  $0 \times 2^0 + 0 \times 2^1 + 1 \times 2^2 + 1 \times 2^3 + 0 \times 2^4 + 1 \times 2^5 + 0
+  \times 2^6 + 1 \times 2^7 = 172$
+  #+END_CENTER
+
+  #+BEGIN_QUOTE 
+  a.k.a. (in case your browser doesn't display [[https://en.wikipedia.org/wiki/MathJax][MathJax]]):
+
+  #+BEGIN_CENTER
+  0 ✕ 2^0 + 0 ✕ 2^1 + 1 ✕ 2^2 + 1 ✕ 2^3 + 0 ✕ 2^4 + 1 ✕ 2^5 + 0 ✕ 2^6 + 1 ✕ 2^7 = 172
+  #+END_CENTER
+  #+END_QUOTE 
+
+  172!
+
+  Most of the time, we don't care, except when we do.  Now you can go back to reading wherever you
+  were before.
+
+* Turing vs. Church and Why Haskell?
+
+  I have to talk about this for a moment, because it kind of helps address the "Why Haskell?"
+  question. 
+
+** Turing
+   
+   Everybody's heard of Alan Turing (right?).  Father of modern computing or some such.  He was a
+   mathematician in the olden days before electronics, so all his thoughts of computers were in his
+   head.  There are a couple of things that make him a big deal:
+
+*** Turing machines
+
+    Turing imagined a machine that had an infinitely-long tape and a finite set of basic
+    instructions like "read whatever's on the tape at the current position", "move the tape forward
+    or backward one position", "write some piece of data from a register onto the tape", "subtract
+    two numbers in memory", "if there was a carry, skip the next instruction", etc.  (This is from
+    memory, so if I got it wrong, sue me.)
+
+*** Computability
+
+    Well, strictly speaking, this wasn't Turing.  This was a bunch of other people, but the idea was (is)
+    that all computers can be shown to be equivalent to a Turing machine, so if a problem can be
+    shown to be solvable on a Turing machine, any modern computer can solve it.  (No statements are
+    made about how /long/ a solution might take, and this leads to more interestingness that I'm not
+    going into now.)
+
+** Church
+
+   So, while everybody's going on and on about Alan Turing, there's this other guy, named Alonzo
+   Church, who was roughly contemporary with Turing.  He came up with a form of math called "lambda
+   calculus".  It's all functions.
+
+   So, while Turing is inventing a machine that stores state on a tape (with assignment statements,
+   basically) and computes that way, Church is inventing a form of math that "stores" state in
+   mathematical function results.
+
+*** Church-Turing Thesis
+
+    The electrifying thing is the idea that lambda calculus can do everything a Turing machine can
+    and vice versa.  (This hasn't been proven, but everybody pretty much accepts it as true, so I
+    do, too.)
+
+** Why Haskell?
+   
+    So: computing without assignment statements.  What's an assignment statement? you ask.
+
+    Remember that BASIC code above?
+
+    #+BEGIN_EXAMPLE
+      B = 152
+    #+END_EXAMPLE
+
+    That's an assignment statement.  We're /assigning/ the value 152 to whatever area of memory =B=
+    represents.  This is like a Turing machine scribbling on its tape.
+
+    That's all fine and dandy, but what if you modified the above program to call a subroutine
+    between the time you assigned the value 152 to =B= and the time you used =B=, and /said
+    subroutine modified =B= without telling you it would?/
+
+    #+BEGIN_EXAMPLE
+      A = INPUT 1
+      B = 152
+      REMark The following function modifies B but the documentation doesn't say anything about that,
+      REMark nor can we read the code because we bought it from another company
+      CALL SPIFYRTN
+      IF A < B THEN OUTPUT 2
+    #+END_EXAMPLE
+
+    So now, we loaded 152 into =B=, and we happen to know the input to the program was 12 (because
+    we measured it with a voltmeter), so the =OUTPUT 2= statement /should/ have turned on the
+    light, but it didn't!  What's wrong?
+
+    After screwing around for a day, we finally think to check =B= at the time of the =IF=
+    statement, and we find that, lo and behold, it's /not/ 152 as we thought, but 0!  Because the
+    =SPIFYRTN= call changed it behind our backs!  (With its own not-easily-visible assignment
+    statement.  Not a very spiffy routine at all.)  Good thing we found this in testing, because if
+    we had shipped this code, that light not lighting up is the "patient is having a heart attack"
+    light, and we could have killed someone.
+
+    This is a big deal, because assignment statements lead to an enormous class of bugs (basically,
+    undocumented subroutine side effects).  So, imagine how great it would be if we could write
+    programs without assignment statements, and not even have these sorts of bugs.  That's Haskell
+    (and a bunch of other functional languages like OCAML and F# and Scala, but Haskell is kind of
+    the granddaddy).
+
+*** A tiny bit about Haskell
+
+    Haskell the language was named after yet another old-timey math guy (a logician, actually) whose
+    name was Haskell Curry.  I don't know what he's famous for.
+
+    The primary (the Swedes would probably say "hold on there, hoss, you mean /a/ primary") place
+    where Haskell research and language compiler development takes place place is the University of
+    Glasgow, in Scotland.  The Haskell compiler we'll be using is the Glasgow Haskell Compiler, and
+    the main command to run the compiler is =ghc=.  (The people in Glasgow call it the Glorious
+    Haskell Compiler, though.)
+
+    It's possible to run an /interpreter/ (kind of an instant-feedback compiler), and that command
+    is =ghci=.
+
+    You can get started with the entire shebang at https://haskell.org.  Download and install the
+    "Haskell Platform" and you'll be off to the races.
+
+* Basic Syntax
+
+  Ok.  So, now that we've established all that, and you've read down to here, I'll assume you're
+  ready and interested to learn some Haskell.
+
+  Haskell code looks pretty simple, at first.  If you fire up =ghci= and type an expression, it'll
+  evaluate the expression and tell you the result.
+
+  So, if you type =2=, you get =2=.  And if you type ="Hello!"=, you get ="Hello!"=.  You can also
+  type expressions, like =2 + 3= and =2 * 3=, which is addition and multiplication.
+
+  Like this:
+
+  #+BEGIN_EXAMPLE
+    deimos$ ghci
+    GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+    Loaded GHCi configuration from /Users/john/.ghci
+    Prelude> 2
+    2
+    Prelude> "Hello!"
+    "Hello!"
+    Prelude> 2+3
+    5
+    Prelude> 2 * 3
+    6
+    Prelude> :q
+    Leaving GHCi.
+  #+END_EXAMPLE
+
+  (Deimos is the name of my computer (a Mac).  This is all happening at a command prompt (no mouse clicking
+  for you!), which Windows users sometimes refer to as "the black window".  You can get to it by
+  holding down the Windows key and hitting "R" and then typing "cmd" in the little text input field
+  and hitting the "Enter" key.  /Surely/ you have done something like this before.  You can also use
+  the Start menu to open a Console window, it's the same thing.)
+
+** Functions (Simplest)
+
+  And you can define functions.  Haskell functions look different from math functions.  Math
+  functions look like this:
+
+  #+BEGIN_CENTER
+  $c(x) = (x - 32) / 1.8$
+  #+END_CENTER
+
+  #+BEGIN_QUOTE
+  Or, for those w/out MathJax:
+  #+BEGIN_CENTER
+  c(x) = (x - 32) / 1.8
+  #+END_CENTER
+  #+END_QUOTE
+  
+  That function converts Fahrenheit to centigrade, if you're interested.  The inverse function
+  being:
+
+  #+BEGIN_CENTER
+  $f(x) = x * 1.8 + 32$
+  #+END_CENTER
+  
+  Haskell functions don't have the parentheses.  They just use spaces.  In fact, when you see two
+  things separated by spaces in Haskell (that aren't explainable by normal syntax rules), it's
+  almost always a function being applied to an argument.
+
+  So, if we were to apply the function =c= to value 22 (°F), it would look like this:
+
+  #+BEGIN_EXAMPLE
+    Prelude> c 22
+    -5.555555555555555
+  #+END_EXAMPLE
+
+  So, like, -6 °C.  No parentheses.  You could use them, but they'd be useless.  Parentheses are
+  used like in regular math, to prioritize math operations that would normally be low priorities, as in
+  the definition of the function =c= above.
+
+  Defining that function in Haskell looks kind of the same:
+
+  #+BEGIN_EXAMPLE
+    Prelude> c x = (x-32)/1.8
+  #+END_EXAMPLE
+  
+  (Try it!  I know you already installed Haskell, didn't you?)
+
+  And you can convert centigrade back to Fahrenheit, so when Midnight Oil sings "boiling diesels
+  steam in 45°" (https://youtu.be/jpkGvk1rQBI), you can know how hot that is.
+
+  #+BEGIN_EXAMPLE
+    Prelude> f x = x * 1.8 + 32
+    Prelude> f 45
+    113.0
+  #+END_EXAMPLE
+  
+  Ok, that's it.  That all.  Now you can use Haskell to balance your checkbook.  Just fire up =ghci=
+  and start entering some mathematical expressions.
+
+  #+BEGIN_EXAMPLE
+    Prelude> 1800-750
+    1050
+    Prelude> 1050-850
+    200
+    Prelude> 200-30
+    170
+    Prelude> 170-250
+    -80
+    Prelude> -80-350
+    -430
+  #+END_EXAMPLE
+  
+  :(
+
+  I'm guessing you didn't need Haskell for that, though.
+
+  (Just kidding.  I've been working on this for several hours and now I have to go make something
+  for our pot-luck tonight.  More later.)
+
+*** Function application is highest priority
+
+    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
+    =4=.
+    
+
+  
+
+
+
+ #  LocalWords:  computability
