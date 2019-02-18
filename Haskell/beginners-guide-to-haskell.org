@@ -412,7 +412,9 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   (Just kidding.  I've been working on this for several hours and now I have to go make something
   for our pot-luck tonight.  More later.)
 
-*** Function application is highest priority
+* Notes for Further Writing
+  
+** Function application is highest priority
 
     =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
     =4=.
@@ -448,3 +450,7 @@ s.setAttribute('data-timestamp', +new Date());
 
 
  #  LocalWords:  computability
+** Layout rule
+** Data type constructors
+** =deriving=
+   
