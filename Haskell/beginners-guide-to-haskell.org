@@ -7,6 +7,12 @@
 #+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
 #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
 #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+#+BEGIN_EXPORT html
+<script type="text/javascript">
+  PAGE_URL = "http://tarheel-nc.s3-website-us-east-1.amazonaws.com/Haskell/beginners-guide-to-haskell.html";
+  PAGE_IDENTIFIER = "tarheel-nc/haskell-beginners-guide";
+</script>
+#+END_EXPORT
 
 * Overview
 
@@ -124,9 +130,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   - C++ :: For people who are tired of immense blobs of C code that constantly break when you make
            one tiny change.
   - Java :: For people who are tired of all the memory-management errors in C++ programs.
-  - C# :: For people who love Microsoft so much that they can't see anything not invented by
-          Microsoft.  Or whose bosses tell them "we're going with Microsoft because that way, people
-          won't have to know so much to produce results.  Also, it's pretty."
+  - C# :: This is pretty similar to Java, but it's for people who love Microsoft so much that they
+          can't see anything not invented by Microsoft.  Or whose bosses tell them "we're going with
+          Microsoft because that way, people won't have to know so much to produce results.  Also,
+          it's pretty."
   - Haskell :: For people who are tired of dealing with errors caused by subroutines that have
                undocumented side effects, and are also ready to work at a higher level than just
                slinging data around (they want to try slinging /functions/).
@@ -412,6 +419,31 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     
 
   
+
+#+BEGIN_EXPORT html
+<!--
+<div id="disqus_thread"></div>
+<script>
+
+/**
+,*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+,*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = "http://tarheel-nc.s3-website-us-east-1.amazonaws.com/Haskell/beginners-guide-to-haskell.html";  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = "tarheel-nc/haskell-beginners-guide"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://tarheel-nc.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+-->
+#+END_EXPORT
 
 
 
