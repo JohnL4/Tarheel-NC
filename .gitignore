@@ -2,7 +2,6 @@
 \#*
 live.js
 template.html
-*.html
 Orgzly
 **/content/org-mode
 **/static/ox-hugo
