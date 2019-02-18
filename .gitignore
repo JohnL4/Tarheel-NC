@@ -5,3 +5,6 @@ template.html
 Orgzly
 **/content/org-mode
 **/static/ox-hugo
+**/*.hi
+**/*.o
+**/*.aux
