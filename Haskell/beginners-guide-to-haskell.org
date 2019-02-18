@@ -4,9 +4,9 @@
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans">
 #+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
-#+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
-#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
-#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+# #+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
+# #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+# #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 #+BEGIN_EXPORT html
 <script type="text/javascript">
   PAGE_URL = "http://tarheel-nc.s3-website-us-east-1.amazonaws.com/Haskell/beginners-guide-to-haskell.html";
@@ -60,10 +60,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     of current running through a flip-flop is steady, until another voltage is applied to a part of
     the circuit, and then the flip-flop changes state, and has, say, NO (or very little) current
     running through it.  So it flip-flops).
-    - We design these flip-flops to be super-response and fast (which also makes them expensive), and we
-      call them "registers" because they register (save) data.  Like a cash register, which is all
-      mechanical:  you push a key and a flag pops up and stays up, until you push another key to
-      lower the flag.
+    - We design these flip-flops to be super-responsive and fast (which also makes them expensive),
+      and we call them "registers" because they register (save) data.  Like a cash register, which
+      is all mechanical:  you push a key and a flag pops up and stays up, until you push another key
+      to lower the flag.
 
   SO ANYWAY...
 
@@ -122,7 +122,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   - COBOL :: For business stuff like accounts receivable and payroll ledgers.
   - LISP :: For people who think everything is a list and computers can be made to appear
             intelligent if they can just process all the lists of stuff we have in our heads.
-  - Pascal :: For people who tired of immense blobs of BASIC code.
+  - Pascal :: For people who are tired of immense blobs of BASIC code.
   - C :: For people who want to get code working on completely new hardware with a minimum of
          screwing around with interpreters (like for BASIC) or compilers (for Pascal).  And who also
          hate Pascal's constant stream of compiler errors when they try to do stuff like subtract a
@@ -162,7 +162,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   important.  And, like decimal, where the ones place is how many ones do you have (and one is just
   10^0, because anything raised to the 0-th power is just 1 (except 0, maybe, what is 0^0? I
   dunno)), and the tens place is how many tens do you have (and ten is just 10^1) and the hundreds
-  place is how many hundreds to you have (and a hundred is just 10^2) and so on.  Binary is the same
+  place is how many hundreds to you have (and a hundred is just 10^2) and so on, binary is the same
   way, except we use 2 as the base instead of 10.
 
   So, the question is: how many ones do you have (where one is just 2^0) and how many twos do you
@@ -288,7 +288,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     name was Haskell Curry.  I don't know what he's famous for.
 
     The primary (the Swedes would probably say "hold on there, hoss, you mean /a/ primary") place
-    where Haskell research and language compiler development takes place place is the University of
+    where Haskell research and language compiler development takes place is the University of
     Glasgow, in Scotland.  The Haskell compiler we'll be using is the Glasgow Haskell Compiler, and
     the main command to run the compiler is =ghc=.  (The people in Glasgow call it the Glorious
     Haskell Compiler, though.)
@@ -361,7 +361,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   things separated by spaces in Haskell (that aren't explainable by normal syntax rules), it's
   almost always a function being applied to an argument.
 
-  So, if we were to apply the function =c= to value 22 (°F), it would look like this:
+  So, if we were to apply the function =c= to the value 22 (°F), it would look like this:
 
   #+BEGIN_EXAMPLE
     Prelude> c 22
