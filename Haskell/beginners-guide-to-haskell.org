@@ -299,7 +299,168 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     You can get started with the entire shebang at https://haskell.org.  Download and install the
     "Haskell Platform" and you'll be off to the races.
 
+* DONE What is Haskell?
+  CLOSED: [2019-02-18 Mon 22:02]
+
+  - CLOSING NOTE [2019-02-18 Mon 22:02]
+
+  So, what is there about Haskell to appeal to the geek?
+
+  Haskell is a lazy, statically-typed, pure functional programming language.
+
+  Breakdown:
+
+** Lazy
+
+   Haskell doesn't do any computations until it really needs to.  You can set up the most
+   monstrously-complex computation and Haskell will only evaluate it when it really needs to, /even
+   if it looks like it should evaluate/.  Seriously, Haskell only waits until it /REALLY/ needs to
+   do the computation.
+
+   Suppose I define a function that looks like this:
+
+   : f x y = if (x < 0) then y else x
+
+   Meaning, the function gives the value y if x is negative, otherwise it just gives the value
+   of x.
+
+   Then, suppose I define some other horribly complex and expensive function /h/ and call /f/ like
+   this:
+
+   : f 2 (h 12)
+
+   Meaning (you might think), "calculate the value of $h(12)$ (let's call the result $z$, for no
+   good reason), even though it's horribly complex, and then call $f(2, z)$.  Since the first
+   argument is 2, we get the 2 back, so... why did we pay the cost of computing $h(12)$?
+
+   Haskell doesn't do that.  It's lazy.  It puts off the calculation until it really needs it.
+
+   Here's a cool example:
+
+   #+BEGIN_EXAMPLE
+     Prelude> :{
+     Prelude| let g :: Int -> [a] -> Int
+     Prelude|     g x ys = if (x < 0) then (length ys) else x
+     Prelude| :}
+     Prelude> g 2 [1..10]
+     2
+     Prelude> g (-2) [1..10]
+     10
+   #+END_EXAMPLE
+
+   Spiffy, right?  If /x/ is negative, it returns the length of the list /ys/, otherwise it just
+   returns /x/.
+
+   What if we hand it an infinite list (you can do that; see [[#infinite-lists][Infinite lists]]).  Now we're expecting
+   it to count the length of an infinite list.  That's like that Star Trek episode where Spock asks
+   the Evil Computer to compute the last digit of pi.  It ain't never gonna come back.
+
+   Except... if we hand the function a positive first argument, it doesn't even /need/ to count the
+   length of the list, and it doesn't.
+
+   #+BEGIN_EXAMPLE
+     Prelude> g 2 [1..]
+     2
+   #+END_EXAMPLE
+
+   Boom.
+
+   Just for grins, let's see what happens when I use a negative number:
+
+   #+BEGIN_EXAMPLE
+     Prelude> g (-2) [1..]
+     ^CInterrupted.
+   #+END_EXAMPLE
+
+   (I got impatient after, like, 7 seconds, because I knew it wasn't coming back.)
+
+** Statically-typed
+
+   Haskell knows the types of everything before the program starts running.  And you can't hand
+   something of the wrong type off to something that expects it to be right type.
+
+   This is different from languages that are dynamically typed.  If I declare a numeric function and
+   hand it a string like "2", we expect the function to Do The Right Thing and convert the "2" to 2
+   and go from there.  If we hand said function a string like "onyx", it'll try to convert "onyx" to
+   a number and almost certainly bomb out, at run time.  (Or, worse, decide "onyx" is really 0, and
+   sail merrily on, giving what looks like a correct calculation.  What if I gave it "5even"?  Too
+   bad, eh?)
+
+*** Type inference
+    
+   Along with the static typing comes something called "type inference", which means you can be sort
+   of casual about your declarations and Haskell will do a pretty good job of figuring out what you
+   really need.
+
+   For example, suppose we define said numeric function like this:
+
+   #+BEGIN_EXAMPLE
+     Prelude> f x = x^2
+     Prelude> f 9
+     81
+   #+END_EXAMPLE
+
+   (So, /f/ squares numbers.)
+   
+   And then we ask Haskell what the type of f is:
+
+   #+BEGIN_EXAMPLE
+     Prelude> :t f
+     f :: Num a => a -> a
+   #+END_EXAMPLE
+
+   What Haskell is saying here is that /f/ is a function that takes some type /a/ and returns the
+   same type, so long as /a/ is a number (=Num=) of some sort.  So, integer, floating point, Roman
+   numeral (so long as you define the math on that puppy), tally marks, whatever.
+
+   How did it figure out that /a/ needs to be a number?  We used the exponentiation operator (=^=),
+   which is a mathematical operator.  (Maybe I should have used =+= here to make things simpler.)
+
+** Pure
+
+   Here's where things start to get really interesting.  "Pure" means Haskell has no assignment
+   statements.  It has no exceptions that say "well, in this /special case/, you can assign a value
+   to a variable."
+
+*** Memoizing
+
+   That puritanical stance against assignment statements has some nice outcomes.  For one, whenever
+   you call a function, since there are no side effects, you can rely on that function returning the
+   same results for the same arguments.  In fact, that allows Haskell to simply /cache/ the result,
+   so, for an expensive function, the first time you call it (and really need it), you pay the
+   price, but from then on, for the same arguments, Haskell just returns the value it memorized.
+   So, you get a nice performance bump.
+
+   There's an actual verb for that, and it's not "memorize".  Instead, we say /memoize/, like that
+   bishop in /Princess Bride/.
+
+*** Parallelizing
+
+    (That was awkward, but I wanted to match "Memoizing".)  If there aren't side effects to
+    functions (like a function trying to scribble on a global variable), then you can break work up
+    into chunks and do the chunks in parallel.  Say, you have a list of a million words and four
+    CPUs and you want to sort the list.  You break it up into four chunks and hand the job of
+    sorting each chunk off to each processor and then merge the results when they're done.
+
+    That's a little bit of a dumb example, but the point is: if a function has side effects, you
+    can't easily parallelize it, because then the same side effect would happen multiple times, and
+    that would probably be Bad.
+
+** Functional
+
+   And, finally, Haskell does everything with functions, slinging them around pretty much with gay
+   abandon, as in:  "here's a function, I don't know what it is (except it's mathematical); call it
+   on each number in this list, please".  Or: "here are two functions, I don't know what they are
+   (except they're mathematical), please compose them together and call the composition on this list
+   of numbers".
+
+   (You probably remember /function composition/ from your math days: $f(g(x)) = (f \circ g)(x)$.
+   That "$\circ$" is the composition operator you know and love.)
+
 * Basic Syntax
+  :PROPERTIES:
+  :CUSTOM_ID: basic-syntax
+  :END:
 
   Ok.  So, now that we've established all that, and you've read down to here, I'll assume you're
   ready and interested to learn some Haskell.
@@ -438,17 +599,76 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    There's a technique for getting special characters into strings, but hopefully I'll remember to mention it later,
    when I need to.
 
-** TODO Currying (Function application is highest priority)
+** DONE Lists
+   CLOSED: [2019-02-18 Mon 20:23]
 
-    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
-    =4=.
-    
-** TODO Lists
+   - CLOSING NOTE [2019-02-18 Mon 20:23]
 
-*** Build with =[]=
+   I mentioned two types in the initial intro in [[#basic-syntax][Basic Syntax]] (implicitly): numbers and strings.  We
+   define these things functionally, really.  Numbers are things you can do math with, and strings
+   are things you can read and display.  (For example, =putStr= is a function that puts a string
+   (and only a string) to the output.)
 
-*** Ranges
-    
+   There's another common, basic type of data: lists.  Lists are collections of data that are all of
+   the same type, and come in some sort of order (first, next, etc., etc., last).
+
+   So, =[1, 2, 3]= is a list.  So is =[2, 3, 1]=, and it's different from the first list because the
+   ordering is different.
+
+   A string is just a list of characters, so ="hello"= is just the same as =['h', 'e', 'l', 'l',
+   'o']=.
+
+*** Lists specified algorithmically (ranges)
+
+    You can list out the contents of a list as above, but you can also specify the contents of the
+    lists a different way.  Essentially, you use a recipe.
+
+    =[1..10]= is a list of all the integers from 1 to 10.
+
+    =[2,4..10]= is a list of all the even numbers from 2 to 10.
+
+    Sadly, you can only go by addition (or subtraction), so you can't, for instance, expect
+    =[1,2..128]= to be a list of all the powers of 2 from 1 to 128.  Nor can you give Haskell a hint
+    with something like [1,2,4..128].
+
+    /However/, there are more tricks!
+
+    =[ 2^x | x <- [1..10]]= is the aforementioned "powers of two" list.  If you go back to your math
+    days, you can almost read this as:
+
+    "THE LIST OF (=[=) all 2^x SUCH THAT (=|=) x IS TAKEN FROM (=<-=) the list of integers from 1 to
+    10"
+
+    You can make the condition more complicated:
+
+    =[ 2^x | x <- [1..10] , 2^x <= 128]= is the same list as above, except we also require 2^x to be
+    les than or equal to 128.
+
+*** DONE Infinite lists
+    CLOSED: [2019-02-18 Mon 22:03]
+    :PROPERTIES:
+    :CUSTOM_ID: infinite-lists
+    :END:
+
+    - CLOSING NOTE [2019-02-18 Mon 22:03]
+
+    You can do this. This blows more-experienced developers' minds, but you can probably be
+    comfortable with this concept.
+
+    =[1..]= is the infinite list of positive integers.  (I don't believe you can have a list be
+    infinite on both ends, but there might be a trick you can pull if you really want something
+    like that.  All lists have to have a starting point.)
+
+    If you try to print that list out, you'll be waiting for a long time for the printing to stop.
+    (You can hit ctrl-C (hold down the control key and hit the 'C' key) to stop it.)
+
+    But you can do something like this:
+
+    =take 10 [1..]= means "take the first ten items from the infinite list of integers".
+
+    Which sounds pretty stupid, but it can come in handy sometimes when you have a less-predictable
+    infinite list to deal with.
+
 ** DONE Layout rule
    CLOSED: [2019-02-18 Mon 17:29]
 
@@ -527,7 +747,12 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 ** TODO Data type constructors
 *** =Maybe=
 *** =Either=
-** =deriving=
+** =deriving= and common classes
+** TODO Currying (Function application is highest priority)
+
+    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
+    =4=.
+    
 ** TODO Basic functions that show up a lot
 *** map
 *** filter
@@ -536,4 +761,4 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 *** concat
 * COMMENT Local spelling dictionary & whatnot
 
- #  LocalWords:  computability
+ #  LocalWords:  computability memoize

@@ -8,3 +8,4 @@ Orgzly
 **/*.hi
 **/*.o
 **/*.aux
+**/*.html
