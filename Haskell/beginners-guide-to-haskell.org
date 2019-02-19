@@ -457,7 +457,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    (You probably remember /function composition/ from your math days: $f(g(x)) = (f \circ g)(x)$.
    That "$\circ$" is the composition operator you know and love.)
 
-* Basic Syntax
+* SUPER Basic Syntax
   :PROPERTIES:
   :CUSTOM_ID: basic-syntax
   :END:
@@ -570,302 +570,313 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   I'm guessing you didn't need Haskell for that, though.
 
-  (Just kidding.  I've been working on this for several hours and now I have to go make something
-  for our pot-luck tonight.  More later.)
+** Special note on using ()s around negative numbers
+   
+  By the way, while we're on the topic of negative numbers, it's best to surround them with parentheses, e.g.
 
-* Notes for Further Writing
+  : (-80) - 350
 
-  I'll probably rearrange these later, but some of these topics are "done" already.  (At least as much as anything is
-  ever "done" in this world.)
-  
-** DONE "Strings"
-   CLOSED: [2019-02-18 Mon 17:39]
+  We got away with no parens in the example above, in more-complicated situations, you'll see weird errors:
 
-   - CLOSING NOTE [2019-02-18 Mon 17:39]
+  #+BEGIN_EXAMPLE
+    Prelude> 2 * -3
 
-   It occurs to me that I casually sling around the word "string" without defining it.  It's probably one of the first
-   true technical buzzwords you can learn: it just means a string of characters.  That's all.
+    <interactive>:1:1: error:
+        Precedence parsing error
+            cannot mix `*' [infixl 7] and prefix `-' [infixl 6] in the same infix expression
 
-   So, you have characters like 'h', and 'e', and 'l', and 'o'.  Typically, /characters/ (single letters or glyphs from
-   whatever alphabet you're using) are indicated with single quotes (and Haskell and most of the other programming
-   languages I mentioned above /require/ the use of single quotes for characters).
+    Prelude> 2 * (-3)
+    -6
+  #+END_EXAMPLE 
 
-   And then you have /strings/, like ="hello"=.  And those are typically indicated with double quotes (and you're
-   required to use double quotes by those same languages).
+* DONE "Strings"
+  CLOSED: [2019-02-18 Mon 17:39]
 
-   As a funky technical note, ="a"= is a /string/ (containing only one character) and ='a'= is a /character/, and it's
-   not the same as ="a"=.
+  - CLOSING NOTE [2019-02-18 Mon 17:39]
 
-   There's a technique for getting special characters into strings, but hopefully I'll remember to mention it later,
-   when I need to.
+  It occurs to me that I casually sling around the word "string" without defining it.  It's probably one of the first
+  true technical buzzwords you can learn: it just means a string of characters.  That's all.
 
-** DONE Lists
-   CLOSED: [2019-02-18 Mon 20:23]
+  So, you have characters like 'h', and 'e', and 'l', and 'o'.  Typically, /characters/ (single letters or glyphs from
+  whatever alphabet you're using) are indicated with single quotes (and Haskell and most of the other programming
+  languages I mentioned above /require/ the use of single quotes for characters).
 
-   - CLOSING NOTE [2019-02-18 Mon 20:23]
+  And then you have /strings/, like ="hello"=.  And those are typically indicated with double quotes (and you're
+  required to use double quotes by those same languages).
 
-   I mentioned two types in the initial intro in [[#basic-syntax][Basic Syntax]] (implicitly): numbers and strings.  We
-   define these things functionally, really.  Numbers are things you can do math with, and strings
-   are things you can read and display.  (For example, =putStr= is a function that puts a string
-   (and only a string) to the output.)
+  As a funky technical note, ="a"= is a /string/ (containing only one character) and ='a'= is a /character/, and it's
+  not the same as ="a"=.
 
-   There's another common, basic type of data: lists.  Lists are collections of data that are all of
-   the same type, and come in some sort of order (first, next, etc., etc., last).
+  There's a technique for getting special characters into strings, but hopefully I'll remember to mention it later,
+  when I need to.
 
-   So, =[1, 2, 3]= is a list.  So is =[2, 3, 1]=, and it's different from the first list because the
-   ordering is different.
+* DONE Lists
+  CLOSED: [2019-02-18 Mon 20:23]
 
-   A string is just a list of characters, so ="hello"= is just the same as =['h', 'e', 'l', 'l',
-   'o']=.
+  - CLOSING NOTE [2019-02-18 Mon 20:23]
 
-*** Lists specified algorithmically (ranges)
+  I mentioned two types in the initial intro in [[#basic-syntax][Basic Syntax]] (implicitly): numbers and strings.  We
+  define these things functionally, really.  Numbers are things you can do math with, and strings
+  are things you can read and display.  (For example, =putStr= is a function that puts a string
+  (and only a string) to the output.)
 
-    You can list out the contents of a list as above, but you can also specify the contents of the
-    lists a different way.  Essentially, you use a recipe.
+  There's another common, basic type of data: lists.  Lists are collections of data that are all of
+  the same type, and come in some sort of order (first, next, etc., etc., last).
 
-    =[1..10]= is a list of all the integers from 1 to 10.
+  So, =[1, 2, 3]= is a list.  So is =[2, 3, 1]=, and it's different from the first list because the
+  ordering is different.
 
-    =[2,4..10]= is a list of all the even numbers from 2 to 10.
+  A string is just a list of characters, so ="hello"= is just the same as =['h', 'e', 'l', 'l',
+  'o']=.
 
-    Sadly, you can only go by addition (or subtraction), so you can't, for instance, expect
-    =[1,2..128]= to be a list of all the powers of 2 from 1 to 128.  Nor can you give Haskell a hint
-    with something like [1,2,4..128].
+** Lists specified algorithmically (ranges)
 
-    /However/, there are more tricks!
+   You can list out the contents of a list as above, but you can also specify the contents of the
+   lists a different way.  Essentially, you use a recipe.
 
-    =[ 2^x | x <- [1..10]]= is the aforementioned "powers of two" list.  If you go back to your math
-    days, you can almost read this as:
+   =[1..10]= is a list of all the integers from 1 to 10.
 
-    "THE LIST OF (=[=) all 2^x SUCH THAT (=|=) x IS TAKEN FROM (=<-=) the list of integers from 1 to
-    10"
+   =[2,4..10]= is a list of all the even numbers from 2 to 10.
 
-    You can make the condition more complicated:
+   Sadly, you can only go by addition (or subtraction), so you can't, for instance, expect
+   =[1,2..128]= to be a list of all the powers of 2 from 1 to 128.  Nor can you give Haskell a hint
+   with something like [1,2,4..128].
 
-    =[ 2^x | x <- [1..10] , 2^x <= 128]= is the same list as above, except we also require 2^x to be
-    les than or equal to 128.
+   /However/, there are more tricks!
 
-*** DONE Infinite lists
-    CLOSED: [2019-02-18 Mon 22:03]
-    :PROPERTIES:
-    :CUSTOM_ID: infinite-lists
-    :END:
+   =[ 2^x | x <- [1..10]]= is the aforementioned "powers of two" list.  If you go back to your math
+   days, you can almost read this as:
 
-    - CLOSING NOTE [2019-02-18 Mon 22:03]
+   "THE LIST OF (=[=) all 2^x SUCH THAT (=|=) x IS TAKEN FROM (=<-=) the list of integers from 1 to
+   10"
 
-    You can do this. This blows more-experienced developers' minds, but you can probably be
-    comfortable with this concept.
+   You can make the condition more complicated:
 
-    =[1..]= is the infinite list of positive integers.  (I don't believe you can have a list be
-    infinite on both ends, but there might be a trick you can pull if you really want something
-    like that.  All lists have to have a starting point.)
+   =[ 2^x | x <- [1..10] , 2^x <= 128]= is the same list as above, except we also require 2^x to be
+   les than or equal to 128.
 
-    If you try to print that list out, you'll be waiting for a long time for the printing to stop.
-    (You can hit ctrl-C (hold down the control key and hit the 'C' key) to stop it.)
+** DONE Infinite lists
+   CLOSED: [2019-02-18 Mon 22:03]
+   :PROPERTIES:
+   :CUSTOM_ID: infinite-lists
+   :END:
 
-    But you can do something like this:
+   - CLOSING NOTE [2019-02-18 Mon 22:03]
 
-    =take 10 [1..]= means "take the first ten items from the infinite list of integers".
+   You can do this. This blows more-experienced developers' minds, but you can probably be
+   comfortable with this concept.
 
-    Which sounds pretty stupid, but it can come in handy sometimes when you have a less-predictable
-    infinite list to deal with.
+   =[1..]= is the infinite list of positive integers.  (I don't believe you can have a list be
+   infinite on both ends, but there might be a trick you can pull if you really want something
+   like that.  All lists have to have a starting point.)
 
-** DONE Layout rule
-   CLOSED: [2019-02-18 Mon 17:29]
+   If you try to print that list out, you'll be waiting for a long time for the printing to stop.
+   (You can hit ctrl-C (hold down the control key and hit the 'C' key) to stop it.)
 
-   - CLOSING NOTE [2019-02-18 Mon 17:29]
+   But you can do something like this:
+
+   =take 10 [1..]= means "take the first ten items from the infinite list of integers".
+
+   Which sounds pretty stupid, but it can come in handy sometimes when you have a less-predictable
+   infinite list to deal with.
+
+* DONE Layout rule
+  CLOSED: [2019-02-18 Mon 17:29]
+
+  - CLOSING NOTE [2019-02-18 Mon 17:29]
      
-   This is tough to define (especially when you don't really understand it, which is true in my case), but here's how I
-   think it goes:
+  This is tough to define (especially when you don't really understand it, which is true in my case), but here's how I
+  think it goes:
 
-   - Haskell statements are separated by semicolons.
-   - Groups of haskell statements are surrounded by curly braces (={}=).
+  - Haskell statements are separated by semicolons.
+  - Groups of haskell statements are surrounded by curly braces (={}=).
 
-   BUT...
+  BUT...
 
-   If you put the things separated by semicolons on separate lines, you don't need the semicolons.
+  If you put the things separated by semicolons on separate lines, you don't need the semicolons.
 
-   And if you indent the things grouped by braces, you don't need the braces.
+  And if you indent the things grouped by braces, you don't need the braces.
 
-   So...
+  So...
 
-   #+BEGIN_SRC haskell
-     module Layout where
+  #+BEGIN_SRC haskell
+    module Layout where
 
-     -- 'do' is one of those statements that expects curly braces containing a list of statements.  The only such statements
-     -- (or keywords) are:
-     --
-     --      do
-     --      where
-     --      let
-     --      of
-     --
-     -- And then, once you're in for a curly brace penny, you're in for semicolon pounds.  Meaning, every statement needs to
-     -- be separated with semicolons.
-     -- 
-     oneLine = do { putStr "Hello, " ; putStrLn "there!" }
+    -- 'do' is one of those statements that expects curly braces containing a list of statements.  The only such statements
+    -- (or keywords) are:
+    --
+    --      do
+    --      where
+    --      let
+    --      of
+    --
+    -- And then, once you're in for a curly brace penny, you're in for semicolon pounds.  Meaning, every statement needs to
+    -- be separated with semicolons.
+    -- 
+    oneLine = do { putStr "Hello, " ; putStrLn "there!" }
 
-     -- But, you can put things on separate lines and indent them properly and get away w/out the braces and semicolons.
-     laidOut = do putStr "Hello, "
-                  putStrLn "there!"
+    -- But, you can put things on separate lines and indent them properly and get away w/out the braces and semicolons.
+    laidOut = do putStr "Hello, "
+                 putStrLn "there!"
 
-     -- A more common alternative
-     laidOut2 = do
-       putStr "Hello, "
-       putStrLn "there!"
+    -- A more common alternative
+    laidOut2 = do
+      putStr "Hello, "
+      putStrLn "there!"
 
-     -- You can do this, too, if you want, but it will bollix everything up that comes after it.
-     badLayout = do
-     putStr "Hello, "
-     putStrLn "there!"
+    -- You can do this, too, if you want, but it will bollix everything up that comes after it.
+    badLayout = do
+    putStr "Hello, "
+    putStrLn "there!"
 
-     -- But once you commit to an indentation, you can't back out of it.  Everything else in that block needs to be indented
-     -- the same.
-     illegalLayout = do
-             putStr "Hello, "
-       putStrLn ", there!"
+    -- But once you commit to an indentation, you can't back out of it.  Everything else in that block needs to be indented
+    -- the same.
+    illegalLayout = do
+            putStr "Hello, "
+      putStrLn ", there!"
 
-     -- Same problem here, because that first "putStr" is already "indented".
-     illegalLayout2 = do putStr "Hello, "
-     putStrLn "there!"
-   #+END_SRC
+    -- Same problem here, because that first "putStr" is already "indented".
+    illegalLayout2 = do putStr "Hello, "
+    putStrLn "there!"
+  #+END_SRC
 
-** DONE Editors
-   CLOSED: [2019-02-18 Mon 17:31]
+* DONE Editors
+  CLOSED: [2019-02-18 Mon 17:31]
 
-   - CLOSING NOTE [2019-02-18 Mon 17:31]
+  - CLOSING NOTE [2019-02-18 Mon 17:31]
 
-   Speaking of the layout rule, you should get a smarter editor than Notepad, as spiffy as it is.
+  Speaking of the layout rule, you should get a smarter editor than Notepad, as spiffy as it is.
 
-   For beginner types who haven't messed around with programming editors very much (and like "free" as a price), I
-   recommend Visual Studio Code (https://code.visualstudio.com/).  Looks like most of the Haskell plugins are a bit
-   complicated to install, but the simplest one seems to be the one named "Haskell Syntax Highlighting", so try that
-   out.  Looks like it does some automatic indenting to kind of give you a hint as to when you need to indent more.
+  For beginner types who haven't messed around with programming editors very much (and like "free" as a price), I
+  recommend Visual Studio Code (https://code.visualstudio.com/).  Looks like most of the Haskell plugins are a bit
+  complicated to install, but the simplest one seems to be the one named "Haskell Syntax Highlighting", so try that
+  out.  Looks like it does some automatic indenting to kind of give you a hint as to when you need to indent more.
 
-   (I have to put in a plug for my editor, [[https://www.gnu.org/software/emacs/][emacs]], but emacs is a journey of a lifetime.  I've been using it for coming
-   up on 40 years now and I /still/ haven't figured out everything about it.)
+  (I have to put in a plug for my editor, [[https://www.gnu.org/software/emacs/][emacs]], but emacs is a journey of a lifetime.  I've been using it for coming
+  up on 40 years now and I /still/ haven't figured out everything about it.)
 
-** DONE Unit testing with Hspec
-   CLOSED: [2019-02-19 Tue 11:41]
+* DONE Unit testing with Hspec
+  CLOSED: [2019-02-19 Tue 11:41]
 
-   - CLOSING NOTE [2019-02-19 Tue 11:41]
+  - CLOSING NOTE [2019-02-19 Tue 11:41]
 
-   Speaking of editors and getting set up, you should start early on unit testing.  "Unit testing" is testing little
-   units of your work (as opposed to testing the entire program).  Unit testing is easier in pure functional languages
-   because to test a function, you just call it.  You don't really need to "set stuff up" before you call it because
-   there /is/ no state to be set up.  (Parameters for the functions might be complex, though, but it still feels easier
-   than in "imperative" programming languages (which is what the rest of the world uses:  "do this, and save the result
-   here; then do that, and save the result there; etc.").
+  Speaking of editors and getting set up, you should start early on unit testing.  "Unit testing" is testing little
+  units of your work (as opposed to testing the entire program).  Unit testing is easier in pure functional languages
+  because to test a function, you just call it.  You don't really need to "set stuff up" before you call it because
+  there /is/ no state to be set up.  (Parameters for the functions might be complex, though, but it still feels easier
+  than in "imperative" programming languages (which is what the rest of the world uses:  "do this, and save the result
+  here; then do that, and save the result there; etc.").
 
-   So, if you're writing a function you want to test, don't put code inside your main program to test it.  Your main
-   program is not for testing, it's for accomplishing your overall goal, ya know?
+  So, if you're writing a function you want to test, don't put code inside your main program to test it.  Your main
+  program is not for testing, it's for accomplishing your overall goal, ya know?
 
-   Instead, write a side program to do the testing.  So much easier then either (1) putting in and taking out code in
-   your main program, or (2) firing up =ghci= and issuing the same manual tests over and over as you make little
-   changes.  And you'll be running multiple tests because either you'll be writing multiple functions or you'll want to
-   test multiple inputs to your function or both.
+  Instead, write a side program to do the testing.  So much easier then either (1) putting in and taking out code in
+  your main program, or (2) firing up =ghci= and issuing the same manual tests over and over as you make little
+  changes.  And you'll be running multiple tests because either you'll be writing multiple functions or you'll want to
+  test multiple inputs to your function or both.
 
-   Now that I've got you pumped up for unit testing, here's what it looks like.
+  Now that I've got you pumped up for unit testing, here's what it looks like.
 
-   Say you're writing some program that works with Foos.  Put your Foo stuff (data types, functions) in a =Foo= module.
-   Then, write a separate =FooSpec= module that looks like this:
+  Say you're writing some program that works with Foos.  Put your Foo stuff (data types, functions) in a =Foo= module.
+  Then, write a separate =FooSpec= module that looks like this:
 
-   #+BEGIN_SRC haskell
-     module FooSpec where
+  #+BEGIN_SRC haskell
+    module FooSpec where
 
-     import Test.Hspec
-     import Foo -- Import the module containing the functions you wrote that you want to test.
+    import Test.Hspec
+    import Foo -- Import the module containing the functions you wrote that you want to test.
 
-     -- This is all black magic at this point.  Don't worry about it, just do the
-     -- incantations.  The dollar signs are important, so pay attention to them.
-     main :: IO ()
-     main = hspec $ do
-       describe "Some readable (English) phrase describing what you're testing in general" $ do
-         it "Some phrase describing a specific single test you're performing, like '1 equals 1'" $
-           -- Here you write some Boolean (true/false) expression that will be true
-           -- when your test passes, and false otherwise
-           1 == 1                    -- This test will succeed.
-         it "Some other phrase for another test, like '1 equals 2'" $ do
-           1 == 2                    -- This test will fail.
-         it "Tigger tops are made of rubber" $ do
-           getTopMaterial (Foo Tigger) == Rubber
-         it "Tigger bottoms are made of springs" $ do
-           getBottomMaterial (Foo Tigger) == Springs
-   #+END_SRC
+    -- This is all black magic at this point.  Don't worry about it, just do the
+    -- incantations.  The dollar signs are important, so pay attention to them.
+    main :: IO ()
+    main = hspec $ do
+      describe "Some readable (English) phrase describing what you're testing in general" $ do
+        it "Some phrase describing a specific single test you're performing, like '1 equals 1'" $
+          -- Here you write some Boolean (true/false) expression that will be true
+          -- when your test passes, and false otherwise
+          1 == 1                    -- This test will succeed.
+        it "Some other phrase for another test, like '1 equals 2'" $ do
+          1 == 2                    -- This test will fail.
+        it "Tigger tops are made of rubber" $ do
+          getTopMaterial (Foo Tigger) == Rubber
+        it "Tigger bottoms are made of springs" $ do
+          getBottomMaterial (Foo Tigger) == Springs
+  #+END_SRC
 
-   (I added some silly stuff about tiggers, which, presumably, you defined in =Foo=.  If you actually want to run all
-   this, comment out or delete the lines involving Foo and Tiggers, obviously.)
+  (I added some silly stuff about tiggers, which, presumably, you defined in =Foo=.  If you actually want to run all
+  this, comment out or delete the lines involving Foo and Tiggers, obviously.)
 
-*** Install =hspec=
+** Install =hspec=
 
-    So, =hspec= doesn't come with the Haskell Platform, for some reason, so you'll need to use the =cabal= command
-    (which /does/ come with Haskell Platform) to install it.  Issue the following command at the command prompt:
+   So, =hspec= doesn't come with the Haskell Platform, for some reason, so you'll need to use the =cabal= command
+   (which /does/ come with Haskell Platform) to install it.  Issue the following command at the command prompt:
 
-    : cabal install hspec
+   : cabal install hspec
 
-    It'll take a while and install a /bunch/ of stuff.
+   It'll take a while and install a /bunch/ of stuff.
 
-    When you compile the above code with ghc, you'll get some incomprehensible warnings about type defaults, but I'm
-    guessing it's because I used actual integers rather than real code to be tested.  It's ok; it still runs fine.
+   When you compile the above code with ghc, you'll get some incomprehensible warnings about type defaults, but I'm
+   guessing it's because I used actual integers rather than real code to be tested.  It's ok; it still runs fine.
 
-*** Run the test
+** Run the test
 
-    Fire up =ghci=, load the test module and run its main (or any other test functions (which probably have to have type
-    =IO ()=)):
+   Fire up =ghci=, load the test module and run its main (or any other test functions (which probably have to have type
+   =IO ()=)):
 
-    #+BEGIN_EXAMPLE
-      PS C:\Users\j6l\Documents\AmazonS3\Tarheel-NC\Haskell# ghci .\FooSpec.hs
-      GHCi, version 8.6.3: http://www.haskell.org/ghc/  :? for help
-      Loaded GHCi configuration from C:\Users\j6l\.ghci
-      [1 of 1] Compiling FooSpec          ( FooSpec.hs, interpreted ) [flags changed]
-      Ok, one module loaded.
-      ,*FooSpec> main
+   #+BEGIN_EXAMPLE
+     PS C:\Users\j6l\Documents\AmazonS3\Tarheel-NC\Haskell# ghci .\FooSpec.hs
+     GHCi, version 8.6.3: http://www.haskell.org/ghc/  :? for help
+     Loaded GHCi configuration from C:\Users\j6l\.ghci
+     [1 of 1] Compiling FooSpec          ( FooSpec.hs, interpreted ) [flags changed]
+     Ok, one module loaded.
+     ,*FooSpec> main
 
-      Some readable (English) phrase describing what you're testing in general
-        Some phrase describing a specific single test you're performing
-        Some other phrase for another test FAILED [1]
+     Some readable (English) phrase describing what you're testing in general
+       Some phrase describing a specific single test you're performing
+       Some other phrase for another test FAILED [1]
 
-      Failures:
+     Failures:
 
-        FooSpec.hs:15:5:
-        1) Some readable (English) phrase describing what you're testing in general Some other phrase for another test
+       FooSpec.hs:15:5:
+       1) Some readable (English) phrase describing what you're testing in general Some other phrase for another test
 
-        To rerun use: --match "/Some readable (English) phrase describing what you're testing in general/Some other phrase for another test/"
+       To rerun use: --match "/Some readable (English) phrase describing what you're testing in general/Some other phrase for another test/"
 
-      Randomized with seed 1422829174
+     Randomized with seed 1422829174
 
-      Finished in 0.0181 seconds
-      2 examples, 1 failure
-      ,*** Exception: ExitFailure 1
-    #+END_EXAMPLE
+     Finished in 0.0181 seconds
+     2 examples, 1 failure
+     ,*** Exception: ExitFailure 1
+   #+END_EXAMPLE
 
-    You'll see green text for successful tests, and red text for failures (plus the word =FAILED=).
+   You'll see green text for successful tests, and red text for failures (plus the word =FAILED=).
 
-** DONE Hoogle
-   CLOSED: [2019-02-19 Tue 11:56]
+* DONE Hoogle
+  CLOSED: [2019-02-19 Tue 11:56]
 
-   - CLOSING NOTE [2019-02-19 Tue 11:56]
+  - CLOSING NOTE [2019-02-19 Tue 11:56]
 
-   [[https://www.haskell.org/hoogle/][Hoogle]] is the Haskell knowledge search engine, your entry point to the deep, dark, shark-infested waters that are the
-   official Haskell library documentation.  This documentation is not written to be friendly, but it /is/ written to be
-   comprehensive and correct.
+  [[https://www.haskell.org/hoogle/][Hoogle]] is the Haskell knowledge search engine, your entry point to the deep, dark, shark-infested waters that are the
+  official Haskell library documentation.  This documentation is not written to be friendly, but it /is/ written to be
+  comprehensive and correct.
 
-   You could, for instance, look up "hspec".
+  You could, for instance, look up "hspec".
 
-** TODO Data type constructors and pattern-matching
-*** =Maybe=
-*** =Either=
+* TODO Data type constructors and pattern-matching
+** =Maybe=
+** =Either=
 ** =deriving= and common classes
-** TODO Currying (Function application is highest priority)
+* TODO Currying (Function application is highest priority)
 
-    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
-    =4=.
+   =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
+   =4=.
     
-** TODO Basic functions that show up a lot
-*** map
-*** filter
-*** take
-*** drop
-*** concat
+* TODO Basic functions that show up a lot
+** map
+** filter
+** take
+** drop
+** concat
 * COMMENT Local spelling dictionary & whatnot
 
  #  LocalWords:  computability memoize
