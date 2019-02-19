@@ -862,7 +862,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   You could, for instance, look up "hspec".
 
-* TODO Data type constructors and pattern-matching
+* TODO Data type constructors, pattern-matching, and conditionals
+
+  This sounds like an odd combination of topics, but bear with me.
+
 ** =Maybe=
 ** =Either=
 ** =deriving= and common classes
