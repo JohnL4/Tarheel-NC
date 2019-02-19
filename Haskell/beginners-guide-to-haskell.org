@@ -792,7 +792,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
            getBottomMaterial (Foo Tigger) == Springs
    #+END_SRC
 
-   (I added some silly stuff about tiggers, which presumably, you defined in =Foo=.  If you actually want to run all
+   (I added some silly stuff about tiggers, which, presumably, you defined in =Foo=.  If you actually want to run all
    this, comment out or delete the lines involving Foo and Tiggers, obviously.)
 
 *** Install =hspec=
@@ -848,6 +848,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    [[https://www.haskell.org/hoogle/][Hoogle]] is the Haskell knowledge search engine, your entry point to the deep, dark, shark-infested waters that are the
    official Haskell library documentation.  This documentation is not written to be friendly, but it /is/ written to be
    comprehensive and correct.
+
+   You could, for instance, look up "hspec".
 
 ** TODO Data type constructors and pattern-matching
 *** =Maybe=
