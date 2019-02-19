@@ -744,7 +744,103 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    (I have to put in a plug for my editor, [[https://www.gnu.org/software/emacs/][emacs]], but emacs is a journey of a lifetime.  I've been using it for coming
    up on 40 years now and I /still/ haven't figured out everything about it.)
 
-** TODO Data type constructors
+** DONE Unit testing with Hspec
+   CLOSED: [2019-02-19 Tue 11:41]
+
+   - CLOSING NOTE [2019-02-19 Tue 11:41]
+
+   Speaking of editors and getting set up, you should start early on unit testing.  "Unit testing" is testing little
+   units of your work (as opposed to testing the entire program).  Unit testing is easier in pure functional languages
+   because to test a function, you just call it.  You don't really need to "set stuff up" before you call it because
+   there /is/ no state to be set up.  (Parameters for the functions might be complex, though, but it still feels easier
+   than in "imperative" programming languages (which is what the rest of the world uses:  "do this, and save the result
+   here; then do that, and save the result there; etc.").
+
+   So, if you're writing a function you want to test, don't put code inside your main program to test it.  Your main
+   program is not for testing, it's for accomplishing your overall goal, ya know?
+
+   Instead, write a side program to do the testing.  So much easier then either (1) putting in and taking out code in
+   your main program, or (2) firing up =ghci= and issuing the same manual tests over and over as you make little
+   changes.  And you'll be running multiple tests because either you'll be writing multiple functions or you'll want to
+   test multiple inputs to your function or both.
+
+   Now that I've got you pumped up for unit testing, here's what it looks like.
+
+   Say you're writing some program that works with Foos.  Put your Foo stuff (data types, functions) in a =Foo= module.
+   Then, write a separate =FooSpec= module that looks like this:
+
+   #+BEGIN_SRC haskell
+     module FooSpec where
+
+     import Test.Hspec
+     import Foo -- Import the module containing the functions you wrote that you want to test.
+
+     -- This is all black magic at this point.  Don't worry about it, just do the
+     -- incantations.  The dollar signs are important, so pay attention to them.
+     main :: IO ()
+     main = hspec $ do
+       describe "Some readable (English) phrase describing what you're testing in general" $ do
+         it "Some phrase describing a specific single test you're performing, like '1 equals 1'" $
+           -- Here you write some Boolean (true/false) expression that will be true
+           -- when your test passes, and false otherwise
+           1 == 1                    -- This test will succeed.
+         it "Some other phrase for another test, like '1 equals 2'" $ do
+           1 == 2                    -- This test will fail.
+         it "Tigger tops are made of rubber" $ do
+           getTopMaterial (Foo Tigger) == Rubber
+         it "Tigger bottoms are made of springs" $ do
+           getBottomMaterial (Foo Tigger) == Springs
+   #+END_SRC
+
+   (I added some silly stuff about tiggers, which presumably, you defined in =Foo=.  If you actually want to run all
+   this, comment out or delete the lines involving Foo and Tiggers, obviously.)
+
+*** Install =hspec=
+
+    So, =hspec= doesn't come with the Haskell Platform, for some reason, so you'll need to use the =cabal= command
+    (which /does/ come with Haskell Platform) to install it.  Issue the following command at the command prompt:
+
+    : cabal install hspec
+
+    It'll take a while and install a /bunch/ of stuff.
+
+    When you compile the above code with ghc, you'll get some incomprehensible warnings about type defaults, but I'm
+    guessing it's because I used actual integers rather than real code to be tested.  It's ok; it still runs fine.
+
+*** Run the test
+
+    Fire up =ghci=, load the test module and run its main (or any other test functions (which probably have to have type
+    =IO ()=)):
+
+    #+BEGIN_EXAMPLE
+      PS C:\Users\j6l\Documents\AmazonS3\Tarheel-NC\Haskell# ghci .\FooSpec.hs
+      GHCi, version 8.6.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from C:\Users\j6l\.ghci
+      [1 of 1] Compiling FooSpec          ( FooSpec.hs, interpreted ) [flags changed]
+      Ok, one module loaded.
+      ,*FooSpec> main
+
+      Some readable (English) phrase describing what you're testing in general
+        Some phrase describing a specific single test you're performing
+        Some other phrase for another test FAILED [1]
+
+      Failures:
+
+        FooSpec.hs:15:5:
+        1) Some readable (English) phrase describing what you're testing in general Some other phrase for another test
+
+        To rerun use: --match "/Some readable (English) phrase describing what you're testing in general/Some other phrase for another test/"
+
+      Randomized with seed 1422829174
+
+      Finished in 0.0181 seconds
+      2 examples, 1 failure
+      ,*** Exception: ExitFailure 1
+    #+END_EXAMPLE
+
+    You'll see green text for successful tests, and red text for failures (plus the word =FAILED=).
+
+** TODO Data type constructors and pattern-matching
 *** =Maybe=
 *** =Either=
 ** =deriving= and common classes
