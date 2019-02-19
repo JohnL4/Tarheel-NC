@@ -840,6 +840,15 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
     You'll see green text for successful tests, and red text for failures (plus the word =FAILED=).
 
+** DONE Hoogle
+   CLOSED: [2019-02-19 Tue 11:56]
+
+   - CLOSING NOTE [2019-02-19 Tue 11:56]
+
+   [[https://www.haskell.org/hoogle/][Hoogle]] is the Haskell knowledge search engine, your entry point to the deep, dark, shark-infested waters that are the
+   official Haskell library documentation.  This documentation is not written to be friendly, but it /is/ written to be
+   comprehensive and correct.
+
 ** TODO Data type constructors and pattern-matching
 *** =Maybe=
 *** =Either=
