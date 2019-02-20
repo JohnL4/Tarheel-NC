@@ -862,11 +862,209 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   You could, for instance, look up "hspec".
 
-* TODO Data type constructors, pattern-matching, and conditionals
+* IN-PROGRESS Data type constructors, pattern-matching, conditionals, and more function stuff
 
   This sounds like an odd combination of topics, but bear with me.
 
+  So far, we've seen three data types: numbers, strings, characters.  Or four, if you count lists,
+  which is worth counting.  As you know, lists can be lists of any type.  That's actually worth
+  remembering.
+
+  All of our advanced programming languages (after BASIC) are capable of having types of data that
+  are like agglomerations of other data.  For example, you could a data type of =Car=, with year,
+  make, model, and color.  And you could have a function, say, =maintenanceCost=, that takes as an
+  argument a =Car=.  (All of my examples are stupid, by the way.)
+
+  Why do we have these data types?  Aren't strings and numbers enough?  A license plate is a string.
+  A cost is a number.  A loan insurance rate is a number.  A bank name is a string.  A check number
+  is... a number.  What more do we need?
+
+  Well, suppose we're writing a program for home finance.  We have a lot of data floating around.
+  Account balances, transaction amounts, check numbers, dates (are those number? Or strings?), bank
+  names, account types ("Savings", "Checking", "Money Market").  Since all those numbers are
+  numbers, what happens if we accidentally send a check number (2804) to a loan interest calculation
+  ($28.04), and then subtract interest from the checking account balance?  Oops.
+
+  Wouldn't it be better if we had types like AccountType, CheckNumber, MoneyAmount, Date?  You could
+  still make mistakes, but the chances would be reduced, eh?
+
+** A simple data type
+
+   Here's a super-simple data type.  It's really an enumeration of possible values.
+
+   #+BEGIN_SRC haskell
+     data Direction = North | East | South | West
+   #+END_SRC
+
+   What's going on here?  We're defining a new data type, named "Direction".  And it can only have
+   four different values.  Simple enough, right?
+
+   We could do this with a string, but what if we had a function, =bearing= that takes a compass
+   direction and returns the number of degrees that direction corresponds to?  Great, but what if we
+   asked it direction "Esta" is?  ERROR.  We can avoid that by using this new data type instead.
+   Here's the function signature ("signature": the list of input types and return values a
+   function has).
+
+   : bearing :: Direction -> Int
+
+   So, the function takes a Direction and returns an Int (an integer).
+
+   To be clear about this: we tell Haskell what the type of a function is (its type is its
+   signature) by giving the function name, a double colon, and then the list of input types and the
+   return value type, all separated by (short) arrows ("=->=").
+
+** Implementation of the =bearing= function with conditionals (=if=)
+
+   So, how do we implement this function?  How about this:
+
+   #+BEGIN_SRC haskell
+     module Compass where
+
+     data Direction = North | East | South | West deriving (Eq, Show)
+
+     bearing :: Direction -> Int
+     bearing dir = if dir == North
+                   then 0
+                   else if dir == East
+                        then 90
+                        else if dir == South
+                             then 180
+                             else 270
+   #+END_SRC
+
+   (You can see where I'm heading with that "=module Compass where=" at the top:  unit testing!
+   Also, that "=deriving (Eq, Show)=" is a piece of black magic I haven't talked about yet, but I
+   will, later.)
+
+   So, what did I do?  I said "the =bearing= function, with a single argument I'm calling =dir=, is as
+   follows:".
+
+   Or, in shorter words, "the =bearing= function IS....", except I used an equals sign for "is".
+   That's what "equals" means, right?  (More or less.)
+
+   Then I have a huge conditional expression.  The basic structure of a conditional expression is
+   "=if /booleanValue/ then /someValue/ else /someOtherValue/".
+
+   (By the way, that "boolean" thing.  It's just a true/false value, but these things are named
+   after Yet Another Old-Timey Mathematician named George Boole, who invented Boolean algebra and
+   wrote some stuff.  It's a short-handed way of saying "true/false value".)
+
+   Anyway, if the boolean value has the value =True=, then the entire expression has the value
+   /someValue/.  Else, the entire expression the value /someOtherValue/.
+
+   Does it work?  To make a long story less long, yes!
+
+   #+BEGIN_EXAMPLE
+     deimos$ ghci CompassSpec.hs
+     GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+     Loaded GHCi configuration from /Users/john/.ghci
+     [1 of 2] Compiling Compass          ( Compass.hs, interpreted )
+     [2 of 2] Compiling CompassSpec      ( CompassSpec.hs, interpreted )
+     Ok, two modules loaded.
+     ,*CompassSpec> main
+
+     bearing
+       North is 0
+       East is 90
+       South is 180
+       West is 270
+
+     Finished in 0.0028 seconds
+     4 examples, 0 failures
+     ,*CompassSpec> bearing West
+     270
+   #+END_EXAMPLE
+
+   But that nested if structure is inelegant.  What if we added some more directions to Direction,
+   like NorthEast and SouthBySouthWest, etc.?  That line of if/then/else's will march off to
+   the... um... SouthEast.
+
+** =case= statement
+
+   How about this?
+
+   #+BEGIN_SRC haskell
+     bearingCase :: Direction -> Int
+     bearingCase dir = case dir of
+       North -> 0
+       East  -> 90
+       South -> 180
+       West  -> 270
+   #+END_SRC
+
+   So, that's prettier.  (And it works, because I extended the unit test with a little
+   copy-and-paste.)
+
+   (The =case= statement uses pattern-matching, by the way.  [That redundant sentence is redundant.])
+
+** TODO Guards
+   
+** Pattern-matching
+
+   Ok, here's a much wackier solution (but one you'll see a lot):
+
+   #+BEGIN_SRC haskell
+     bearingPat :: Direction -> Int
+     bearingPat North  = 0
+     bearingPat East   = 90
+     bearingPat South  = 180
+     bearingPat West   = 270
+   #+END_SRC
+
+   What the heck?  This is /pattern-matching/.  There are /no conditionals/ here.  Conditionals are
+   ok, but sometimes it's clearer to avoid them.  What's going on here is that we're saying
+   (obviously, I guess) that if the function is called with the value =North=, the function's value
+   is 0, and if it's called with the value =East=, its value is 90, and so on.
+
+   You will definitely see more pattern-matching in the future, but it'll be a bit more complex
+   (don't worry, not too crazy).
+
+   Note that what's happening in the =case= statement is also pattern-matching, btw.
+
 ** =Maybe=
+
+   Ok, let's kick it up a notch.  There's a built-in data type named "=Maybe=".  It's essentially
+   defined like this:
+
+   : data Maybe = Nothing | Just a
+
+   (There's probably more to the official definition, but this is about right.)
+
+   So, we're saying that, like =Direction=, a =Maybe= value can one of two possible values:
+   =Nothing= and =Just a=.
+
+   But, wait, what's the "=a="?
+
+   Well, that is Haskellish for "any old thing, of any old type".  (The "a" comes from the beginning
+   of the alphabet, not the first letter of "any".)
+
+   So, you can have something that's "=Just 2=" or "=Just North=" or "=Just "hello"=".
+
+   Why would you do such a thing?
+
+   Imagine a function that divides one number by another.  What if we passed it zero?  What should
+   we return?  Should we just blow up the program?
+
+   How about this:
+
+   #+BEGIN_SRC haskell
+     divAbyB a 0 = Nothing
+     divAbyB a b = Just (a/b)
+   #+END_SRC
+
+   (Oh, look!  More pattern-matching!)
+
+   So, now we're saying anything divided by 0 is Nothing, as opposed to 0.
+
+   And, if it's not Nothing, it's =Just= whatever the result is.
+
+   #+BEGIN_EXAMPLE
+     ,*CompassSpec> divAbyB 1 0
+     Nothing
+     ,*CompassSpec> divAbyB 1 2
+     Just 0.5
+   #+END_EXAMPLE
+
 ** =Either=
 ** =deriving= and common classes
 * TODO Currying (Function application is highest priority)
