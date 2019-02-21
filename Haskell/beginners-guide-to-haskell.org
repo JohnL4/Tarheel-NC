@@ -576,7 +576,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   : (-80) - 350
 
-  We got away with no parens in the example above, in more-complicated situations, you'll see weird errors:
+  We got away with no parens in the example above, but in more-complicated situations, you'll see weird errors:
 
   #+BEGIN_EXAMPLE
     Prelude> 2 * -3
@@ -763,12 +763,14 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   - CLOSING NOTE [2019-02-18 Mon 17:31]
 
-  Speaking of the layout rule, you should get a smarter editor than Notepad, as spiffy as it is.
+  Speaking of the layout rule, you should get a smarter editor than Notepad, as spiffy as it is.  (Or Write or whatever
+  comes with the Mac.)
 
   For beginner types who haven't messed around with programming editors very much (and like "free" as a price), I
-  recommend Visual Studio Code (https://code.visualstudio.com/).  Looks like most of the Haskell plugins are a bit
-  complicated to install, but the simplest one seems to be the one named "Haskell Syntax Highlighting", so try that
-  out.  Looks like it does some automatic indenting to kind of give you a hint as to when you need to indent more.
+  recommend Visual Studio Code (https://code.visualstudio.com/).  (It works just fine on Mac and Linux.)  Looks like
+  most of the Haskell plugins are a bit complicated to install, but the simplest one seems to be the one named "Haskell
+  Syntax Highlighting", so try that out.  Looks like it does some automatic indenting to kind of give you a hint as to
+  when you need to indent more.
 
   (I have to put in a plug for my editor, [[https://www.gnu.org/software/emacs/][emacs]], but emacs is a journey of a lifetime.  I've been using it for coming
   up on 40 years now and I /still/ haven't figured out everything about it.)
@@ -885,8 +887,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   - CLOSING NOTE [2019-02-20 Wed 20:37]
 
-  This sounds like an odd combination of topics, but bear with me.  (TODO: Actually, maybe can split the conditionals
-  and guards stuff out into a separate topic.)
+  This sounds like an odd combination of topics, but bear with me.
 
   So far, we've seen three data types: numbers, strings, characters.  Or four, if you count lists,
   which is worth counting.  As you know, lists can be lists of any type.  That's actually worth
@@ -982,6 +983,19 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     after Yet Another Old-Timey Mathematician named George Boole, who invented Boolean algebra and
     wrote some stuff.  It's a short-handed way of saying "true/false value".)
 
+    The double-equals sign compares two things for equality and gives a true/false result.  So,
+
+    : "Hi" == "Hi"
+
+    is true, and
+
+    : 1 == 2
+
+    is false.
+
+    The difference a single equal sign and the double equal sign is that with a single equal sign, you're /saying/ that
+    a thing has a certain value, and with the double equal sign, you're /asking/ whether a thing has a certain value.
+
     Anyway, if the boolean value has the value =True=, then the entire expression has the value
     /someValue/.  Else, the entire expression has the value /someOtherValue/.
 
@@ -1036,6 +1050,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
       ,*CompassSpec> bearing West
       270
     #+END_EXAMPLE
+
+    (By the way, you can see all the code at [[file:Compass.hs][Compass.hs]], and all the unit-test code at [[file:CompassSpec.hs][CompassSpec.hs]].)
 
 **** But, in the end....
     
@@ -1092,15 +1108,23 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      bearingPat West   = 270
    #+END_SRC
 
-   What the heck?  This is /pattern-matching/.  There are /no conditionals/ here.  Conditionals are
-   ok, but sometimes it's clearer to avoid them.  What's going on here is that we're saying
-   (obviously, I guess) that if the function is called with the value =North=, the function's value
-   is 0, and if it's called with the value =East=, its value is 90, and so on.
+   What the heck?  How can you define the same function more than once?  This is /pattern-matching/.  There are /no
+   conditionals/ here.  Conditionals are ok, but sometimes it's clearer to avoid them.  What's going on here is that
+   we're saying (obviously, I guess) that if the function is called with the value =North=, the function's value is 0,
+   and if it's called with the value =East=, its value is 90, and so on.
 
    You will definitely see more pattern-matching in the future, but it'll be a bit more complex
    (don't worry, not too crazy).
 
    Note that what's happening in the =case= statement is also pattern-matching, btw.
+
+*** The difference between pattern-matching and conditionals
+
+    You've probably figured it out by now (or maybe you've started to get an inkling), but the difference between
+    conditionals and pattern-matching is this:  with *conditionals*, you're using a boolean expression that can be as
+    complex as you want but that distills down to either True or False; and with *pattern-matching*, you're checking the
+    /structure/ of something (does that structure have a certain pattern?).  For simple values (like, say =North=), they
+    kind of look alike.
 
 ** IN-PROGRESS =Maybe=
 
