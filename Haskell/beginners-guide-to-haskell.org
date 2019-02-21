@@ -1,4 +1,4 @@
-# -*- org -*-
+# -*- mode: org; fill-column: 100; flyspell-mode: 1 -*-
 #+TITLE: Guide to Haskell for the Absolute Beginner
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
@@ -20,7 +20,12 @@
   doesn't really computer at all, except to use a laptop or smartphone to surf the web and write
   emails and social media posts.
 
-  Let's go. :)  (Hmm, maybe I should find some emojis for this static web site thingie.)
+  Said hypothetical person is intelligent, has an interest in programming, but is also a bit
+  overwhelmed or intimidated by the knowledge required and the way knowledgeable people tend to
+  present it.
+
+  Maybe I can do better.  Let's go. :)  (Hmm, maybe I should find some emojis for this static web
+  site thingie.)
 
 * Basic Basics
 
