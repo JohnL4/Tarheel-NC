@@ -348,8 +348,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      10
    #+END_EXAMPLE
 
-   Spiffy, right?  If /x/ is negative, it returns the length of the list /ys/, otherwise it just
-   returns /x/.
+   Spiffy, right?  If /x/ is negative, it gives the length of the list /ys/, otherwise it just
+   gives /x/.
 
    What if we hand it an infinite list (you can do that; see [[#infinite-lists][Infinite lists]]).  Now we're expecting
    it to count the length of an infinite list.  That's like that Star Trek episode where Spock asks
@@ -409,7 +409,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      f :: Num a => a -> a
    #+END_EXAMPLE
 
-   What Haskell is saying here is that /f/ is a function that takes some type /a/ and returns the
+   What Haskell is saying here is that /f/ is a function that takes some type /a/ and gives the
    same type, so long as /a/ is a number (=Num=) of some sort.  So, integer, floating point, Roman
    numeral (so long as you define the math on that puppy), tally marks, whatever.
 
@@ -425,10 +425,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 *** Memoizing
 
    That puritanical stance against assignment statements has some nice outcomes.  For one, whenever
-   you call a function, since there are no side effects, you can rely on that function returning the
+   you call a function, since there are no side effects, you can rely on that function giving the
    same results for the same arguments.  In fact, that allows Haskell to simply /cache/ the result,
    so, for an expensive function, the first time you call it (and really need it), you pay the
-   price, but from then on, for the same arguments, Haskell just returns the value it memorized.
+   price, but from then on, for the same arguments, Haskell just gives the value it memorized.
    So, you get a nice performance bump.
 
    There's an actual verb for that, and it's not "memorize".  Instead, we say /memoize/, like that
@@ -588,6 +588,24 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     Prelude> 2 * (-3)
     -6
   #+END_EXAMPLE 
+
+* Comments
+  :PROPERTIES:
+  :CUSTOM_ID: comments
+  :END:
+
+  In programming, a "comment" is a piece of English (or Arabic or Cherokee or whatever is your natural language of
+  choice) text you slap into the middle of a program containing whatever documentation you think will be helpful to
+  other people (including you, 18 months from now) reading and trying to understand your code.
+
+  The compiler (generally) ignores the comments.  It's like they're spaces or something.
+
+  It'll become more obvious later, but there are two ways you can put comments into Haskell programs.
+
+  1) You can type a double dash ("=--=") and then, everything you type after that, to the end of the line, is a
+     comment.
+     
+  2) You can type "={-=" and "=-}=" and put your comment between those two.  (But I don't think you can nest them.)
 
 * DONE "Strings"
   CLOSED: [2019-02-18 Mon 17:39]
@@ -862,21 +880,22 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   You could, for instance, look up "hspec".
 
-* IN-PROGRESS Data type constructors, pattern-matching, conditionals, and more function stuff
+* IN-PROGRESS Data type constructors, conditionals, guards, pattern-matching, and more function stuff
 
-  This sounds like an odd combination of topics, but bear with me.
+  This sounds like an odd combination of topics, but bear with me.  (TODO: Actually, maybe can split the conditionals
+  and guards stuff out into a separate topic.)
 
   So far, we've seen three data types: numbers, strings, characters.  Or four, if you count lists,
   which is worth counting.  As you know, lists can be lists of any type.  That's actually worth
   remembering.
 
   All of our advanced programming languages (after BASIC) are capable of having types of data that
-  are like agglomerations of other data.  For example, you could a data type of =Car=, with year,
+  are like agglomerations of other data.  For example, you could have a data type of =Car=, with year,
   make, model, and color.  And you could have a function, say, =maintenanceCost=, that takes as an
   argument a =Car=.  (All of my examples are stupid, by the way.)
 
   Why do we have these data types?  Aren't strings and numbers enough?  A license plate is a string.
-  A cost is a number.  A loan insurance rate is a number.  A bank name is a string.  A check number
+  A cost is a number.  A loan interest rate is a number.  A bank name is a string.  A check number
   is... a number.  What more do we need?
 
   Well, suppose we're writing a program for home finance.  We have a lot of data floating around.
@@ -900,18 +919,28 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    four different values.  Simple enough, right?
 
    We could do this with a string, but what if we had a function, =bearing= that takes a compass
-   direction and returns the number of degrees that direction corresponds to?  Great, but what if we
+   direction and gives the number of degrees that direction corresponds to?  Great, but what if we
    asked it direction "Esta" is?  ERROR.  We can avoid that by using this new data type instead.
-   Here's the function signature ("signature": the list of input types and return values a
+   Here's the function signature ("signature": the list of input types and the result type a
    function has).
 
    : bearing :: Direction -> Int
 
-   So, the function takes a Direction and returns an Int (an integer).
+   So, the function takes a Direction and gives an Int (an integer).
 
    To be clear about this: we tell Haskell what the type of a function is (its type is its
    signature) by giving the function name, a double colon, and then the list of input types and the
-   return value type, all separated by (short) arrows ("=->=").
+   result value type, all separated by (short) arrows ("=->=").
+
+   #+BEGIN_QUOTE
+   You might remember, from your days of math in school, that functions are usually specified with arrows.  See:
+
+   - [[https://en.m.wikipedia.org/wiki/Function_(mathematics)#Notation][Wikipedia on function notation]], and
+   - [[https://en.m.wikipedia.org/wiki/Function_(mathematics)#Arrow_notation][Wikipedia on arrow notation]]
+
+   The big difference between Haskell and "regular" math is that, in Haskell, we put arrows everywhere, not just in
+   front of the function result.  More about that later. :)
+   #+END_QUOTE
 
 ** Implementation of the =bearing= function with conditionals (=if=)
 
@@ -950,7 +979,36 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    wrote some stuff.  It's a short-handed way of saying "true/false value".)
 
    Anyway, if the boolean value has the value =True=, then the entire expression has the value
-   /someValue/.  Else, the entire expression the value /someOtherValue/.
+   /someValue/.  Else, the entire expression has the value /someOtherValue/.
+
+*** Breakdown
+
+    Pardon me, I just automatically assumed you, dear reader, would be able to reflexively parse that big if-then-else
+    expression, but maybe I should be a little more pedantic.
+
+    Take that last part:
+
+    : if dir == South then 180 else 270
+
+    That's pretty clear, right?  If the direction is South, then the bearing is 180°, otherwise it's 270°.  Taking that
+    expression in isolation, that "otherwise" could cover a lot (North, East, West), but at least we know it's not
+    South, right?
+
+    So, back up a level:
+
+    : if dir == East then 90 else {- nested 'if' expression -}
+
+    (Yeah, I just snuck in a [[#comments][comment]], in its more-rare form.  I'm being sloppy.)
+
+    If the direction is East, then the bearing is 90°.  Else it's whatever that /nested 'if' expression/ evaluates to.
+
+    And, at the "top", we check for North, and if we got North, we give 0° back.  Otherwise, we go down the rabbit hole
+    of nested 'if' expressions, but we know we're not sending North down that rabbit hole.  Likewise, in the second
+    'if', when we hit the 'else' part, we know we've already handled North and East, so we could only be sending in
+    South or West.  And, finally, back to the last part's 'else' statement: we already handled North, East and South, so
+    we know it can only be West, right?  Which is why we can so confidently say the bearing is 270°.
+    
+*** Test
 
    Does it work?  To make a long story less long, yes!
 
@@ -975,6 +1033,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      270
    #+END_EXAMPLE
 
+*** But, in the end....
+    
    But that nested if structure is inelegant.  What if we added some more directions to Direction,
    like NorthEast and SouthBySouthWest, etc.?  That line of if/then/else's will march off to
    the... um... SouthEast.
@@ -992,7 +1052,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
        West  -> 270
    #+END_SRC
 
-   So, that's prettier.  (And it works, because I extended the unit test with a little
+   So, that's prettier.  (And we know it works, because I extended the unit test with a little
    copy-and-paste.)
 
    (The =case= statement uses pattern-matching, by the way.  [That redundant sentence is redundant.])
@@ -1030,20 +1090,20 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
    (There's probably more to the official definition, but this is about right.)
 
-   So, we're saying that, like =Direction=, a =Maybe= value can one of two possible values:
+   So, we're saying that, like =Direction=, a =Maybe= value can have one of two possible values:
    =Nothing= and =Just a=.
 
    But, wait, what's the "=a="?
 
-   Well, that is Haskellish for "any old thing, of any old type".  (The "a" comes from the beginning
-   of the alphabet, not the first letter of "any".)
+   Well, that is Haskellish for "any old thing, of any old type".  (The "a" comes from the beginning of the alphabet,
+   not the first letter of "any".) Remember that whole "lists of any type" thing?  Same thing.
 
    So, you can have something that's "=Just 2=" or "=Just North=" or "=Just "hello"=".
 
    Why would you do such a thing?
 
    Imagine a function that divides one number by another.  What if we passed it zero?  What should
-   we return?  Should we just blow up the program?
+   we give as a result?  Should we just blow up the program?
 
    How about this:
 
@@ -1078,6 +1138,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 ** take
 ** drop
 ** concat
+** fold
 * COMMENT Local spelling dictionary & whatnot
 
  #  LocalWords:  computability memoize
