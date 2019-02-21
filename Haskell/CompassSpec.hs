@@ -33,4 +33,13 @@ main = hspec $ do
       bearingPat South == 180
     it "West is 270" $ do
       bearingPat West == 270
+  describe "bearingGd" $ do
+    it "North is 0" $ do
+      bearingGd North == 0
+    it "East is 90" $ do
+      bearingGd East == 90
+    it "South is 180" $ do
+      bearingGd South == 180
+    it "West is 270" $ do
+      bearingGd West == 270
   

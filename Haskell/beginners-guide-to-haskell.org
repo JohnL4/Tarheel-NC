@@ -880,7 +880,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
   You could, for instance, look up "hspec".
 
-* IN-PROGRESS Data type constructors, conditionals, guards, pattern-matching, and more function stuff
+* DONE Data type constructors, conditionals, guards, pattern-matching, and more function stuff
+  CLOSED: [2019-02-20 Wed 20:37]
+
+  - CLOSING NOTE [2019-02-20 Wed 20:37]
 
   This sounds like an odd combination of topics, but bear with me.  (TODO: Actually, maybe can split the conditionals
   and guards stuff out into a separate topic.)
@@ -942,123 +945,141 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    front of the function result.  More about that later. :)
    #+END_QUOTE
 
-** Implementation of the =bearing= function with conditionals (=if=)
+** Conditionals
+*** =if=: Implementation of the =bearing= function with conditionals
 
-   So, how do we implement this function?  How about this:
+    So, how do we implement this function?  How about this:
 
-   #+BEGIN_SRC haskell
-     module Compass where
+    #+BEGIN_SRC haskell
+      module Compass where
 
-     data Direction = North | East | South | West deriving (Eq, Show)
+      data Direction = North | East | South | West deriving (Eq, Show)
 
-     bearing :: Direction -> Int
-     bearing dir = if dir == North
-                   then 0
-                   else if dir == East
-                        then 90
-                        else if dir == South
-                             then 180
-                             else 270
-   #+END_SRC
+      bearing :: Direction -> Int
+      bearing dir = if dir == North
+                    then 0
+                    else if dir == East
+                         then 90
+                         else if dir == South
+                              then 180
+                              else 270
+    #+END_SRC
 
-   (You can see where I'm heading with that "=module Compass where=" at the top:  unit testing!
-   Also, that "=deriving (Eq, Show)=" is a piece of black magic I haven't talked about yet, but I
-   will, later.)
+    (You can see where I'm heading with that "=module Compass where=" at the top:  unit testing!
+    Also, that "=deriving (Eq, Show)=" is a piece of black magic I haven't talked about yet, but I
+    will, later.)
 
-   So, what did I do?  I said "the =bearing= function, with a single argument I'm calling =dir=, is as
-   follows:".
+    So, what did I do?  I said "the =bearing= function, with a single argument I'm calling =dir=, is as
+    follows:".
 
-   Or, in shorter words, "the =bearing= function IS....", except I used an equals sign for "is".
-   That's what "equals" means, right?  (More or less.)
+    Or, in shorter words, "the =bearing= function IS....", except I used an equals sign for "is".
+    That's what "equals" means, right?  (More or less.)
 
-   Then I have a huge conditional expression.  The basic structure of a conditional expression is
-   "=if /booleanValue/ then /someValue/ else /someOtherValue/".
+    Then I have a huge conditional expression.  The basic structure of a conditional expression is
+    "=if /booleanValue/ then /someValue/ else /someOtherValue/".
 
-   (By the way, that "boolean" thing.  It's just a true/false value, but these things are named
-   after Yet Another Old-Timey Mathematician named George Boole, who invented Boolean algebra and
-   wrote some stuff.  It's a short-handed way of saying "true/false value".)
+    (By the way, that "boolean" thing.  It's just a true/false value, but these things are named
+    after Yet Another Old-Timey Mathematician named George Boole, who invented Boolean algebra and
+    wrote some stuff.  It's a short-handed way of saying "true/false value".)
 
-   Anyway, if the boolean value has the value =True=, then the entire expression has the value
-   /someValue/.  Else, the entire expression has the value /someOtherValue/.
+    Anyway, if the boolean value has the value =True=, then the entire expression has the value
+    /someValue/.  Else, the entire expression has the value /someOtherValue/.
 
-*** Breakdown
+**** Breakdown
 
-    Pardon me, I just automatically assumed you, dear reader, would be able to reflexively parse that big if-then-else
-    expression, but maybe I should be a little more pedantic.
+     Pardon me, I just automatically assumed you, dear reader, would be able to reflexively parse that big if-then-else
+     expression, but maybe I should be a little more pedantic.
 
-    Take that last part:
+     Take that last part:
 
-    : if dir == South then 180 else 270
+     : if dir == South then 180 else 270
 
-    That's pretty clear, right?  If the direction is South, then the bearing is 180°, otherwise it's 270°.  Taking that
-    expression in isolation, that "otherwise" could cover a lot (North, East, West), but at least we know it's not
-    South, right?
+     That's pretty clear, right?  If the direction is South, then the bearing is 180°, otherwise it's 270°.  Taking that
+     expression in isolation, that "otherwise" could cover a lot (North, East, West), but at least we know it's not
+     South, right?
 
-    So, back up a level:
+     So, back up a level:
 
-    : if dir == East then 90 else {- nested 'if' expression -}
+     : if dir == East then 90 else {- nested 'if' expression -}
 
-    (Yeah, I just snuck in a [[#comments][comment]], in its more-rare form.  I'm being sloppy.)
+     (Yeah, I just snuck in a [[#comments][comment]], in its more-rare form.  I'm being sloppy.)
 
-    If the direction is East, then the bearing is 90°.  Else it's whatever that /nested 'if' expression/ evaluates to.
+     If the direction is East, then the bearing is 90°.  Else it's whatever that /nested 'if' expression/ evaluates to.
 
-    And, at the "top", we check for North, and if we got North, we give 0° back.  Otherwise, we go down the rabbit hole
-    of nested 'if' expressions, but we know we're not sending North down that rabbit hole.  Likewise, in the second
-    'if', when we hit the 'else' part, we know we've already handled North and East, so we could only be sending in
-    South or West.  And, finally, back to the last part's 'else' statement: we already handled North, East and South, so
-    we know it can only be West, right?  Which is why we can so confidently say the bearing is 270°.
+     And, at the "top", we check for North, and if we got North, we give 0° back.  Otherwise, we go down the rabbit hole
+     of nested 'if' expressions, but we know we're not sending North down that rabbit hole.  Likewise, in the second
+     'if', when we hit the 'else' part, we know we've already handled North and East, so we could only be sending in
+     South or West.  And, finally, back to the last part's 'else' statement: we already handled North, East and South, so
+     we know it can only be West, right?  Which is why we can so confidently say the bearing is 270°.
     
-*** Test
+**** Test
 
-   Does it work?  To make a long story less long, yes!
+    Does it work?  To make a long story less long, yes!
 
-   #+BEGIN_EXAMPLE
-     deimos$ ghci CompassSpec.hs
-     GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
-     Loaded GHCi configuration from /Users/john/.ghci
-     [1 of 2] Compiling Compass          ( Compass.hs, interpreted )
-     [2 of 2] Compiling CompassSpec      ( CompassSpec.hs, interpreted )
-     Ok, two modules loaded.
-     ,*CompassSpec> main
+    #+BEGIN_EXAMPLE
+      deimos$ ghci CompassSpec.hs
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 2] Compiling Compass          ( Compass.hs, interpreted )
+      [2 of 2] Compiling CompassSpec      ( CompassSpec.hs, interpreted )
+      Ok, two modules loaded.
+      ,*CompassSpec> main
 
-     bearing
-       North is 0
-       East is 90
-       South is 180
-       West is 270
+      bearing
+        North is 0
+        East is 90
+        South is 180
+        West is 270
 
-     Finished in 0.0028 seconds
-     4 examples, 0 failures
-     ,*CompassSpec> bearing West
-     270
-   #+END_EXAMPLE
+      Finished in 0.0028 seconds
+      4 examples, 0 failures
+      ,*CompassSpec> bearing West
+      270
+    #+END_EXAMPLE
 
-*** But, in the end....
+**** But, in the end....
     
-   But that nested if structure is inelegant.  What if we added some more directions to Direction,
-   like NorthEast and SouthBySouthWest, etc.?  That line of if/then/else's will march off to
-   the... um... SouthEast.
+    But that nested if structure is inelegant.  What if we added some more directions to Direction,
+    like NorthEast and SouthBySouthWest, etc.?  That line of if/then/else's will march off to
+    the... um... SouthEast.
 
-** =case= statement
+*** =case=: Another form of conditional
 
-   How about this?
+    How about this?
 
-   #+BEGIN_SRC haskell
-     bearingCase :: Direction -> Int
-     bearingCase dir = case dir of
-       North -> 0
-       East  -> 90
-       South -> 180
-       West  -> 270
-   #+END_SRC
+    #+BEGIN_SRC haskell
+      bearingCase :: Direction -> Int
+      bearingCase dir = case dir of
+        North -> 0
+        East  -> 90
+        South -> 180
+        West  -> 270
+    #+END_SRC
 
-   So, that's prettier.  (And we know it works, because I extended the unit test with a little
-   copy-and-paste.)
+    So, that's prettier.  (And we know it works, because I extended the unit test with a little
+    copy-and-paste.)
 
-   (The =case= statement uses pattern-matching, by the way.  [That redundant sentence is redundant.])
+    (The =case= statement uses pattern-matching, by the way.  [That redundant sentence is redundant.])
 
-** TODO Guards
-   
+*** DONE Guards: Yet /another/ form of conditionals
+    CLOSED: [2019-02-20 Wed 20:25]
+
+    - CLOSING NOTE [2019-02-20 Wed 20:25]
+
+    There's another way we can put conditionals in function definitions, and you've seen it before in
+    your math textbooks.  Check out https://en.wikipedia.org/wiki/Sign_function.
+
+    #+BEGIN_SRC haskell
+      bearingGd dir
+        | dir == North  = 0
+        | dir == East   = 90
+        | dir == South  = 180
+        | dir == West   = 270
+    #+END_SRC 
+
+    So, you basically have "=|=", a boolean expression, and then "= theValue".  (There's no
+    pattern-matching here.)
+
 ** Pattern-matching
 
    Ok, here's a much wackier solution (but one you'll see a lot):
@@ -1081,12 +1102,12 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
    Note that what's happening in the =case= statement is also pattern-matching, btw.
 
-** =Maybe=
+** IN-PROGRESS =Maybe=
 
    Ok, let's kick it up a notch.  There's a built-in data type named "=Maybe=".  It's essentially
    defined like this:
 
-   : data Maybe = Nothing | Just a
+   : data Maybe a = Nothing | Just a
 
    (There's probably more to the official definition, but this is about right.)
 
@@ -1125,8 +1146,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      Just 0.5
    #+END_EXAMPLE
 
-** =Either=
-** =deriving= and common classes
+** TODO =Either=
+** TODO =deriving= and common classes
 * TODO Currying (Function application is highest priority)
 
    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
