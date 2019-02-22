@@ -20,7 +20,8 @@
   doesn't really computer at all, except to use a laptop or smartphone to surf the web and write
   emails and social media posts.
 
-  Said hypothetical person is intelligent, has an interest in programming, but is also a bit
+  Said hypothetical person is intelligent, has an interest in programming (or, at least, /finding
+  out/ how far their interest extends), but is also a bit
   overwhelmed or intimidated by the knowledge required and the way knowledgeable people tend to
   present it.
 
@@ -1064,28 +1065,13 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     like NorthEast and SouthBySouthWest, etc.?  That line of if/then/else's will march off to
     the... um... SouthEast.
 
-*** =case=: Another form of conditional
+*** DONE Guards: another form of conditionals
+    CLOSED: [2019-02-22 Fri 17:18]
+
+    - CLOSING NOTE [2019-02-22 Fri 17:18]
+    - CLOSING NOTE [2019-02-20 Wed 20:25]
 
     How about this?
-
-    #+BEGIN_SRC haskell
-      bearingCase :: Direction -> Int
-      bearingCase dir = case dir of
-        North -> 0
-        East  -> 90
-        South -> 180
-        West  -> 270
-    #+END_SRC
-
-    So, that's prettier.  (And we know it works, because I extended the unit test with a little
-    copy-and-paste.)
-
-    (The =case= statement uses pattern-matching, by the way.  [That redundant sentence is redundant.])
-
-*** DONE Guards: Yet /another/ form of conditionals
-    CLOSED: [2019-02-20 Wed 20:25]
-
-    - CLOSING NOTE [2019-02-20 Wed 20:25]
 
     There's another way we can put conditionals in function definitions, and you've seen it before in
     your math textbooks.  Check out https://en.wikipedia.org/wiki/Sign_function.
@@ -1098,8 +1084,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
         | dir == West   = 270
     #+END_SRC 
 
-    So, you basically have "=|=", a boolean expression, and then "= theValue".  (There's no
-    pattern-matching here.)
+    So, that's prettier.  (And we know it works, because I extended the unit test with a little
+    copy-and-paste.)
+
+    You basically have "=|=", a boolean expression, and then "= theValue".
 
 ** Pattern-matching
 
@@ -1121,7 +1109,26 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    You will definitely see more pattern-matching in the future, but it'll be a bit more complex
    (don't worry, not too crazy).
 
-   Note that what's happening in the =case= statement is also pattern-matching, btw.
+*** DONE =case=: Another form of pattern-matching
+    CLOSED: [2019-02-22 Fri 17:38]
+    :PROPERTIES:
+    :CUSTOM_ID: case-stmt
+    :END:
+
+    - CLOSING NOTE [2019-02-22 Fri 17:38]
+
+    Here's another way to use pattern-matching w/out the goofiness of "defining" the same function
+    four times, but beware.  It can get ugly, as I'll show down below in the "=Maybe=" section.
+
+    #+BEGIN_SRC haskell
+      bearingCase :: Direction -> Int
+      bearingCase dir = case dir of
+        North -> 0
+        East  -> 90
+        South -> 180
+        West  -> 270
+    #+END_SRC
+
 
 *** The difference between pattern-matching and conditionals
 
@@ -1243,6 +1250,45 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     =Nothing=.
 
     And that's the beauty of pattern-matching.
+
+**** But you can get ugly if you use pattern-matching in =case= statements
+
+     I said, in [[#case-stmt][the section on =case= statements]], you can make pattern-matching ugly.  Here's how:
+
+     #+BEGIN_SRC haskell
+       sillyAdd2 x y =
+         case (x,y) of
+           (Nothing, _)           -> Nothing
+           (_, Nothing)           -> Nothing
+           ((Just x), (Just y))   -> Just (x + y)
+     #+END_SRC
+
+     /Gack./  We're so determined to have only one "sillyAdd2 x y =" line that we pushed the
+     pattern-matching down into the function body, but...
+
+     We need to check both arguments.  We can either have nested =case= statements or we jam both
+     arguments together in a /tuple/ (which is basically a collection of disparate pieces of data,
+     like an ordered pair from your math days (or daze, as the case may be)) and then pattern-match
+     the tuple.
+
+     #+BEGIN_QUOTE
+     Quick diversion into tuples here, since I haven't talked about them yet:  A tuple is a bit like
+     a list (/but it definitely ain't a list!/) in that it's a bunch of elements in order, but:
+
+     - All tuples "of the same type" have the same length and each element is the same type.  So,
+       you can a tuple like =(3, "hi")=, but if you want to hand that tuple to a function that
+       handles tuples, any tuple you hand that function has to consist of exactly a number and a
+       string, in that order, no more, no less.
+     - They can't be of varying lengths (as I said) and you can't build them up and shrink them down
+       like you can with lists.  Not easily, anyway.  They just ain't lists.  They're more like
+       =Car='s: =(2007, "Honda", "Civic", White)=.  (Where =White= is a value from a =Color= type,
+       obviously.  /Obviously./  (:eyeroll:))
+
+     Anyway, tuples are indicated by parentheses and commas.
+     #+END_QUOTE 
+
+     Seems to me this is inefficient, since we construct something only to use it in
+     pattern-matching.
     
 ** TODO =Either=
 ** TODO =deriving= and common classes

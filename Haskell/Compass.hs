@@ -37,4 +37,11 @@ divAbyB a b = Just (a/b)
 
 sillyAdd Nothing _ = Nothing
 sillyAdd _ Nothing = Nothing
-sillyAdd (Just a) (Just b) = Just (a + b)
+sillyAdd (Just x) (Just y) = Just (x + y)
+
+sillyAdd2 :: (Num a) => Maybe a -> Maybe a -> Maybe a
+sillyAdd2 x y =
+  case (x,y) of
+    (Nothing, _)           -> Nothing
+    (_, Nothing)           -> Nothing
+    ((Just x), (Just y))   -> Just (x + y)
