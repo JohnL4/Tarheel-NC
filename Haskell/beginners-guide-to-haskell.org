@@ -1131,7 +1131,11 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     /structure/ of something (does that structure have a certain pattern?).  For simple values (like, say =North=), they
     kind of look alike.
 
-** IN-PROGRESS =Maybe=
+** DONE =Maybe=
+   CLOSED: [2019-02-21 Thu 22:08]
+
+   - CLOSING NOTE [2019-02-21 Thu 22:08] \\
+     Well, /mostly/ done.  At least the first pass.
 
    Ok, let's kick it up a notch.  There's a built-in data type named "=Maybe=".  It's essentially
    defined like this:
@@ -1175,6 +1179,71 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      Just 0.5
    #+END_EXAMPLE
 
+*** Why do we need =Just=?  And some terminology about "constructors"
+
+    Why can't we define the type as
+
+    : data Maybe a = Nothing | a
+
+    Honestly, I don't know.  Maybe it's because we wouldn't be able to tell whether a number was a
+    number or =Maybe= a number.
+
+    While we're on the topic of stupid niggling details, I might as well tell you what the
+    "constructor" on the left side of the equal sign is called a "/type/ constructor" (I guess
+    because it constructs types, like =Maybe Int= is a different type from =Maybe String=?).
+
+    And the constructors on the right side of the equal sign are called "/data/ constructors", because
+    they construct data (like "North" and "Just 12" are /data/).
+
+*** Pulling pattern-matching and data types together
+
+    Here's why I put data type constructors and pattern-matching in the same section.
+
+    Suppose we have the above stupid function, =divAbyB=, that might return a =Nothing=, and we
+    write another function, =sillyAdd=, that looks like this:
+
+    #+BEGIN_SRC haskell
+      sillyAdd Nothing _ = Nothing
+      sillyAdd _ Nothing = Nothing
+      sillyAdd (Just a) (Just b) = Just (a + b)
+    #+END_SRC
+
+    That's some more serious pattern-matching, with an extra twist.  Now we can pass in the result
+    of =divAbyB=, and be safe.  (I would not advise rewriting all of mathematics this way, though.)
+
+    #+BEGIN_EXAMPLE
+      ,*Compass> sillyAdd (Just 2) (divAbyB 1 2)
+      Just 2.5
+
+      ,*Compass> sillyAdd (Just 2) (divAbyB 1 0)
+      Nothing
+    #+END_EXAMPLE
+
+    So, what's happening here?  And what's with that underscore character ("=_=")?  The answer is
+    that we're pattern-matching on the data type, and the underscore is both a wildcard and a
+    statement that we don't care about the argument in that position (in the function invocation "=f
+    a b=", the =a= and =b= are /arguments/ to the function).
+
+    So, if we get a =Nothing= in the first argument, we don't really care what the second argument
+    is, we know the function result is =Nothing=.  Likewise, if we get a =Nothing= in the second
+    argument, we don't care what the first argument; we know the result is Nothing.
+
+    On the other hand, if we /don't/ get =Nothing= in either argument, then we know both arguments
+    are =Just= /something/, and we do even more tricky pattern-matching there.  The pattern we're
+    looking for is that =Just= /something/, because we want to pull the /something/ out of the
+    =Just=, do something with it, and then stick it back in another =Just=.  And you can see that we
+    do exactly that.  We pull the /a/ out of the first =Just a= argument (we use parentheses to keep
+    Haskell from getting confused about what goes with what), and we pull the /b/ out of the second
+    =Just b=, and then we jam them together with a =+= and put the result back inside another
+    =Just=.
+
+    Simple!
+
+    So, we have another function that /Maybe/ returns a number, but maybe it just returns
+    =Nothing=.
+
+    And that's the beauty of pattern-matching.
+    
 ** TODO =Either=
 ** TODO =deriving= and common classes
 * TODO Currying (Function application is highest priority)

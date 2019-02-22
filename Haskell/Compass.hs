@@ -35,3 +35,6 @@ bearingGd dir
 divAbyB a 0 = Nothing
 divAbyB a b = Just (a/b)
 
+sillyAdd Nothing _ = Nothing
+sillyAdd _ Nothing = Nothing
+sillyAdd (Just a) (Just b) = Just (a + b)
