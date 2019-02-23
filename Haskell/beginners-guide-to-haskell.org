@@ -2,7 +2,7 @@
 #+TITLE: Guide to Haskell for the Absolute Beginner
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
-#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans">
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
 #+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
 # #+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
 # #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
@@ -1071,8 +1071,6 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     - CLOSING NOTE [2019-02-22 Fri 17:18]
     - CLOSING NOTE [2019-02-20 Wed 20:25]
 
-    How about this?
-
     There's another way we can put conditionals in function definitions, and you've seen it before in
     your math textbooks.  Check out https://en.wikipedia.org/wiki/Sign_function.
 
@@ -1118,7 +1116,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     - CLOSING NOTE [2019-02-22 Fri 17:38]
 
     Here's another way to use pattern-matching w/out the goofiness of "defining" the same function
-    four times, but beware.  It can get ugly, as I'll show down below in the "=Maybe=" section.
+    four times, but beware.  It can get ugly, as I'll show down below in the "[[#ugly-pattern-matching][=Maybe=]]" section.
 
     #+BEGIN_SRC haskell
       bearingCase :: Direction -> Int
@@ -1132,11 +1130,15 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
 *** The difference between pattern-matching and conditionals
 
-    You've probably figured it out by now (or maybe you've started to get an inkling), but the difference between
-    conditionals and pattern-matching is this:  with *conditionals*, you're using a boolean expression that can be as
-    complex as you want but that distills down to either True or False; and with *pattern-matching*, you're checking the
-    /structure/ of something (does that structure have a certain pattern?).  For simple values (like, say =North=), they
-    kind of look alike.
+    You may have figured it out by now (or maybe you've started to get an inkling), but the difference between
+    conditionals and pattern-matching is this:
+
+    - With *conditionals*, you're using a boolean expression that can be as
+      complex as you want but that distills down to either True or False; and
+      
+    - With *pattern-matching*, you're checking the
+      /structure/ of something (does that structure have a certain pattern?).  For simple values (like, say =North=), they
+      kind of look alike.
 
 ** DONE =Maybe=
    CLOSED: [2019-02-21 Thu 22:08]
@@ -1169,8 +1171,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    How about this:
 
    #+BEGIN_SRC haskell
-     divAbyB a 0 = Nothing
-     divAbyB a b = Just (a/b)
+     divAbyB x 0 = Nothing
+     divAbyB x y = Just (x/y)
    #+END_SRC
 
    (Oh, look!  More pattern-matching!)
@@ -1185,6 +1187,14 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      ,*CompassSpec> divAbyB 1 2
      Just 0.5
    #+END_EXAMPLE
+
+*** A note on variable names
+
+    I'm trying to be clear in my variable names when a variable represents a /value/ (x, y) and when
+    a variable represents a /type/ (a), but you may not be so lucky, normally.  (Plus, I may have
+    made it worse by not getting it 100% correct.)  Normally, all the variables, no matter what they
+    represent, are just a, b, c, etc., and, after this "Maybe" section, I'll probably stop trying to
+    keep them separate.
 
 *** Why do we need =Just=?  And some terminology about "constructors"
 
@@ -1212,7 +1222,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     #+BEGIN_SRC haskell
       sillyAdd Nothing _ = Nothing
       sillyAdd _ Nothing = Nothing
-      sillyAdd (Just a) (Just b) = Just (a + b)
+      sillyAdd (Just x) (Just y) = Just (x + y)
     #+END_SRC
 
     That's some more serious pattern-matching, with an extra twist.  Now we can pass in the result
@@ -1227,21 +1237,21 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     #+END_EXAMPLE
 
     So, what's happening here?  And what's with that underscore character ("=_=")?  The answer is
-    that we're pattern-matching on the data type, and the underscore is both a wildcard and a
+    that we're pattern-matching on the data type (=Maybe=), and the underscore is both a wildcard and a
     statement that we don't care about the argument in that position (in the function invocation "=f
-    a b=", the =a= and =b= are /arguments/ to the function).
+    x y=", the =x= and =y= are /arguments/ to the function).
 
     So, if we get a =Nothing= in the first argument, we don't really care what the second argument
     is, we know the function result is =Nothing=.  Likewise, if we get a =Nothing= in the second
-    argument, we don't care what the first argument; we know the result is Nothing.
+    argument, we don't care what the first argument is; we know the result is Nothing.
 
     On the other hand, if we /don't/ get =Nothing= in either argument, then we know both arguments
     are =Just= /something/, and we do even more tricky pattern-matching there.  The pattern we're
     looking for is that =Just= /something/, because we want to pull the /something/ out of the
     =Just=, do something with it, and then stick it back in another =Just=.  And you can see that we
-    do exactly that.  We pull the /a/ out of the first =Just a= argument (we use parentheses to keep
-    Haskell from getting confused about what goes with what), and we pull the /b/ out of the second
-    =Just b=, and then we jam them together with a =+= and put the result back inside another
+    do exactly that.  We pull the /x/ out of the first =Just x= argument (we use parentheses to keep
+    Haskell from getting confused about what goes with what), and we pull the /y/ out of the second
+    =Just y=, and then we jam them together with a =+= and put the result back inside another
     =Just=.
 
     Simple!
@@ -1252,6 +1262,9 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     And that's the beauty of pattern-matching.
 
 **** But you can get ugly if you use pattern-matching in =case= statements
+     :PROPERTIES:
+     :CUSTOM_ID: ugly-pattern-matching
+     :END:
 
      I said, in [[#case-stmt][the section on =case= statements]], you can make pattern-matching ugly.  Here's how:
 
@@ -1276,7 +1289,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      a list (/but it definitely ain't a list!/) in that it's a bunch of elements in order, but:
 
      - All tuples "of the same type" have the same length and each element is the same type.  So,
-       you can a tuple like =(3, "hi")=, but if you want to hand that tuple to a function that
+       you can have a tuple like =(3, "hi")=, but if you want to hand that tuple to a function that
        handles tuples, any tuple you hand that function has to consist of exactly a number and a
        string, in that order, no more, no less.
      - They can't be of varying lengths (as I said) and you can't build them up and shrink them down
@@ -1290,8 +1303,259 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      Seems to me this is inefficient, since we construct something only to use it in
      pattern-matching.
     
-** TODO =Either=
-** TODO =deriving= and common classes
+** DONE =Either=
+   CLOSED: [2019-02-23 Sat 16:56]
+
+   - CLOSING NOTE [2019-02-23 Sat 16:56]
+
+   You might not be satisfied with a =Maybe= data type, because when you get a =Nothing=, there's no
+   info about /why/ you got the =Nothing= or what went wrong.
+
+   Behold, =Either=!
+
+   : data Either a b = Left a | Right b
+
+   So, now you can return the "right" answer or some /sinister/ error info.  ("Left" is always bad;
+   we lefties can't get a break.)
+
+   #+BEGIN_SRC haskell
+     divWithError x 0 = Left "division by zero is undefined"
+     divWithError x y = Right (x/y)
+
+     sillyAdd3 (Left e) _ = Left (e ++ " (sillyAdd3)")
+     sillyAdd3 _ (Left e) = Left (e ++ " (sillyAdd3)")
+     sillyAdd3 (Right x) (Right y) = Right (x + y)
+   #+END_SRC 
+
+   #+BEGIN_EXAMPLE
+     ,*Compass> sillyAdd3 (Right 1) (divWithError 1 0)
+     Left "division by zero is undefined (sillyAdd3)"
+
+     ,*Compass> sillyAdd3 (Right 1) (divWithError 1 2)
+     Right 1.5
+   #+END_EXAMPLE 
+
+** DONE =deriving= and common classes
+   CLOSED: [2019-02-23 Sat 17:50]
+
+   - CLOSING NOTE [2019-02-23 Sat 17:50]
+
+   I'm going to give this short shrift, because a longer discussion would be a /lot/ longer, but
+   there some useful typeclasses you can use (and will probably have to, if you start defining new
+   types).  A /typeclass/ is kind of a type of a type, or a category of types, or a /class/ of
+   types.
+
+   So, for instance, the typeclass =Eq= is the set of all types can be compared with each other for
+   equality, and the typeclass =Show= is the set of all types that can be converted to
+   human-readable strings.
+
+   You can't use the "====" operator without being in the =Eq= class (normally), and you can't display
+   a value using =putStr= or =putStrLn= without being in the =Show= class.  Also, you can't decide
+   whether one value is less than another without being in the =Ord= ("ordinal", "orderable")
+   typeclass.
+
+   So, we usually just slap on a =deriving= statement along with a list of typeclasses we want to
+   invoke.
+
+   #+BEGIN_QUOTE 
+   =putStr=, by the way, is a function that puts a string to the output.  =putStrLn= puts a string
+   followed by an end-of-line sequence (e.g., a carriage return) to the output.  You won't use them
+   much in ghci, but you will definitely use them in a lot of regular Haskell programs after you've
+   compiled them to a runnable executable.
+   #+END_QUOTE
+
+*** =Eq=
+
+    Suppose we left the "=deriving Eq=" off our definition of the =Direction= type.
+
+    #+BEGIN_SRC haskell
+      module Direction where
+  
+      data Direction = North | East | South | West
+
+      bearing dir 
+        | dir == North  = 0
+        | dir == East   = 90
+        | dir == South  = 180
+        | dir == West   = 270
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+      deimos$ ghci Direction.hs 
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 1] Compiling Direction        ( Direction.hs, interpreted )
+
+      Direction.hs:6:5: error:
+          • Could not deduce (Eq Direction) arising from a use of ‘==’
+            from the context: Num p
+              bound by the inferred type of bearing :: Num p => Direction -> p
+              at Direction.hs:(5,1)-(9,23)
+          • In the expression: dir == North
+            In a stmt of a pattern guard for
+                           an equation for ‘bearing’:
+              dir == North
+            In an equation for ‘bearing’:
+                bearing dir
+                  | dir == North = 0
+                  | dir == East = 90
+                  | dir == South = 180
+                  | dir == West = 270
+        |
+      6 |   | dir == North  = 0
+        |     ^^^^^^^^^^^^
+      Failed, no modules loaded.
+      Prelude> 
+    #+END_EXAMPLE
+
+    Blech.  The key part of the above error vomit is this: "Could not deduce (Eq Direction) arising
+    from a use of ‘==’".  We need to derive =Eq=.
+
+    #+BEGIN_SRC haskell
+      module Direction where
+  
+      data Direction = North | East | South | West
+        deriving (Eq)
+
+      bearing dir 
+        | dir == North  = 0
+        | dir == East   = 90
+        | dir == South  = 180
+        | dir == West   = 270
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+      deimos$ ghci Direction.hs 
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 1] Compiling Direction        ( Direction.hs, interpreted )
+      Ok, one module loaded.
+      ,*Direction> bearing East
+      90
+      ,*Direction> 
+    #+END_EXAMPLE
+
+    Alles gut.
+
+*** =Ord=
+    
+    Suppose you want to compare some things.
+
+    #+BEGIN_SRC haskell
+      module Grade where
+
+      data Grade = F | D | C | B | A
+
+      isPassing grd = grd > F
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+      deimos$ ghci Grade.hs
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 1] Compiling Grade            ( Grade.hs, interpreted )
+
+      Grade.hs:5:17: error:
+          • No instance for (Ord Grade) arising from a use of ‘>’
+          • In the expression: grd > F
+            In an equation for ‘isPassing’: isPassing grd = grd > F
+        |
+      5 | isPassing grd = grd > F
+        |                 ^^^^^^^
+      Failed, no modules loaded.
+    #+END_EXAMPLE 
+
+    "No instance for (Ord Grade) arising from a use of ‘>’".  Ok, we know how to fix that.
+    
+    First attempt at a fix[fn:3]:
+
+    #+BEGIN_SRC haskell
+      module Grade where
+
+      data Grade = F | D | C | B | A
+        deriving Ord
+
+      isPassing grd = grd > F
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+      deimos$ ghci Grade.hs
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 1] Compiling Grade            ( Grade.hs, interpreted )
+
+      Grade.hs:4:12: error:
+          • No instance for (Eq Grade)
+              arising from the 'deriving' clause of a data type declaration
+            Possible fix:
+              use a standalone 'deriving instance' declaration,
+                so you can specify the instance context yourself
+          • When deriving the instance for (Ord Grade)
+        |
+      4 |   deriving Ord
+        |            ^^^
+      Failed, no modules loaded.
+      Prelude> 
+    #+END_EXAMPLE
+
+    It turns out that if you want to compare things, they have to "equalable", too.
+
+    #+BEGIN_SRC haskell
+      module Grade where
+
+      data Grade = F | D | C | B | A
+        deriving (Ord, Eq)
+
+      isPassing grd = grd > F
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+      deimos$ ghci Grade.hs
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 1] Compiling Grade            ( Grade.hs, interpreted )
+      Ok, one module loaded.
+      ,*Grade> isPassing B
+      True
+      ,*Grade> isPassing F
+      False
+    #+END_EXAMPLE
+    
+*** =Show=
+
+    You'll run into this one a /ton/:
+
+    #+BEGIN_EXAMPLE
+      ,*Grade> B
+
+      <interactive>:3:1: error:
+          • No instance for (Show Grade) arising from a use of ‘print’
+          • In a stmt of an interactive GHCi command: print it
+    #+END_EXAMPLE
+
+    #+BEGIN_SRC haskell
+      module Grade where
+
+      data Grade = F | D | C | B | A
+        deriving (Ord, Eq, Show)
+
+      isPassing grd = grd > F
+    #+END_SRC
+
+    #+BEGIN_EXAMPLE
+      deimos$ ghci Grade.hs
+      GHCi, version 8.4.3: http://www.haskell.org/ghc/  :? for help
+      Loaded GHCi configuration from /Users/john/.ghci
+      [1 of 1] Compiling Grade            ( Grade.hs, interpreted )
+      Ok, one module loaded.
+      ,*Grade> B
+      B
+    #+END_EXAMPLE 
+
+[fn:3] By the way, it's worth pointing out that a lot of your work in Haskell will be *attempting to
+fix*, to keep the compiler happy.  Generally, once you satisfy the compiler, your code will run
+properly, so that's a silver lining.
+
 * TODO Currying (Function application is highest priority)
 
    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to

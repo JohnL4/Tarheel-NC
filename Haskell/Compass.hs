@@ -32,8 +32,8 @@ bearingGd dir
   | dir == West   = 270
 
 -- divAbyB :: (Eq t, Fractional t) => t -> t -> Maybe t
-divAbyB a 0 = Nothing
-divAbyB a b = Just (a/b)
+divAbyB x 0 = Nothing
+divAbyB x y = Just (x/y)
 
 sillyAdd Nothing _ = Nothing
 sillyAdd _ Nothing = Nothing
@@ -45,3 +45,10 @@ sillyAdd2 x y =
     (Nothing, _)           -> Nothing
     (_, Nothing)           -> Nothing
     ((Just x), (Just y))   -> Just (x + y)
+
+divWithError x 0 = Left "division by zero is undefined"
+divWithError x y = Right (x/y)
+
+sillyAdd3 (Left e) _ = Left (e ++ " (sillyAdd3)")
+sillyAdd3 _ (Left e) = Left (e ++ " (sillyAdd3)")
+sillyAdd3 (Right x) (Right y) = Right (x + y)
