@@ -1498,7 +1498,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
       Prelude> 
     #+END_EXAMPLE
 
-    It turns out that if you want to compare things, they have to "equalable", too.
+    It turns out that if you want to compare things, they have to be "equalable", too.
 
     #+BEGIN_SRC haskell
       module Grade where
