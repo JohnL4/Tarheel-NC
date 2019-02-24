@@ -1520,6 +1520,10 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
       ,*Grade> isPassing F
       False
     #+END_EXAMPLE
+
+[fn:3] By the way, it's worth pointing out that a lot of your work in Haskell will be *attempting to
+fix*, to keep the compiler happy.  Generally, once you satisfy the compiler, your code will run
+properly, so that's a silver lining.
     
 *** =Show=
 
@@ -1552,15 +1556,122 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
       B
     #+END_EXAMPLE 
 
-[fn:3] By the way, it's worth pointing out that a lot of your work in Haskell will be *attempting to
-fix*, to keep the compiler happy.  Generally, once you satisfy the compiler, your code will run
-properly, so that's a silver lining.
+* IN-PROGRESS Currying (Function application is highest priority)
 
-* TODO Currying (Function application is highest priority)
+  You just got handed a bunch of syntax.  Some of it's weird, but it basically all boils down to the
+  sort of syntax any programming language comes with.  For example, Python comes with its own layout
+  rule.  And Java and SQL have case expressions.  Lots of languages have what's called "ternary
+  expressions", which are pretty similar to Haskell's 'if' expression.
 
-   =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
-   =4=.
-    
+  But here's some special Haskell weirdness: you don't have to supply every argument to a function.
+  And, when you don't, you don't get an error or default values for the missing arguments.  Instead,
+  you get another function that takes whatever arguments you didn't feed it.
+
+  For example, consider a function that adds three numbers and gives the sum.
+
+  #+BEGIN_SRC haskell
+    module Add3Nums where
+
+    add3nums x y z = x + y + z
+  #+END_SRC
+
+  And suppose you only call it with one argument.  What you get is a function that adds two numbers
+  and then adds the original argument you called =add3nums= with.  So, kind of like add-and-offset.
+
+  #+BEGIN_SRC haskell
+    add2to2nums = add3nums 2
+  #+END_SRC
+
+  (That was a function definition, by the way.)
+
+  #+BEGIN_EXAMPLE
+    ,*Add3Nums> add2to2nums 3 5
+    10
+  #+END_EXAMPLE
+
+  And we can do it again, obviously:
+
+  #+BEGIN_SRC haskell
+    add5 = add2to2nums 3
+  #+END_SRC
+
+  #+BEGIN_EXAMPLE
+    ,*Add3Nums> add5 17
+    22
+  #+END_EXAMPLE
+
+  But, wait, if those are function definitions, where are the arguments?  =add3nums= has arguments
+  in its definition, but the other two don't!
+
+  TODO: all of the following (including lambda expressions) is interesting but irrelevant.  Move it.
+
+  It turns out that functions are "first class" values in their own right, meaning you can sling
+  them around just like another value.  And I say "functions", I don't mean "function results" or
+  "function invocations" but the functions themselves.
+
+  For instance, I can define a function that applies another function to an argument.
+
+  #+BEGIN_SRC haskell
+    applyFunction f = f 2
+  #+END_SRC
+
+  What's the argument here?  A function!
+
+  #+BEGIN_EXAMPLE
+    ,*Add3Nums> applyFunction sqrt
+    1.4142135623730951
+
+    ,*Add3Nums> applyFunction recip
+    0.5
+  #+END_EXAMPLE
+
+  The square root of 2 is 1.414.  And the reciprocal of 2 is 1/2.  =sqrt= and =recip= are built-in
+  /functions/ (that take a single numeric argument), and we passed the /functions/ as arguments to
+  another function (=applyFunction=).
+
+  So, a function can exist in its own right, just as the value 2 can exist in /its/ own right.
+
+  In fact, you don't even have to give a function a name.  This is just like you don't have to give
+  a numeric value a name.  If I want to use 12 in an expression, I just do it.  So, how does an
+  unnamed function exist?
+
+  As a /lambda expression/.
+
+** Lambda expressions
+   
+   Why, hello, Alonzo Church!  Fancy meeting you here!
+
+   A lambda expression looks like this:
+
+   : \y -> 2 * y + 1
+
+   This is a function that takes $y$, and gives $2y + 1$ back.  Note that it doesn't have a name;
+   it's anonymous.
+
+   (How we got from "=^=" to "=/\=" to "=λ=" to "=\=" is a fun little story of the abuse of
+   typography, full of /randomness/ and /wonder/[fn:4].  Basically what it means, though, is that
+   "lambda" is utterly meaningless, and you don't need to be intimidated by a Greek letter standing
+   for who knows what abstruse mathematical concept.)
+
+   So, we could call =applyFunction= like this:
+
+   #+BEGIN_EXAMPLE
+     ,*Add3Nums> applyFunction (\x -> x ^ 3)
+     8
+   #+END_EXAMPLE
+
+   So, we just applied a cubing function to 2.
+
+** TODO [whatever's next?]
+
+
+    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
+    =4=.
+
+[fn:4] Not kidding. https://en.wikipedia.org/wiki/Lambda_calculus#Origin_of_the_lambda_symbol.
+
+
+   
 * TODO The =$= operator
 * TODO Basic functions that show up a lot
 ** map
@@ -1569,6 +1680,35 @@ properly, so that's a silver lining.
 ** drop
 ** concat
 ** fold
+* Script idea: inverting a list of spices and what they can be used for, from email messages
+
+  I'm not actually going to write this program; it's an exercise for the reader, but you know how
+  every bottle of spice you have lists what it's good for?  And then, when you're cooking, you have
+  no idea what spices to put in your dish?  Wouldn't it be nice if you had a program that would spit
+  out all the suggestions from the various spice bottles?  Like, your bottle of smoked paprika says
+  "sprinkle on chicken, fish, pork, potatoes or rice", you're like, "hmm, what am I going to season
+  this whitefish fillet with?" (because you've totally forgotten that you have some smoked
+  paprika).  Wouldn't it be cool to open your cabinet door to where you've taped this list, and you
+  look up "fish" on it, and see "smoked paprika"?
+
+  So, you could email yourself the spice suggestions (maybe with a "spice" subject line or
+  something), find all the emails and save them to text files on your computer, and then process them
+  all with a Haskell program that plucks out the important stuff and builds this list of spices to
+  use with each dish.  And, if you keep the output handy, you can feed it back in later, along with
+  some new email messages you sent yourself, and keep adding to it that way.  
+
+  Input:
+
+  #+BEGIN_EXAMPLE
+    spice <spice> use[d] [in|for|with] <dish>, <dish>, <dish>
+
+    dish <dish> use[s] <spice>, <spice>, <spice>
+
+    syn[onym] dish = dish
+  #+END_EXAMPLE
+
+  Output will be like the 2nd line of input.
+
 * COMMENT Local spelling dictionary & whatnot
 
  #  LocalWords:  computability memoize
