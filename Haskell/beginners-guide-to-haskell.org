@@ -2,7 +2,7 @@
 #+TITLE: Guide to Haskell for the Absolute Beginner
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
 #+OPTIONS: author:nil creator:t H:9
-#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
 #+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
 # #+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
 # #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
@@ -303,7 +303,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     is =ghci=.
 
     You can get started with the entire shebang at https://haskell.org.  Download and install the
-    "Haskell Platform" and you'll be off to the races.
+    "Haskell Platform" and you'll be off to the races.
 
 * DONE What is Haskell?
   CLOSED: [2019-02-18 Mon 22:02]
@@ -1556,6 +1556,10 @@ properly, so that's a silver lining.
       B
     #+END_EXAMPLE 
 
+* TODO Typeclass constraints (==>=)
+
+  I want to use "typeclass" instead of just "class", because I think that'll be less confusing.
+
 * IN-PROGRESS Currying (Function application is highest priority)
 
   You just got handed a bunch of syntax.  Some of it's weird, but it basically all boils down to the
@@ -1563,7 +1567,7 @@ properly, so that's a silver lining.
   rule.  And Java and SQL have case expressions.  Lots of languages have what's called "ternary
   expressions", which are pretty similar to Haskell's 'if' expression.
 
-  But here's some special Haskell weirdness: you don't have to supply every argument to a function.
+  But here's some special Haskell +weirdness+ nifty-ness: you don't have to supply every argument to a function.
   And, when you don't, you don't get an error or default values for the missing arguments.  Instead,
   you get another function that takes whatever arguments you didn't feed it.
 
@@ -1603,39 +1607,71 @@ properly, so that's a silver lining.
   But, wait, if those are function definitions, where are the arguments?  =add3nums= has arguments
   in its definition, but the other two don't!
 
-  TODO: all of the following (including lambda expressions) is interesting but irrelevant.  Move it.
+  It turns out that you can sort of "cancel out" the arguments of a function definition, sometimes.
 
-  It turns out that functions are "first class" values in their own right, meaning you can sling
-  them around just like another value.  And I say "functions", I don't mean "function results" or
-  "function invocations" but the functions themselves.
+  So, for instance, if I want to define some arbitrary function /f/, and it's really just the
+  square-root function, I can define it two ways:
 
-  For instance, I can define a function that applies another function to an argument.
+  : f x = sqrt x
 
-  #+BEGIN_SRC haskell
-    applyFunction f = f 2
-  #+END_SRC
+  or
 
-  What's the argument here?  A function!
+  : f = sqrt
+
+  It's like, "Well, we know the arguments are going to get slapped on to the end, so let's just
+  agree to leave them off.  What do you say, old chap?"
+
+  You'll see a bunch of that.  Like, "=+=" takes two arguments, so if you specify "=(+3)=", you've just
+  defined a function of one argument but you didn't even type a placeholder variable for that last
+  argument.
 
   #+BEGIN_EXAMPLE
-    ,*Add3Nums> applyFunction sqrt
-    1.4142135623730951
+    Prelude> f = (+3)
 
-    ,*Add3Nums> applyFunction recip
-    0.5
-  #+END_EXAMPLE
+    Prelude> f 2
+    5
+  #+END_EXAMPLE 
 
-  The square root of 2 is 1.414.  And the reciprocal of 2 is 1/2.  =sqrt= and =recip= are built-in
-  /functions/ (that take a single numeric argument), and we passed the /functions/ as arguments to
-  another function (=applyFunction=).
+  This process of partially applying functions (turning them into other functions with fewer
+  arguments) is called /currying/, after Haskell Curry.
 
-  So, a function can exist in its own right, just as the value 2 can exist in /its/ own right.
+** Functions as first-class values
 
-  In fact, you don't even have to give a function a name.  This is just like you don't have to give
-  a numeric value a name.  If I want to use 12 in an expression, I just do it.  So, how does an
-  unnamed function exist?
+   TODO: all of the following (including lambda expressions) is interesting but irrelevant.  Move
+   it.  Maybe.
 
-  As a /lambda expression/.
+   Actually, it turns out that functions are "first class" values in their own right, meaning you can sling
+   them around just like another value.  And I say "functions", I don't mean "function results" or
+   "function invocations" but the functions themselves.
+
+   For instance, I can define a function that applies another function to an argument.
+
+   #+BEGIN_SRC haskell
+     applyFunction f = f 2
+   #+END_SRC
+
+   What's the argument here?  A function!  We're taking whatever function we're passed as an
+   argument and applying it to the constant =2=.
+
+   #+BEGIN_EXAMPLE
+     ,*Add3Nums> applyFunction sqrt
+     1.4142135623730951
+
+     ,*Add3Nums> applyFunction recip
+     0.5
+   #+END_EXAMPLE
+
+   The square root of 2 is 1.414.  And the reciprocal of 2 is $\frac{1}{2}$.  =sqrt= and =recip= are built-in
+   /functions/ (that take a single numeric argument), and we passed the /functions/ as arguments to
+   another function (=applyFunction=).
+
+   So, a function can exist in its own right, just as the value 2 can exist in /its/ own right.
+
+   In fact, you don't even have to give a function a name.  This is just like you don't have to give
+   a numeric value a name.  If I want to use 12 in an expression, I just do it.  So, how does an
+   unnamed function exist?
+
+   As a /lambda expression/.
 
 ** Lambda expressions
    
@@ -1660,7 +1696,8 @@ properly, so that's a silver lining.
      8
    #+END_EXAMPLE
 
-   So, we just applied a cubing function to 2.
+   So, we just applied a cubing function to 2, without bothering to name the function /f/ or /g/ or
+   whatever.
 
 ** TODO [whatever's next?]
 
