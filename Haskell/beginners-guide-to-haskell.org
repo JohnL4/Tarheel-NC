@@ -1560,7 +1560,10 @@ properly, so that's a silver lining.
 
   I want to use "typeclass" instead of just "class", because I think that'll be less confusing.
 
-* IN-PROGRESS Currying (Function application is highest priority)
+* DONE Currying
+  CLOSED: [2019-02-25 Mon 14:49]
+
+  - CLOSING NOTE [2019-02-25 Mon 14:49]
 
   You just got handed a bunch of syntax.  Some of it's weird, but it basically all boils down to the
   sort of syntax any programming language comes with.  For example, Python comes with its own layout
@@ -1635,13 +1638,105 @@ properly, so that's a silver lining.
   This process of partially applying functions (turning them into other functions with fewer
   arguments) is called /currying/, after Haskell Curry.
 
+** DONE Function application is the highest priority
+   CLOSED: [2019-02-25 Mon 16:40]
+
+   - CLOSING NOTE [2019-02-25 Mon 16:40]
+
+   You remember that whole "My Dear Aunt Sally" thing to help you remember which operations have
+   priority in a mathematical expression.  (Multiplication, division, addition, subtraction.)
+
+   Exponentiation is higher-priority than multiplication, so $\frac{1}{8}\times2^3 = 1$, because
+   first you compute $2^3$ and /then/ you divide by $8$.
+
+   In the same way, function application (function invocation) is the absolute highest priority (at
+   least, until I remember something that's even higher).  So, if you have =f 2 + 3=, what's going
+   to happen is /f/ will be applied to 2, and then /the result/ will have 3 added to it.
+
+   Finally, here's what happens (I believe) when you have an expression like =f 2 3 4=, where /f/ is
+   a 3-argument function.
+
+   First, /f/ gets applied to 2, yielding an unnamed two-argument function via the miracle of
+   currying.
+
+   Then, this unnamed two-argument function gets applied to 3, yielding a one-argument function,
+   also unnamed.
+
+   Finally, this one-argument function gets applied to 4, yielding whatever is the end result.
+
+   (This is conceptual.  In real life, probably something even more mysterious involving a tree of
+   "thunks" happens, but let's just close our eyes and pretend my explanation is good enough.)
+   
+** DONE "=$=" is the lowest priority
+   CLOSED: [2019-02-25 Mon 17:23]
+
+   - CLOSING NOTE [2019-02-25 Mon 17:23]
+
+   While we're on the subject of function-application being the highest priority operation, it might
+   be useful to know what the "=$=" operator does.
+
+   Before we do that, though, let's define some more functions:
+
+   #+BEGIN_SRC haskell
+     module ChainOfFunctions where
+
+     f x y z = x + y + z
+
+     g x y = x * y
+
+     h x = 0 - x
+
+     main = do
+       putStrLn ("h g 2 f 4 6 8 = " ++ show (h (g 2 (f 4 6 8))))
+   #+END_SRC 
+
+   ("=++=" is string concatenation, by the way.  Jams two strings together.)
+
+   #+BEGIN_EXAMPLE
+     PS C:\Users\j6l\Documents\AmazonS3\Tarheel-NC\Haskell# ghci .\ChainOfFunctions.hs
+     GHCi, version 8.6.3: http://www.haskell.org/ghc/  :? for help
+     Loaded GHCi configuration from C:\Users\j6l\.ghci
+     [1 of 1] Compiling ChainOfFunctions ( ChainOfFunctions.hs, interpreted ) [flags changed]
+     Ok, one module loaded.
+     ,*ChainOfFunctions> main
+     h g 2 f 4 6 8 = -36
+   #+END_EXAMPLE
+
+   (If you work out all the math, you'll see this is correct.)
+
+   That is a ton of parentheses.  If you try it without the parentheses, it'll be a glorious mess.
+   This is because function application takes priority, so, when you have "=h g 2 f 4 6 8=", Haskell
+   tries to apply h to everything that comes after it.  So, you have to parenthesize the
+   application of /g/, so it gets evaluated before /h/ gets applied, and you also have to
+   parenthesize the application of /f/, so it gets evaluated before /g/ gets applied.
+
+   /AND/ you have to parenthesize the whole thing before =show= gets applied to turn a number into a
+   string, /AND/ you have to parenthesize all /that/ before =putStrLn= gets applied.
+
+   But what's a few dozen parentheses among friends?  Especially at the end; you can just hammer the
+   right-parenthesis key until the editor is satisfied; that should do the trick.
+
+   /OR/... (see what I did there?[fn:4]) you could use "=$=".  "=$=" has a very funny definition:
+
+   : f $ x = f x
+
+   Basically, it does nothing but disappear, so what's the point?
+
+   The point is that "=$=" is defined to have the /lowest/ priority of all the operators.  So that
+   means that when Haskell sees something like =f $ 3 + 4=, it says "hold up, I see you want to
+   apply /f/ to something, but I have to evaluate "=3 + 4=" before I can evaluate "=f $
+   <whatever>=", because "=+=" has higher priority than "=$="."
+
+   So, basically, "=$=" means "hold up and evaluate everything from here to the end of the current
+   expression", which is equivalent to banging in a left parenthesis at this spot and also tacking a
+   right parenthesis on to the end of the line.  "=$=" saves parentheses.
+
+[fn:4] Conjunction junction, what's your function?
+
 ** Functions as first-class values
 
-   TODO: all of the following (including lambda expressions) is interesting but irrelevant.  Move
-   it.  Maybe.
-
    Actually, it turns out that functions are "first class" values in their own right, meaning you can sling
-   them around just like another value.  And I say "functions", I don't mean "function results" or
+   them around just like another value.  And when I say "functions", I don't mean "function results" or
    "function invocations" but the functions themselves.
 
    For instance, I can define a function that applies another function to an argument.
@@ -1685,7 +1780,7 @@ properly, so that's a silver lining.
    it's anonymous.
 
    (How we got from "=^=" to "=/\=" to "=λ=" to "=\=" is a fun little story of the abuse of
-   typography, full of /randomness/ and /wonder/.[fn:4]  Basically what it means, though, is that
+   typography, full of /randomness/ and /wonder/.[fn:5]  Basically what it means, though, is that
    "lambda" is utterly meaningless, and you don't need to be intimidated by a Greek letter standing
    for who knows what abstruse mathematical concept.)
 
@@ -1699,13 +1794,13 @@ properly, so that's a silver lining.
    So, we just applied a cubing function to 2, without bothering to name the function /f/ or /g/ or
    whatever.
 
+[fn:5] Not kidding. https://en.wikipedia.org/wiki/Lambda_calculus#Origin_of_the_lambda_symbol.
+
 ** TODO [whatever's next?]
 
 
     =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
     =4=.
-
-[fn:4] Not kidding. https://en.wikipedia.org/wiki/Lambda_calculus#Origin_of_the_lambda_symbol.
 
 
    
