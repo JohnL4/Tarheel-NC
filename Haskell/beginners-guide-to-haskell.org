@@ -1649,7 +1649,7 @@ properly, so that's a silver lining.
    it's anonymous.
 
    (How we got from "=^=" to "=/\=" to "=λ=" to "=\=" is a fun little story of the abuse of
-   typography, full of /randomness/ and /wonder/[fn:4].  Basically what it means, though, is that
+   typography, full of /randomness/ and /wonder/.[fn:4]  Basically what it means, though, is that
    "lambda" is utterly meaningless, and you don't need to be intimidated by a Greek letter standing
    for who knows what abstruse mathematical concept.)
 
