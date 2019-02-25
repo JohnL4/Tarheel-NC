@@ -1556,9 +1556,9 @@ properly, so that's a silver lining.
       B
     #+END_EXAMPLE 
 
-* TODO Typeclass constraints (==>=)
+** TODO Typeclass constraints (==>=)
 
-  I want to use "typeclass" instead of just "class", because I think that'll be less confusing.
+   I want to use "typeclass" instead of just "class", because I think that'll be less confusing.
 
 * DONE Currying
   CLOSED: [2019-02-25 Mon 14:49]
@@ -1796,15 +1796,6 @@ properly, so that's a silver lining.
 
 [fn:5] Not kidding. https://en.wikipedia.org/wiki/Lambda_calculus#Origin_of_the_lambda_symbol.
 
-** TODO [whatever's next?]
-
-
-    =f 2 3 4= is =f 2= applied to =3=, yielding a curried function which is, in turn, applied to
-    =4=.
-
-
-   
-* TODO The =$= operator
 * TODO Basic functions that show up a lot
 ** map
 ** filter
