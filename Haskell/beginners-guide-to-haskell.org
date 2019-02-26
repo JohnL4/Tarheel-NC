@@ -1127,7 +1127,6 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
         West  -> 270
     #+END_SRC
 
-
 *** The difference between pattern-matching and conditionals
 
     You may have figured it out by now (or maybe you've started to get an inkling), but the difference between
@@ -1560,16 +1559,18 @@ properly, so that's a silver lining.
     #+END_EXAMPLE 
 
 ** DONE Typeclass constraints (==>=)
-   CLOSED: [2019-02-25 Mon 20:41]
+   CLOSED: [2019-02-26 Tue 11:32]
 
-   - CLOSING NOTE [2019-02-25 Mon 20:41]
+   - CLOSING NOTE [2019-02-25 Mon 20:41] \\
+     Not super-proud of this section; just sayin'.
 
    (I want to use "typeclass" instead of just "class", because I think that'll be less confusing.)
 
    About that "any old type" bit I mentioned up above in the [[#maybe][=Maybe=]] section....
 
    Sometimes, "just any old type" won't do.  For instance, you can't do math on strings.  And some
-   functions really take only integers, not fractions.
+   functions really take only integers, not fractions.  And sometimes, data types want to contain
+   only things of certain types, and so on.
 
    In those cases, when you specify function types (which I haven't done much, if any, of so far),
    you might need to say something like "this function takes any old type /so long as it's a
@@ -1582,6 +1583,9 @@ properly, so that's a silver lining.
 
    I really don't have any better examples right because I barely know what I'm doing.  Check back
    with me in a year and see if I've made any progress. :/
+
+   The concept of a typeclass constraint applies almost anywhere you'd use a data type or a
+   typeclass, in addition to functions.
 
 * DONE Currying
   CLOSED: [2019-02-25 Mon 14:49]
@@ -1630,36 +1634,38 @@ properly, so that's a silver lining.
     22
   #+END_EXAMPLE
 
-  But, wait, if those are function definitions, where are the arguments?  =add3nums= has arguments
-  in its definition, but the other two don't!
-
-  It turns out that you can sort of "cancel out" the arguments of a function definition, sometimes.
-
-  So, for instance, if I want to define some arbitrary function /f/, and it's really just the
-  square-root function, I can define it two ways:
-
-  : f x = sqrt x
-
-  or
-
-  : f = sqrt
-
-  It's like, "Well, we know the arguments are going to get slapped on to the end, so let's just
-  agree to leave them off.  What do you say, old chap?"
-
-  You'll see a bunch of that.  Like, "=+=" takes two arguments, so if you specify "=(+3)=", you've just
-  defined a function of one argument but you didn't even type a placeholder variable for that last
-  argument.
-
-  #+BEGIN_EXAMPLE
-    Prelude> f = (+3)
-
-    Prelude> f 2
-    5
-  #+END_EXAMPLE 
-
   This process of partially applying functions (turning them into other functions with fewer
   arguments) is called /currying/, after Haskell Curry.
+
+** Side note: Leaving off arguments in definitions
+   
+   But, wait, if those are function definitions, where are the arguments?  =add3nums= has arguments
+   in its definition, but the other two don't!
+
+   It turns out that you can sort of "cancel out" the arguments of a function definition, sometimes.
+
+   So, for instance, if I want to define some arbitrary function /f/, and it's really just the
+   square-root function, I can define it two ways:
+
+   : f x = sqrt x
+
+   or
+
+   : f = sqrt
+
+   It's like, "Well, we know the arguments are going to get slapped on to the end, so let's just
+   agree to leave them off.  What do you say, old chap?"
+
+   You'll see a bunch of that.  Like, "=+=" takes two arguments, so if you specify "=(+3)=", you've just
+   defined a function of one argument but you didn't even type a placeholder variable for that last
+   argument.
+
+   #+BEGIN_EXAMPLE
+     Prelude> f = (+3)
+
+     Prelude> f 2
+     5
+   #+END_EXAMPLE 
 
 ** DONE Function application is the highest priority
    CLOSED: [2019-02-25 Mon 16:40]
@@ -1690,7 +1696,7 @@ properly, so that's a silver lining.
    (This is conceptual.  In real life, probably something even more mysterious involving a tree of
    "thunks" happens, but let's just close our eyes and pretend my explanation is good enough.)
    
-** DONE "=$=" is the lowest priority
+** DONE Side note: "=$=" is the lowest priority
    CLOSED: [2019-02-25 Mon 17:23]
 
    - CLOSING NOTE [2019-02-25 Mon 17:23]
