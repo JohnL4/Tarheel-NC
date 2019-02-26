@@ -1142,6 +1142,9 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
 ** DONE =Maybe=
    CLOSED: [2019-02-21 Thu 22:08]
+   :PROPERTIES:
+   :CUSTOM_ID: maybe
+   :END:
 
    - CLOSING NOTE [2019-02-21 Thu 22:08] \\
      Well, /mostly/ done.  At least the first pass.
@@ -1556,9 +1559,29 @@ properly, so that's a silver lining.
       B
     #+END_EXAMPLE 
 
-** TODO Typeclass constraints (==>=)
+** DONE Typeclass constraints (==>=)
+   CLOSED: [2019-02-25 Mon 20:41]
 
-   I want to use "typeclass" instead of just "class", because I think that'll be less confusing.
+   - CLOSING NOTE [2019-02-25 Mon 20:41]
+
+   (I want to use "typeclass" instead of just "class", because I think that'll be less confusing.)
+
+   About that "any old type" bit I mentioned up above in the [[#maybe][=Maybe=]] section....
+
+   Sometimes, "just any old type" won't do.  For instance, you can't do math on strings.  And some
+   functions really take only integers, not fractions.
+
+   In those cases, when you specify function types (which I haven't done much, if any, of so far),
+   you might need to say something like "this function takes any old type /so long as it's a
+   number/".
+
+   #+BEGIN_SRC haskell
+     f :: (Num a) => a -> a
+     f x = -x
+   #+END_SRC
+
+   I really don't have any better examples right because I barely know what I'm doing.  Check back
+   with me in a year and see if I've made any progress. :/
 
 * DONE Currying
   CLOSED: [2019-02-25 Mon 14:49]
