@@ -31,4 +31,18 @@
     Device 'TPPS/2 IBM TrackPoint':
             Device Enabled (143):   1
   #+END_EXAMPLE
+
+  Note: I haven't tried to change this yet.
+
+* Install AWS CLI -- "ModuleNotFoundError -- setuptools"
+
+  Haven't solved this one yet:
+
+  #+BEGIN_EXAMPLE
+        ModuleNotFoundError: No module named 'setuptools'
+    
+        ----------------------------------------
+    Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-vx9id3mw/PyYAML/
+  #+END_EXAMPLE
+  
   
