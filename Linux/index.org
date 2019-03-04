@@ -1,0 +1,18 @@
+# -*- org -*-
+#+TITLE: Notes on Linux
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" href="../org-mode.css" type="text/css"/>
+#+HTML_HEAD: <link rel="stylesheet" href="../styles/toc.css" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="../scripts/toc-manipulation.js" type="text/javascript"></script>
+
+* Overview
+
+  Various scribblings on Linux that I think others (including future myself) might be interested
+  in/find useful.
+
+* Files
+
+  - [[file:linux-mint-lenovo-t440s.org][linux-mint-lenovo-t440s.org]] :: I slapped Mint 19.1 on my old corporate Lenovo T440s.

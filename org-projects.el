@@ -1,7 +1,14 @@
-(if (eq system-type 'windows-nt)
-    (setq my-prefix "C:/Users/J6L"))
-(if (eq system-type 'darwin)
-    (setq my-prefix "~"))
+(cond ((eq system-type 'windows-nt)
+       (setq my-prefix "C:/Users/J6L")
+       )
+      ((eq system-type 'darwin)
+       (setq my-prefix "~")
+       )
+      (t                                ;otherwise...
+       ;; All kinds of unix.
+       (setq my-prefix "~")
+       )
+      )
 
 (setq org-publish-project-alist
       (list (list "tarheel-nc"
