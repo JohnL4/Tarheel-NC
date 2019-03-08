@@ -386,7 +386,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    Haskell knows the types of everything before the program starts running.  And you can't hand
    something of the wrong type off to something that expects it to be right type.
 
-   This is different from languages that are dynamically typed.  If I declare a numeric function and
+   This is different from languages that are dynamically typed.  In a dynamically-typed language, if I declare a numeric function and
    hand it a string like "2", we expect the function to Do The Right Thing and convert the "2" to 2
    and go from there.  If we hand said function a string like "onyx", it'll try to convert "onyx" to
    a number and almost certainly bomb out, at run time.  (Or, worse, decide "onyx" is really 0, and
