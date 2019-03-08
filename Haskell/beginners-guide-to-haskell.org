@@ -87,7 +87,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     than registers) and store it another register.  Maybe we call that register "B".  (Incidentally,
     "base" starts with a "b".)
   - Subtract B from A (remember the [[#binary-math][MATH]]?), being sure to set flags indicating that we had to do a
-    carry from some imaginary 9th bit.
+    carry from some imaginary 9th bit.  (Or a borrow.  But "carry" and "borrow" are pretty much the
+    same, really.)
   - If we had to carry (i.e., B was bigger than A), skip the next step.
   - Go to the end of the program (remember, we might be skipping this step).
   - Send some output voltages that turns on a light.
