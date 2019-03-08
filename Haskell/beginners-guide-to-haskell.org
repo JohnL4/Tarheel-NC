@@ -1763,6 +1763,9 @@ properly, so that's a silver lining.
 [fn:4] Conjunction junction, what's your function?
 
 ** Functions as first-class values
+   :PROPERTIES:
+   :CUSTOM_ID: functions-as-first-class-values
+   :END:
 
    Actually, it turns out that functions are "first class" values in their own right, meaning you can sling
    them around just like another value.  And when I say "functions", I don't mean "function results" or
@@ -1826,12 +1829,154 @@ properly, so that's a silver lining.
 [fn:5] Not kidding. https://en.wikipedia.org/wiki/Lambda_calculus#Origin_of_the_lambda_symbol.
 
 * TODO Basic functions that show up a lot
+
+  As I add functions to this list, I realize a lot of them, if not all, operate on lists, usually
+  producing more lists.  Which is a bit LISP-ish.
+
 ** map
+
+   Map a function to each element of a list, producing a list of results.
+
+   #+BEGIN_SRC haskell
+     λ Prelude> ns = [1,2,3]
+
+     λ Prelude> map (2*) ns
+     [2,4,6]
+   #+END_SRC
+
+   So we mapped a function that doubles (=(2*)=) to a list of numbers, getting a list of doubled
+   numbers.
+
+   We could do the same with a lambda function:
+
+   #+BEGIN_SRC haskell
+     λ Prelude> strs = ["hi","there"]
+
+     λ Prelude> map (\s -> s ++ " " ++ s) strs
+     ["hi hi","there there"]
+   #+END_SRC
+
+   (You see the lambda function, right?)
+
 ** filter
+
+   Filter things out of a list.
+
+   #+BEGIN_SRC haskell
+     λ Prelude> ns = [1..10]
+
+     λ Prelude> filter (\n -> 0 == (rem n 2)) ns
+     [2,4,6,8,10]
+   #+END_SRC
+
+   Quick review: ==== is the test for equality.  =rem= (which you haven't met before) is the
+   remainder after integer division.  So, we're using a boolean lambda expression to filter for
+   numbers whose remainders are 0 when divided by two (that's bad grammar, but I think you know what
+   I mean).
+
 ** take
+
+   You've already met =take= in the discussion of [[#infinite-lists][infinite lists]].
+
 ** drop
-** concat
-** fold
+
+   =drop= is a bit like =take=, but it /drops/ the first /n/ elements of a list and returns you the
+   rest of the list.
+
+   #+BEGIN_SRC haskell
+     λ Prelude> drop 3 ns
+     [4,5,6,7,8,9,10]
+   #+END_SRC 
+
+** =++=
+
+   =++= jams two lists together.
+
+   #+BEGIN_SRC haskell
+     λ Prelude> as = [2,4..10]
+     λ Prelude> bs = [102,104..110]
+     λ Prelude> as ++ bs
+     [2,4,6,8,10,102,104,106,108,110]
+   #+END_SRC
+
+   You've seen it used to jam strings together, but, remember, strings are just lists of
+   characters.  =++= works on lists of anything (so long as the two lists are of the same thing).
+
+** TODO fold
+
+   Ah, =fold=.  This one is trickier.  It "folds" a list (or any =Foldable=) up into a single
+   value.  You have to give it a starting value, and an operation to use in folding up the list, and
+   (of course) the list.
+
+   There are several variants of fold:
+
+   - =foldl= -- Folds "from the left"
+   - =foldr= -- Folds "from the right" (can't use on an infinite list)
+   - =foldl'= -- Folds from the left but "better".
+
+   (TODO: explain all that better.)
+
+   Suppose we want to sum up a list of numbers:
+
+   #+BEGIN_SRC haskell
+     λ Prelude> ns
+     [1,2,3,4,5,6,7,8,9,10]
+
+     λ Prelude> :t foldl
+     foldl :: Foldable t => (b -> a -> b) -> b -> t a -> b
+
+     λ Prelude> foldl (+) 0 ns
+     55
+   #+END_SRC
+
+   Wut... just happened?
+
+   First, we verified that =ns= is a list of the integers from 1 to 10.
+
+   Then, we reminded ourselves what =foldl= wants.  And it wants:
+
+   - Well, it can only be run over types /t/ that are =Foldable=, for one thing.  A list is
+     foldable.
+   - Given that, it wants a function that takes as input things that are type /b/ and type /a/ (two
+     inputs), and that returns something of type /b/.  In our case, types /b/ and /a/ are the same:
+     integers, because we're summing a list of integers to an integer.  We could be summing up the
+     lengths of a list of stirngs, in which case, /b/ would still be an integer (the result), but
+     /a/ would be the type =string=, because our inputs (from the list) are strings.  I'll show you
+     that in a minute.
+   - =foldl= also wants something of type /b/, our result type.  This is the initial value.  For
+     summing things, we (usually) start with zero.
+   - And, finally, =foldl= wants that =Foldable= of things that are type /a/.  That's what that =t
+     a= part means.  In our case, that means we have to give a list of integers.
+   - And, finally finally, =foldl= returns a thing of type /b/.  An integer, in our case.  That's
+     the result of the fold operation.
+
+   And then we invoked =foldl=.  The two-argument function of things type /b/ and /a/ is just
+   addition ("=(+)=").  By putting the "=+=" in parentheses, we just handed a raw function to
+   =foldl=.  Remember that [[#functions-as-first-class-values]["functions as first-class values"]] thing?
+
+   Then, the next argument we handed =foldl= was =0=, the initial value.
+
+   Finally, we gave it the list we want to sum up.
+
+   And... out pops the answer!  55!
+
+*** Summing up the lengths of a list of strings
+
+    Here's another example, with some different types at play:
+
+    #+BEGIN_SRC haskell
+      λ Prelude> strs = ["abc", "de", "fghi"]
+
+      λ Prelude> foldl (\n s -> n + length s) 0 strs
+      9
+    #+END_SRC
+
+    This time, our types /b/ and /a/ are different.  /b/ is still the return type (an integer), but
+    now /a/ is type =string= (the elements of our list), so the function we give =foldl= has to take
+    as input an integer and a string and return an integer.  So, we define a lambda of two arguments
+    (=n= and =s=), and return =n= /plus/ the /length/ of the string =s=.  Initialize with 0, and
+    we're off to the races!
+
 * Script idea: inverting a list of spices and what they can be used for, from email messages
 
   I'm not actually going to write this program; it's an exercise for the reader, but you know how
@@ -1860,6 +2005,8 @@ properly, so that's a silver lining.
   #+END_EXAMPLE
 
   Output will be like the 2nd line of input.
+
+  Now, go forth and conquer! :)
 
 * COMMENT Local spelling dictionary & whatnot
 

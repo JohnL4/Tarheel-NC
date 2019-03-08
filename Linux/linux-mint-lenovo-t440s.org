@@ -75,6 +75,11 @@
 
   - Enter your desired shortcut sequence (Alt-ESC).
 
+* Transpose Left-Control and Caps-Lock
+
+  Probably similar to the above for Alt-ESC.
+  
+
     
 
   
