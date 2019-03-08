@@ -47,11 +47,34 @@
     Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-vx9id3mw/PyYAML/
   #+END_EXAMPLE
   
-  
 * Use TLP to set battery charge threshholds
 
   So you don't constantly charge your battery to 100%, which hurts its life.
 
   I haven't quite figured out if this thing is working properly, since the "power manager" applet on
   the task bar reports that the laptop is always charging.
+  
+* Pandora: Use Pithos
+
+  The Pandora web app doesn't work so well on Linux, but there is another app that you can use:
+  Pithos seems to work.
+  
+* Making Alt-ESC send windows to the background
+
+  I love getting rid of a window in Windows with Alt-ESC to send it to the background.  To do this
+  in Mint (19.1, Cinnamon):
+
+  - Run the "keyboard" preferences applet (hit the "windows" key and type "keyboard" to search for
+    it).
+
+  - Select "Shortcuts".
+
+  - Select "Windows" in the "Categories" pane (for shortcuts pertaining to windows).
+
+  - Select "Lower window" in the right pane.
+
+  - Enter your desired shortcut sequence (Alt-ESC).
+
+    
+
   
