@@ -23,6 +23,18 @@
 
    https://docs.aws.amazon.com/cli/index.html (includes both Python and PowerShell CLIs).
 
+** Installation
+
+   Use =pip3= for Python 3 (as opposed to =pip=, which might just use Python 2).
+
+   Note on Linux Mint 19.1, there were a couple of problems with PyYAML (if I recall correctly).
+   One package complained that =setuptools= was not available.  I solved this with (a) a few reboots
+   and (b) an explicit call to install =setuptools=:
+
+   #+BEGIN_SRC bash
+     pip3 install setuptools
+   #+END_SRC
+
 * Simplest possible basics
 
 ** Set up credentials

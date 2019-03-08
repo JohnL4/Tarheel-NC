@@ -34,9 +34,11 @@
 
   Note: I haven't tried to change this yet.
 
-* Install AWS CLI -- "ModuleNotFoundError -- setuptools"
+* DONE Install AWS CLI -- "ModuleNotFoundError -- setuptools"
+  CLOSED: [2019-03-07 Thu 22:15]
 
-  Haven't solved this one yet:
+  - CLOSING NOTE [2019-03-07 Thu 22:15] \\
+    Solution: =pip3 install setuptools= (assuming you're using =pip3= to install the awscli).
 
   #+BEGIN_EXAMPLE
         ModuleNotFoundError: No module named 'setuptools'
