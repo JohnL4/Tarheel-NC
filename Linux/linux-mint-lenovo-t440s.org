@@ -46,3 +46,10 @@
   #+END_EXAMPLE
   
   
+* Use TLP to set battery charge threshholds
+
+  So you don't constantly charge your battery to 100%, which hurts its life.
+
+  I haven't quite figured out if this thing is working properly, since the "power manager" applet on
+  the task bar reports that the laptop is always charging.
+  
