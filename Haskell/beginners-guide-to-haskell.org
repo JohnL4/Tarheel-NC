@@ -1951,7 +1951,15 @@ properly, so that's a silver lining.
       #+END_EXAMPLE
 
    2) A single quote is a legitimate part of a variable name.  You can read it as "prime".  So, you
-      can have a function /f/, and another function /f'/, read as "f prime".
+      can have a function /f/, and another function /f'/, read as "f prime".  Or, you could have a
+      function named =o'donnell=, if you really want.
+
+      #+BEGIN_EXAMPLE
+        Prelude> o'donnell x = "Top o' the marning to ye, " ++ x ++ "!"
+
+        Prelude> o'donnell "Frank"
+        "Top o' the marning to ye, Frank!"
+      #+END_EXAMPLE
    #+END_QUOTE
    
    Suppose we want to sum up a list of numbers:
