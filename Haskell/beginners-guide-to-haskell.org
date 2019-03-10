@@ -1829,7 +1829,10 @@ properly, so that's a silver lining.
 
 [fn:5] Not kidding. https://en.wikipedia.org/wiki/Lambda_calculus#Origin_of_the_lambda_symbol.
 
-* TODO Basic functions that show up a lot
+* DONE Basic functions that show up a lot
+  CLOSED: [2019-03-09 Sat 22:14]
+
+  - CLOSING NOTE [2019-03-09 Sat 22:14]
 
   As I add functions to this list, I realize a lot of them, if not all, operate on lists, usually
   producing more lists.  Which is a bit LISP-ish.
@@ -1903,7 +1906,10 @@ properly, so that's a silver lining.
    You've seen it used to jam strings together, but, remember, strings are just lists of
    characters.  =++= works on lists of anything (so long as the two lists are of the same thing).
 
-** TODO fold
+** DONE fold
+   CLOSED: [2019-03-09 Sat 22:14]
+
+   - CLOSING NOTE [2019-03-09 Sat 22:14]
 
    Ah, =fold=.  This one is trickier.  It "folds" a list (or any =Foldable=) up into a single
    value.  You have to give it a starting value, and an operation to use in folding up the list, and
@@ -1911,12 +1917,43 @@ properly, so that's a silver lining.
 
    There are several variants of fold:
 
-   - =foldl= -- Folds "from the left"
-   - =foldr= -- Folds "from the right" (can't use on an infinite list)
-   - =foldl'= -- Folds from the left but "better".
+   - =foldl= :: Folds "from the left".  Computes ( ... (((x_0 `f` x_1) `f` x_2) `f` x_3) `f`... ).
+     In other words, first applies function /f/ to the leftmost two arguments, then applies /f/ to
+     that result and the third argument, then applies /f/ to the result of /that/ and the fourth
+     argument, and so on.  This is the most straightforward, but it's also a little wasteful of
+     memory, especially when you run it over really huge lists.
 
-   (TODO: explain all that better.)
+   - =foldr= :: Folds "from the right".  Computes x_0 `f` (x_1 `f` (x_2 `f` (x_3 `f` ...))).  In
+     other words, applies /f/ to the /rightmost/ two arguments, then applies /f/ to the next
+     argument to the left and the result of the previous application, and so on.  Sometimes this is
+     better if your function can arrive at its final result without having to traverse all of an
+     infinite list (boolean functions or multiplication (maybe) can do this if there's a zero
+     somewhere in the list)
 
+   - =foldl'= :: Folds from the left like =foldl=, but is more efficient in memory usage so you can
+     use it on a huge list.
+
+   (Here's a bit more discussion, if you're interested: https://qr.ae/TW7XD4.)
+   
+   #+BEGIN_QUOTE
+   *Some little notes on syntax*
+
+   1) A two-argument function (say, =f x y=) can actually be stuck between its operands by using
+      backquotes.
+      #+BEGIN_EXAMPLE
+        Prelude> f x y = x + 2 * y
+
+        Prelude> f 1 2
+        5
+
+        Prelude> 1 `f` 2
+        5
+      #+END_EXAMPLE
+
+   2) A single quote is a legitimate part of a variable name.  You can read it as "prime".  So, you
+      can have a function /f/, and another function /f'/, read as "f prime".
+   #+END_QUOTE
+   
    Suppose we want to sum up a list of numbers:
 
    #+BEGIN_SRC haskell
@@ -1978,6 +2015,19 @@ properly, so that's a silver lining.
     (=n= and =s=), and return =n= /plus/ the /length/ of the string =s=.  Initialize with 0, and
     we're off to the races!
 
+*** Folding "from the left" vs. "from the right"
+
+    If your function is =(-)= instead of =(+)=, and you run =foldr= instead of =foldl=, you'll see
+    the results of folding from either direction.
+
+    #+BEGIN_EXAMPLE
+      Prelude> foldl (-) 0 [1,2,3,4]         -- ((1 - 2) - 3) - 4
+      -10
+
+      Prelude> foldr (-) 0 [1,2,3,4]         -- 1 - (2 - (3 - 4))
+      -2
+    #+END_EXAMPLE 
+    
 * Script idea: inverting a list of spices and what they can be used for, from email messages
 
   I'm not actually going to write this program; it's an exercise for the reader, but you know how
