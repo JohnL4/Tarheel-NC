@@ -1,0 +1,20 @@
+# -*- org -*-
+#+TITLE: Notes on Project Ideas
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
+#+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
+#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+
+* Overview
+
+  Notes on project ideas.  Don't steal muh project ideas without crediting me.
+
+* Language-Parsing Tools written in Haskell
+
+  For VB.NET, C#.
+
+  Idea is to process current export tool, turning =If= statements into config data items (XML? d/b? .INI?).
+  

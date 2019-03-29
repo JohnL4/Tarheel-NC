@@ -20,6 +20,8 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:project-ideas.org][project-ideas.org]] :: Notes on project ideas I have, since my dynamic jspwiki is completely broken. >:(
+
   - [[file:Linux][Linux]] :: W000!  Linux!
        
   - [[file:org-mode.org][org-mode.org]] :: My terse notes on =org-mode=, my markup language of choice.  Kind of a cheat
