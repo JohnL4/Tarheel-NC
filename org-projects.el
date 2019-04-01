@@ -21,6 +21,7 @@
          :with-author nil
          :with-creator 't
          :publishing-function 'lusk-org-publish
+         :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
          )
         )
       )
