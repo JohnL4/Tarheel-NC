@@ -1,0 +1,87 @@
+# -*- org -*-
+#+TITLE: Notes on Writing a Haskell Program (or Service)
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
+# #+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
+# #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+# #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+
+* Overview
+
+  Now that I've finally finished /Learn a Haskell/, I'm ready to write some real functionality in
+  Haskell, which requires all sort of setup and configuration.  These are the notes I'll take as I
+  go along (I hope).
+
+  The "or Service" part of this document refers to the fact that functionality written in Haskell
+  might not be an entire standalone program, but may instead be a "service" provided to software
+  written in other languages (e.g., Java), or might use other software to provide services.  How
+  that might be implemented is unknown at the moment, but probably requires some sort of FFI from/to
+  Haskell. 
+
+  See also:
+
+  - https://wiki.haskell.org/How_to_write_a_Haskell_program
+
+* Build System
+
+  Decided to use Stack, not Cabal.  Stack seems to be based on Cabal and is supposed to guarantee
+  reproducible builds, with respect to package versions.  (Supposedly, Cabal can, too, but that
+  functionality seems to be more of a bolt-on.)
+
+  See:
+
+  - https://en.wikipedia.org/wiki/Stack_(Haskell)
+  - https://docs.haskellstack.org/en/stable/README/
+
+** Mac install
+
+   : stack --version
+   : stack upgrade
+   : brew update
+   : brew upgrade haskell-stack
+
+** Linux install
+
+   Just follow the docs, they worked for me. :)
+   
+* New Project
+
+  You can probably either accept the defaults or figure out what the right values are.
+
+  Consider creating your project with a lower-case name and then (if you want) capitalizing the
+  directory name (and git repo?) /afterward/.  Lower-case project name will generate a nicer
+  package.yaml.
+
+** Licensing
+
+   BSD3 is about as good as MIT.
+
+   Licenses are here:
+   https://www.haskell.org/cabal/release/cabal-latest/doc/API/Cabal/Distribution-License.html#t:License 
+
+** Category
+   
+   For category, pick from one of the top-level Hackage categories, which you can see at
+   https://hackage.haskell.org/packages/.
+
+   (For Delaunay, I'm picking "Graphics".)
+
+** Library Structure
+
+   =stack=, by default, creates one library, named "Lib".  If you want to give it a more creative
+   name (e.g., "Graphics.Delaunay"), don't forget that module names with dots are expected to
+   correspond to directory structures in which each dot-separated component is a directory (except
+   the last, which is a file).  So, the code defining module Graphics.Delaunay must reside in
+   =Graphics/Delaunay.hs=. 
+
+* Testing
+
+  There seems to be a fair amount of discussion on this, but I like hspec right now.
+
+** Add hspec to stack config
+
+   (There's probably something similar for cabal, if you chose that.)
+
+   

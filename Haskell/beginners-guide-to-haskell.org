@@ -1100,10 +1100,12 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
      bearingPat West   = 270
    #+END_SRC
 
-   What the heck?  How can you define the same function more than once?  This is /pattern-matching/.  There are /no
-   conditionals/ here.  Conditionals are ok, but sometimes it's clearer to avoid them.  What's going on here is that
-   we're saying (obviously, I guess) that if the function is called with the value =North=, the function's value is 0,
-   and if it's called with the value =East=, its value is 90, and so on.
+   What the heck?  How can you define the same function more than once?  (Maybe you think this is
+   completely normal.  The "bearing" of North is 0 degrees, the bearing of East is 90 degrees, etc.
+   What's the problem, John?)  This is /pattern-matching/.  There are /no conditionals/ here.
+   Conditionals are ok, but sometimes it's clearer to avoid them.  What's going on here is that
+   we're saying (obviously, I guess) that if the function is called with the value =North=, the
+   function's value is 0, and if it's called with the value =East=, its value is 90, and so on.
 
    You will definitely see more pattern-matching in the future, but it'll be a bit more complex
    (don't worry, not too crazy).
@@ -1127,6 +1129,23 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
         South -> 180
         West  -> 270
     #+END_SRC
+
+*** TODO Aliasing in pattern matching ("as patterns")
+
+    (This was inserted later, so it might not flow well.)
+
+    Sometimes you need (or want) to pattern match on some structure but also refer to the entire
+    thing, not just the piecesparts of the structure.  Like, if you want to know something is a list
+    and you need the first element of the list, but you also need the entire list.
+
+    We use something called an "as pattern".
+
+    #+BEGIN_SRC haskell
+      listFunkiness allXs @ (_:xs)    = xs ++ allXs
+      listFunkiness []                = []
+    #+END_SRC
+
+    So, =allxs= is the entire list and =xs= is just part of it (the tail, as it happens).
 
 *** The difference between pattern-matching and conditionals
 
