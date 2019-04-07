@@ -21,18 +21,22 @@ Various notes on various Haskell things, as I climb my Mt. Everest and pursue my
   
 # Links must be relative.
 
-- [[file:../Orgzly/monad-journey.html][../Orgzly/monad-journey.html]] :: Resuming My Journey Toward an Understanding of Haskell Monads (Yet Again).  This is
-     basically my notes file as I fight my way through the last three chapters of /Learn You a Haskell/.
+  - [[file:write-a-haskell-program.org][write-a-haskell-program.org]] :: Notes on writing a program (or service), now that I've finally
+       finished /Learn You a Haskell/.
 
-- [[file:beginners-guide-to-haskell.org][beginners-guide-to-haskell.org]] :: Because why not?
+  - [[file:../Orgzly/monad-journey.html][../Orgzly/monad-journey.html]] :: Resuming My Journey Toward an Understanding of Haskell Monads
+       (Yet Again).  This is basically my notes file as I fight my way through the last three
+       chapters of /Learn You a Haskell/.
 
-- [[file:KnightMoves.pdf][KnightMoves.pdf]] :: A writeup of my attempt to decipher what's going in the /Learn You a Haskell/
-     section named "A knight's quest" treating =List= as a monad in determining where a chess knight
-     can move.
+  - [[file:beginners-guide-to-haskell.org][beginners-guide-to-haskell.org]] :: Because why not?
 
-- [[file:applicative-monad.org][applicative-monad.org]] :: Exercise in getting Pierre to walk a tightrope from /Learn You a
-     Haskell/, based on an offhand comment in the text about not being able to do it with just
-     applicative functors.
+  - [[file:KnightMoves.pdf][KnightMoves.pdf]] :: A writeup of my attempt to decipher what's going in the /Learn You a Haskell/
+       section named "A knight's quest" treating =List= as a monad in determining where a chess
+       knight can move.
 
-- [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Definition of "Functor" (Notes on Errors Encountered While Trying to
-     Use Newtype to Declare a Type an Instance of Functor)
+  - [[file:applicative-monad.org][applicative-monad.org]] :: Exercise in getting Pierre to walk a tightrope from /Learn You a
+       Haskell/, based on an offhand comment in the text about not being able to do it with just
+       applicative functors.
+
+  - [[file:haskell-newtype-errors.org][haskell-newtype-errors.org]] :: Definition of "Functor" (Notes on Errors Encountered While Trying
+       to Use Newtype to Declare a Type an Instance of Functor)

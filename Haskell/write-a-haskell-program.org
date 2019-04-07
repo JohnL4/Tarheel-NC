@@ -84,4 +84,10 @@
 
    (There's probably something similar for cabal, if you chose that.)
 
-   
+   Under "tests", add "hspec" to the dependencies:
+
+   #+BEGIN_SRC yaml
+         dependencies:
+         - delaunay
+         - hspec
+   #+END_SRC 
