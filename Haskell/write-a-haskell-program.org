@@ -14,6 +14,9 @@
   Haskell, which requires all sort of setup and configuration.  These are the notes I'll take as I
   go along (I hope).
 
+  The software I hope to write is a function that will return the Delaunay triangulation of a set of
+  2-D points.  It currently lives at https://github.com/JohnL4/Delaunay.
+
   The "or Service" part of this document refers to the fact that functionality written in Haskell
   might not be an entire standalone program, but may instead be a "service" provided to software
   written in other languages (e.g., Java), or might use other software to provide services.  How
