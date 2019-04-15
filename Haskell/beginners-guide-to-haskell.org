@@ -784,6 +784,9 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
 * DONE Unit testing with Hspec
   CLOSED: [2019-02-19 Tue 11:41]
+  :PROPERTIES:
+  :CUSTOM_ID: unit-testing-with-hspec
+  :END:
 
   - CLOSING NOTE [2019-02-19 Tue 11:41]
 
@@ -835,8 +838,13 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
 
 ** Install =hspec=
 
-   So, =hspec= doesn't come with the Haskell Platform, for some reason, so you'll need to use the =cabal= command
-   (which /does/ come with Haskell Platform) to install it.  Issue the following command at the command prompt:
+   So, =hspec= doesn't come with the Haskell Platform, for some reason, so you'll need to install
+   it.  You can install with =cabal= or with =stack=.  The usage of =cabal= is simple, see below.
+   =stack= is better if you're going to do something other than write a proof-of-concept toy, and I
+   discuss it a little more in [[file:write-a-haskell-program.org::#build-system][Build System]] in [[file:write-a-haskell-program.org][write-a-haskell-program.org]].
+
+   For =cabal=, use the =cabal= command (which /does/ come with Haskell Platform) to install it.
+   Issue the following command at the command prompt:
 
    : cabal install hspec
 

@@ -28,6 +28,9 @@
   - https://wiki.haskell.org/How_to_write_a_Haskell_program
 
 * Build System
+  :PROPERTIES:
+  :CUSTOM_ID: build-system
+  :END:
 
   Decided to use Stack, not Cabal.  Stack seems to be based on Cabal and is supposed to guarantee
   reproducible builds, with respect to package versions.  (Supposedly, Cabal can, too, but that
@@ -82,6 +85,9 @@
 * Testing
 
   There seems to be a fair amount of discussion on this, but I like hspec right now.
+
+  You can pop over to [[file:beginners-guide-to-haskell.org::#unit-testing-with-hspec][Unit testing with Hspec]] in [[file:beginners-guide-to-haskell.org][beginners-guide-to-haskell.org]] to steal the syntax,
+  but here's how to integrate with the =stack= build system.
 
 ** Add hspec to stack config
 
