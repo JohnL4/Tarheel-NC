@@ -961,6 +961,12 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    front of the function result.  More about that later. :)
    #+END_QUOTE
 
+*** A binary tree
+
+    (But I'm not going to go into it any more than I have to.)
+
+    : data Tree a = EmptyTree | Node a (Tree a) (Tree a) deriving (Show, Read, Eq)  
+
 ** Conditionals
 *** =if=: Implementation of the =bearing= function with conditionals
 

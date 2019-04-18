@@ -54,6 +54,13 @@
    
 * New Project
 
+  Run:
+  
+  : stack new project-name
+
+  In the directory that will contain the directory that contains your project (i.e., in the
+  directory above the (not-yet-existing) directory that will correspond to your project).
+
   You can probably either accept the defaults or figure out what the right values are.
 
   Consider creating your project with a lower-case name and then (if you want) capitalizing the
