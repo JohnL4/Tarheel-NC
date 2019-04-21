@@ -1,0 +1,20 @@
+# -*- org -*-
+#+TITLE: Notes for on Zippers (in Haskell)
+#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+OPTIONS: author:nil creator:t H:9
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
+
+* Overview 
+
+  I'm trying to implement the triangle "tree" (it's really more of a DAG) from the Faniry-AIMS paper
+  on Delaunay triangulation, and I want to do it as a zipper.
+
+  If you want to see how this "discussion" evolves, see it in GitHub @ 
+
+  For more info on zippers, see:
+
+  - http://learnyouahaskell.com/zippers
+  - 
+
+* Tree Structure
