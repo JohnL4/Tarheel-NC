@@ -19,6 +19,10 @@
 
   There's also this interesting article:
   http://blog.ezyang.com/2010/04/you-could-have-invented-zippers/.
+  
+  And:
+  
+  - http://www.sciencedirect.com/science/article/pii/S1571066106001289 (via https://stackoverflow.com/questions/46400446/immutable-functional-data-structure-to-represent-graphs)
 
 [fn:1] http://page.mi.fu-berlin.de/faniry/files/faniry_aims.pdf
 
