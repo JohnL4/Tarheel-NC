@@ -21,6 +21,8 @@ Various notes on various Haskell things, as I climb my Mt. Everest and pursue my
   
 # Links must be relative.
 
+  - [[file:zippers.org][zippers.org]] :: (in progress) On creating a Zipper data structure in Haskell
+
   - [[file:write-a-haskell-program.org][write-a-haskell-program.org]] :: Notes on writing a program (or service), now that I've finally
        finished /Learn You a Haskell/.
 

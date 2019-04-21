@@ -14,7 +14,7 @@
       (list (list "tarheel-nc"
          :base-directory (concat my-prefix "/Documents/AmazonS3/Tarheel-NC")
          :base-extension 'any
-         :exclude "^\\.git\\|\\(\\\\\\|/\\)#\\|~$\\|template\.org" ;.git subdir, Temp. and backup files.
+         :exclude "^\\.git\\|^\\.DS_store\\|\\(\\\\\\|/\\)#\\|~$\\|template\.org" ;.git subdir, Temp. and backup files.
          :publishing-directory (concat my-prefix "/Documents/AmazonS3/Tarheel-NC-published")
          :recursive 't
          :headline-levels 12
