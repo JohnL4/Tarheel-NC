@@ -229,15 +229,15 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    
    Everybody's heard of Alan Turing (right?).  Father of modern computing or some such.  He was a
    mathematician in the olden days before electronics, so all his thoughts of computers were in his
-   head.  There are a couple of things that make him a big deal:
+   head (or literally on paper).  There are a couple of things that make him a big deal:
 
 *** Turing machines
 
-    Turing imagined a machine that had an infinitely-long tape and a finite set of basic
-    instructions like "read whatever's on the tape at the current position", "move the tape forward
-    or backward one position", "write some piece of data from a register onto the tape", "subtract
-    two numbers in memory", "if there was a carry, skip the next instruction", etc.  (This is from
-    memory, so if I got it wrong, sue me.)
+    Turing imagined a machine that had an infinitely-long tape (like, a paper teletype tape, like a
+    ticker tape) and a finite set of basic instructions like "read whatever's on the tape at the
+    current position", "move the tape forward or backward one position", "write some piece of data
+    from a register onto the tape", "subtract two numbers in memory", "if there was a carry, skip
+    the next instruction", etc.  (This is from memory, so if I got it wrong, sue me.)
 
 *** Computability
 
