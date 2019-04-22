@@ -28,6 +28,20 @@
   Maybe I can do better.  Let's go. :)  (Hmm, maybe I should find some emojis for this static web
   site thingie.)
 
+** For readers who might already be familiar with programming
+
+   In case you got here and you already program in something like Java or Python, you can still read
+   this doc, but skip straight to the stuff that's specific to Haskell and is almost certainly
+   different from what you're used to:
+
+   - [[#turing-church-haskell][Turing vs. Church and Why Haskell?]]
+   - [[#what-is-haskell][What is Haskell? (lazy, statically-typed, pure functional)]]
+   - [[#basic-syntax][SUPER Basic Syntax and running Haskell interactively with =ghci=]]
+   - [[#comments][Comments]]
+   - Strings: You can skip this section so long as you know strings (denoted with "") are just lists
+     of characters (denoted with '').
+   - [[#lists][Lists]] and everything else to the end of the document.
+
 * Basic Basics
 
   Wait, before I head into syntax, I should back up a few steps.
@@ -204,6 +218,9 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   were before.
 
 * Turing vs. Church and Why Haskell?
+  :PROPERTIES:
+  :CUSTOM_ID: turing-church-haskell
+  :END:
 
   I have to talk about this for a moment, because it kind of helps address the "Why Haskell?"
   question. 
@@ -306,8 +323,11 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     You can get started with the entire shebang at https://haskell.org.  Download and install the
     "Haskell Platform" and you'll be off to the races.
 
-* DONE What is Haskell?
+* DONE What is Haskell? (lazy, statically-typed, pure functional)
   CLOSED: [2019-02-18 Mon 22:02]
+  :PROPERTIES:
+  :CUSTOM_ID: what-is-haskell
+  :END:
 
   - CLOSING NOTE [2019-02-18 Mon 22:02]
 
@@ -464,7 +484,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    (You probably remember /function composition/ from your math days: $f(g(x)) = (f \circ g)(x)$.
    That "$\circ$" is the composition operator you know and love.)
 
-* SUPER Basic Syntax
+* SUPER Basic Syntax and running Haskell interactively with =ghci=
   :PROPERTIES:
   :CUSTOM_ID: basic-syntax
   :END:
@@ -612,7 +632,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   1) You can type a double dash ("=--=") and then, everything you type after that, to the end of the line, is a
      comment.
      
-  2) You can type "={-=" and "=-}=" and put your comment between those two.  (But I don't think you can nest them.)
+  2) You can type "={-=" and "=-}=" and put your comment between those two.  (And I think you can even nest them.)
 
 * DONE "Strings"
   CLOSED: [2019-02-18 Mon 17:39]
@@ -632,11 +652,14 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   As a funky technical note, ="a"= is a /string/ (containing only one character) and ='a'= is a /character/, and it's
   not the same as ="a"=.
 
-  There's a technique for getting special characters into strings, but hopefully I'll remember to mention it later,
-  when I need to.
+  There's a technique for getting special characters into strings (backslashes), but hopefully I'll
+  remember to mention it later, when I need to.
 
 * DONE Lists
   CLOSED: [2019-02-18 Mon 20:23]
+  :PROPERTIES:
+  :CUSTOM_ID: lists
+  :END:
 
   - CLOSING NOTE [2019-02-18 Mon 20:23]
 
@@ -885,6 +908,27 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
    #+END_EXAMPLE
 
    You'll see green text for successful tests, and red text for failures (plus the word =FAILED=).
+
+* Haddock (documentation comments)
+
+  A quick note about some of the funny comment syntax you might see: like Javadoc, Pydoc, Perldoc,
+  emacs LISP's documentation strings, etc., etc., Haskell has its own documentation-comment syntax,
+  and it's processed by a tool named [[https://www.haskell.org/haddock/][Haddock]].
+
+  I won't go into details, but here's what you need to know (and I encourage you to use this in your
+  own code, if you ever get around to writing any):
+
+  =-- |= is for comments that document the thing that comes /after/ the comment (so, like function
+  documentation).
+
+  =-- ^= is for comments that document the thing that comes /before/ the comment (so, like function
+  /argument/ documentation, where you define the argument and then put the documentation out to the
+  right).
+
+  The space before the "|" or "^" is important.
+
+  That is all.
+  
 
 * DONE Hoogle
   CLOSED: [2019-02-19 Tue 11:56]

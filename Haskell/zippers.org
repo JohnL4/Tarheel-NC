@@ -22,8 +22,10 @@
   
   And:
   
-  - http://www.sciencedirect.com/science/article/pii/S1571066106001289 (via https://stackoverflow.com/questions/46400446/immutable-functional-data-structure-to-represent-graphs)
-  - https://stackoverflow.com/questions/9732084/how-do-you-represent-a-graph-in-haskell (which I've seen before, but coming back to it, i realize it's probably pretty decent)
+  - http://www.sciencedirect.com/science/article/pii/S1571066106001289 (via
+    https://stackoverflow.com/questions/46400446/immutable-functional-data-structure-to-represent-graphs)
+  - https://stackoverflow.com/questions/9732084/how-do-you-represent-a-graph-in-haskell (which I've
+    seen before, but coming back to it, i realize it's probably pretty decent)
 
 [fn:1] http://page.mi.fu-berlin.de/faniry/files/faniry_aims.pdf
 
