@@ -321,7 +321,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     is =ghci=.
 
     You can get started with the entire shebang at https://haskell.org.  Download and install the
-    "Haskell Platform" and you'll be off to the races.
+    "Haskell Platform" and you'll be off to the races.
+
 
 * DONE What is Haskell? (lazy, statically-typed, pure functional)
   CLOSED: [2019-02-18 Mon 22:02]
@@ -542,7 +543,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   being:
 
   #+BEGIN_CENTER
-  $f(x) = x * 1.8 + 32$
+  $f(x) = x \times 1.8 + 32$
   #+END_CENTER
   
   Haskell functions don't have the parentheses.  They just use spaces.  In fact, when you see two
