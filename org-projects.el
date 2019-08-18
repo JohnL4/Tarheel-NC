@@ -21,7 +21,9 @@
          :with-author nil
          :with-creator 't
          :publishing-function 'lusk-org-publish
-         :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
+         ;; This might actually be better than the HTML_LINK export settings that are the default for org-mode.  We can
+         ;; probably just make them less obtrusive.
+         ;; :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
          )
         )
       )
