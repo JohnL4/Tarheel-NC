@@ -1,12 +1,23 @@
 # -*- org -*-
 #+TITLE: Notes on Using AWS (provisioning an instance, getting it set up for development, etc.)
-#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
-#+OPTIONS: author:nil creator:t H:9
-#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
-# #+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
-# #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
-# #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
 
 * Setting up an AWS instance
 
@@ -173,6 +184,14 @@
 * Server Updates
 
   : yum update
+
+* General Admin
+
+  If your tiny 8 GB default disk drive on your Amazon EC2 instance is filling up with linux headers
+  (in =/usr/src=) and images (in =/lib=), you should be able to remove them with =sudo apt-get autoremove=
+  (unless things have gotten real bad).
+
+  Also, use =ncdu= to see what's taking up so much space.
 
 * App Development
 

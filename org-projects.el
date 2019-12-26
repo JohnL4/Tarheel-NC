@@ -19,14 +19,16 @@
        (list "tarheel-nc"
              :base-directory (concat my-home "/Documents/AmazonS3/Tarheel-NC")
              :base-extension 'any
-             :exclude "^\\.git\\|\\(\\\\\\|/\\)#\\|~$\\|template\.org" ;.git subdir, Temp. and backup files.
+             :exclude "^\\.git\\|^\\.DS_store\\|\\(\\\\\\|/\\)#\\|~$\\|template\.org" ;.git subdir, Temp. and backup files.
              :publishing-directory (concat my-home "/Documents/AmazonS3/Tarheel-NC-published")
              :recursive 't
              :headline-levels 12
              :with-author nil
              :with-creator 't
              :publishing-function 'lusk-org-publish
-             :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
+             ;; This might actually be better than the HTML_LINK export settings that are the default for org-mode.  We can
+             ;; probably just make them less obtrusive.
+             ;; :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
              )
        (list "sunrise-vademecum"
              :base-directory "c:/Work/Sunrise/VadeMecum"
@@ -38,7 +40,9 @@
              :with-author nil
              :with-creator 't
              :publishing-function 'lusk-org-publish
-             :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
+             ;; This might actually be better than the HTML_LINK export settings that are the default for org-mode.  We can
+             ;; probably just make them less obtrusive.
+             ;; :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
              )
        (list "hmed-vademecum"
              :base-directory "c:/Work/HMED/VadeMecum"
@@ -50,7 +54,9 @@
              :with-author nil
              :with-creator 't
              :publishing-function 'lusk-org-publish
-             :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
+             ;; This might actually be better than the HTML_LINK export settings that are the default for org-mode.  We can
+             ;; probably just make them less obtrusive.
+             ;; :html-preamble "<p><a class='button' href='/'>Home</a> <a class='button' href='..'>Up dir</a> <a class='button' href='.'>Current dir</a></p>"
              )
        )
       )
