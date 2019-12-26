@@ -185,6 +185,14 @@
 
   : yum update
 
+* General Admin
+
+  If your tiny 8 GB default disk drive on your Amazon EC2 instance is filling up with linux headers
+  (in =/usr/src=) and images (in =/lib=), you should be able to remove them with =sudo apt-get autoremove=
+  (unless things have gotten real bad).
+
+  Also, use =ncdu= to see what's taking up so much space.
+
 * App Development
 
 ** Git
