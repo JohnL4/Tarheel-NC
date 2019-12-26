@@ -78,7 +78,10 @@
 
     : aws configure --profile JohnS3
 
-    You will be prompted for access key and secret access key.  The other parameters can be defaulted.
+    You will be prompted for access key and secret access key.  The other parameters can be
+    defaulted.
+
+    (Note: on Linux, credentials are in text file: =~/.aws/credentials=.)
     
 *** Choose a credential for the current session (will expire, so you'll have to do it again the next day)
     

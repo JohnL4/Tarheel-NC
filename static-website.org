@@ -43,7 +43,12 @@
    If you're in the right directory (i.e., your current org file is in the right directory) then the
    org-mode publish op should proceed properly.
 
+   (Then push generated html to S3, [[#push-html-to-s3][Push exported html to S3]].)
+
 * Push exported html to S3
+  :PROPERTIES:
+  :CUSTOM_ID: push-html-to-s3
+  :END:
 
   As described in [[file:aws-s3-powershell-and-cli.org::#cli-sync][basic operations]].
 
