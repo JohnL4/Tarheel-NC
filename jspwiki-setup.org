@@ -244,7 +244,7 @@ It's also in my Google Drive root at present.
   (case-sensitive?) via the public "create your own account!" page.  Once that was done, I was able
   to close off the wiki with the following edits.
 
-  #+BEGIN_EXAMPLE
+  #+BEGIN_SRC diff
     --- jspwiki.policy.orig 2017-01-21 04:44:47.490238637 +0000
     +++ jspwiki.policy      2017-01-21 05:22:08.370383295 +0000
     @@ -49,8 +49,8 @@
@@ -288,7 +288,7 @@ It's also in my Google Drive root at present.
     +    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editPreferences";
     +    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editProfile";
      };
-  #+END_EXAMPLE
+  #+END_SRC 
   
 * Upgrading JSPWiki
 
@@ -308,7 +308,7 @@ It's also in my Google Drive root at present.
    : jspwiki.fileSystemProvider.pageDir = /usr/share/jspwiki/pages
    : jspwiki.basicAttachmentProvider.storageDir = /usr/share/jspwiki/attachments
 
-** Extract config file (TODO: from...?) and modify
+** RESEARCH-TODO Extract config file (TODO: from...?) and modify
 
 *** Change base name to match deployed file (temporarily)
 
