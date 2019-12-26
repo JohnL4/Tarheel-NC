@@ -31,7 +31,11 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
-  - [[file:project-ideas.org][project-ideas.org]] :: Notes on project ideas I have, since my dynamic jspwiki is completely broken. >:(
+  - [[file:sql-basics.org][sql-basics.org]] :: SQL basics, like it says.  Not much to it, at present, but who knows, maybe I'll flesh it out a
+       bit later.
+
+  - [[file:project-ideas.org][project-ideas.org]] :: Notes on project ideas I have, since my dynamic jspwiki is completely broken. >:(  (Actually, I
+       got it fixed.  See http://web.how-hard-can-it-be.com/wiki.)
 
   - [[file:Linux][Linux]] :: W000!  Linux!
        

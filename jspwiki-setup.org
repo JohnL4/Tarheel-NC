@@ -214,6 +214,19 @@ It's also in my Google Drive root at present.
     "jspwiki.log", I'd know what path was being attempted.  As it happens, I made the directory
     read/write by user:group tomcat8:tomcat8, so I get no errors.
 
+*** NOTE: Other possible locations for this config file (=jspwiki.properties=)
+
+    #+BEGIN_EXAMPLE
+      =========================== ./jspwiki-builder-2.11.0.M6-source-release.zip ==========================
+           7017  2017-03-14 20:02   jspwiki-builder-2.11.0.M6/jspwiki-util/src/test/resources/ini/jspwiki.properties
+          44895  2019-08-11 18:47   jspwiki-builder-2.11.0.M6/jspwiki-main/src/main/resources/ini/jspwiki.properties
+           7017  2017-03-14 20:02   jspwiki-builder-2.11.0.M6/jspwiki-main/src/test/resources/ini/jspwiki.properties
+      =========================== ./jspwiki-main-2.11.0.M6-sources.jar ==========================
+          43820  2019-12-12 20:45   ini/jspwiki.properties
+      =========================== ./jspwiki-main-2.11.0.M6.jar ==========================
+          43820  2019-12-12 20:49   ini/jspwiki.properties
+    #+END_EXAMPLE
+    
 * =catalina.policy= hijinks
 
   *(NOTE: I am certain this section isn't necessary, or even a good idea, since the specified path

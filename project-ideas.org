@@ -23,6 +23,9 @@
 
   Notes on project ideas.  Don't steal muh project ideas without crediting me.
 
+  (Note that I've fixed (for some value of "fixed") my wiki since I created this file, so you'll probably find a more
+  up-to-date list at http://web.how-hard-can-it-be.com/wiki/Wiki.jsp?page=ProjectIdeas.)
+
 * Language-Parsing Tools written in Haskell
 
   For VB.NET, C#.
