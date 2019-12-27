@@ -117,7 +117,7 @@
 
    #+BEGIN_SRC sql
      SELECT e.EntityName
-             , COUNT(*) as TagCount  -- Counts rows, requires GROUP BY clause (below)
+             , COUNT(*) AS TagCount  -- Counts rows, requires GROUP BY clause (below)
          FROM Entity e
              JOIN EntityTag et ON et.EntityID = e.EntityID
              JOIN Tag t ON t.TagID = et.TagID
@@ -126,8 +126,8 @@
          HAVING TagCount = 2
    #+END_SRC
 
-   (Or something.  I haven't actually set this up and tested it.  You could probably also do this with an "inner
-   SELECT", but that might be (a lot) less efficient.)
+   (Or something.  I haven't actually set this up and tested it.  [Narrator: it works.]  You could
+   probably also do this with an "inner SELECT", but that might be (a lot) less efficient.)
 
    (Returns the names of all entities that have both 'Flying' and 'Walking' tags.  Here, we're joining all three tables
    together into one monstrous virtual table and specifying how to match the rows up (otherwise, we'd wind up with a
@@ -177,6 +177,13 @@
    =DELETE EntityTag WHERE EntityID = 1 AND TagID = 7=
 
 * Moar Knowledge
+
+  You can fool around with SQL by installing SQLiteStudio from https://sqlitestudio.pl/.
+
+  =sqlite= is a well-known lightweight implementation of a SQL database that doesn't get too
+  complicated (so, not multi-user, no transactions, etc.  Although it may have come some distance
+  since I last used it -- anyway, if you want a serious database that can handle concurrency, you
+  should try https://www.postgresql.org/).
 
   https://www.lynda.com/SQL-training-tutorials/446-0.html?category=developer_50
 
