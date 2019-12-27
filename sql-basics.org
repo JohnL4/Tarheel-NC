@@ -71,7 +71,7 @@
 
    Table name: Tag
 
-   | *TagID* | *Tag*   |
+   | *TagID* | *TagName*   |
    |       1 | Flying  |
    |       2 | Walking |
    |       3 | Yellow  |
@@ -121,7 +121,7 @@
          FROM Entity e
              JOIN EntityTag et ON et.EntityID = e.EntityID
              JOIN Tag t ON t.TagID = et.TagID
-         WHERE t.Tag IN ('Flying', 'Walking')
+         WHERE t.TagName IN ('Flying', 'Walking')
          GROUP BY e.EntityName
          HAVING TagCount = 2
    #+END_SRC
@@ -152,14 +152,14 @@
     #+BEGIN_SRC sql
       SELECT e.EntityName
           FROM Entity e
-          WHERE EXISTS (SELECT t.Tag
+          WHERE EXISTS (SELECT t.TagName
                           FROM Tag t
                               JOIN EntityTag et on et.TagID = t.TagID AND et.EntityID = e.EntityID
-                          WHERE t.Tag = 'Flying')
-              AND EXISTS (SELECT t.Tag
+                          WHERE t.TagName = 'Flying')
+              AND EXISTS (SELECT t.TagName
                           FROM Tag t
                               JOIN EntityTag et on et.TagID = t.TagID AND et.EntityID = e.EntityID
-                          WHERE t.Tag = 'Walking')
+                          WHERE t.TagName = 'Walking')
     #+END_SRC
 
     The reason this is less efficient is that we get essentially nested loops, where we iterate over the Entity rows,
@@ -175,7 +175,7 @@
 
    (Fix a misspelling.)
    
-   =UPDATE Tag SET Tag = 'Walking' WHERE Tag = 'Wlaking'=
+   =UPDATE Tag SET TagName = 'Walking' WHERE TagName = 'Wlaking'=
 
 ** DELETE -- Deletes a row from a table
 
