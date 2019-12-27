@@ -1,16 +1,21 @@
 # -*- org -*-
 #+TITLE: Notes on JSPWiki Setup
 #+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
-#+OPTIONS: author:nil creator:t H:9
-#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
 
-This file/page/entry is some notes on how I got JSPWiki running on Tomcat8 on an Ubuntu 16.04 LTS
-image running on an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance.
 
-It's an edited version of a question I posted to the users' mailing list.
+* Overview 
 
-It's also in my Google Drive root at present.
+  This file/page/entry is some notes on how I got JSPWiki running on Tomcat8 on Java 8 on an Ubuntu
+  16.04 LTS image running on an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance.
+
+  It's an edited version of a question I posted to the users' mailing list.
+
+  It's also in my Google Drive root at present.
+
+  See [[#operations][Operations]] for info on things you can do once it's installed and running.
 
 * Initial Setup: Tomcat 8
 
@@ -52,7 +57,7 @@ It's also in my Google Drive root at present.
          =Login.jsp=).
   - /usr/share/tomcat8 :: The binaries for the Tomcat server itself.
   - /var/lib/tomcat8 :: This is basically where Tomcat apps live (unless they're configured with
-       different paths on a per-app basic with the context XMLs in
+       different paths on a per-app basis with the context XMLs in
        =/etc/tomcat8/Catalina/localhost=, something I don't think you need to worry about to run
        JSPWiki).
     - webapps :: Where your war file goes (it should be automatically unzipped as soon as you drop
@@ -66,6 +71,27 @@ It's also in my Google Drive root at present.
   I also installed =authbind=, in order to bind to ports < 1023 without running as root.  Can't
   remember where I saw this, but it's pretty much everywhere.
        
+* Upgrading Tomcat from 8.0 to 8.5
+
+  As of <2019-06-03 Mon>, Tomcat 8.5 does not seem to be available on aptitude/get-apt, so we'll
+  have to install by hand.
+
+** Step 1: Download
+
+   I'm guessing we really only need Core and Full docs.
+
+   We can probably deploy jspwiki ourselves w/out using the Deployer, nor do we need JMX remote
+   access (sounds like it would just open up another attack surface to manage), nor we need Web
+   Services (I think).
+
+** Step 2: Inspect downloaded package contents to ascertain structure before deploying
+
+*** We may need to implement some =init= scripts to bring it up when the system boots
+
+    See =/etc/init.d=
+
+    
+
 * JSPWiki
   
   So, I downloaded jspwiki.war 2.10.2, renamed it to "wiki.war" (because the context path should
@@ -275,6 +301,13 @@ It's also in my Google Drive root at present.
   #+END_EXAMPLE
   
 * Operations
+  :PROPERTIES:
+  :CUSTOM_ID: operations
+  :END:
 
   - Restart the daemon :: =/etc/init.d/tomcat8 restart=
        
+  - Figure out which version of Tomcat you have :: Run =/usr/share/tomcat8/bin/version.sh=
+
+  - Back up JSPWiki data before an upgrade :: Pages and attachments are in =/usr/share/jspwiki=.
+       tar | gzip 'em up.

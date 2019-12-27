@@ -9,3 +9,4 @@ Orgzly
 **/*.o
 **/*.aux
 **/*.html
+/.DS_Store

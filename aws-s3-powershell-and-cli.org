@@ -4,9 +4,9 @@
 #+OPTIONS: author:nil creator:t H:9
 #+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
-#+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
-#+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
-#+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+# #+HTML_HEAD: <link href="/styles/toc.css" rel="stylesheet" type="text/css">
+# #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
+# #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
 
 # See org-mode explainer at the bottom of this file.
 
@@ -81,6 +81,9 @@
     For the CLI, set an environment variable:
 
     : export AWS_PROFILE=JohnS3
+
+    (On Linux, =cat ~/.aws/credentials= will tell you what credentials are available on your system,
+    in case you forgot (like I do, all the time).)
 
 ***** DONE Test
       CLOSED: [2018-12-09 Sun 12:40]
