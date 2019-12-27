@@ -101,6 +101,16 @@
    |            10 |          4 |       2 |
    |            11 |          4 |       8 |
 
+** Sample database load script
+
+   Just for grins, I took this for a test run using SQLiteStudio.  Here's the load script so you don't have to type all
+   that data in yourself:
+
+   [[file:SQL/play.sql][SQL/play.sql]]
+
+   (Note to self: I changed the metadata on this particular object in the S3 bucket to set =Content-type= to
+   =text/plain=.  There's probably a wildcard way to do it, but it might need to be done after a sync?)
+
 * The four SQL verbs
 
   Well, the four main ones.
