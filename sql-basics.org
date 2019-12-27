@@ -1,0 +1,183 @@
+# -*- org -*-
+#+TITLE: SQL Basics for Smart People
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* Overview
+
+  Some simple SQL (Structured Query Language) basics for smart people.
+
+* Example: Entity Database With Tags
+
+  SQL is a bunch of tables, with rows and columns.
+
+  Say you have a "database" of "entities" (which I'll assume are basically BLOBs -- binary large objects) and you want
+  them tagged with various arbitrary tags.
+
+  So, like:
+
+  - Gryphon (entity)
+    - flying
+    - walking
+    - yellow
+  - Phoenix (entity)
+    - flying
+    - rainbow
+    - fast
+  - Gelatinous cube (entity)
+    - walking
+    - pink
+    - slow
+  - Orc (entity)
+    - walking
+    - green
+
+  And you want to store them in a database so you can query against tags (say "flying" AND "walking").
+
+  So, you'd have three tables:
+
+  - the entities themselves
+  - the tags themselves (so you can do things like present the user with a warning ="The tag 'wlaking' doesn't
+    exist. Are you sure you want to create a new tag?"=
+  - the connections between entities and tags
+
+** Entities
+
+   Table name: Entity
+
+   | *EntityID* | *EntityName*    | *EntityBlob*         |
+   |          1 | Gryphon         | /gryphonBlob/        |
+   |          2 | Phoenix         | /phoenixBlob/        |
+   |          3 | Gelatinous Cube | /gelatinousCubeBlob/ |
+   |          4 | Orc             | /orcBlob/            |
+
+** Tags
+
+   Table name: Tag
+
+   | *TagID* | *Tag*   |
+   |       1 | Flying  |
+   |       2 | Walking |
+   |       3 | Yellow  |
+   |       4 | Rainbow |
+   |       5 | Fast    |
+   |       6 | Pink    |
+   |       7 | Slow    |
+   |       8 | Green   |
+
+** Gerund/Cross-reference
+
+   Hard to know what to call these types of tables.  I've seen two different names for them.  This is how you do
+   "many-to-many" relationships (each entity has many tags, and each tag tags many entities).
+
+   Table name: EntityTag
+
+   | *EntityTagID* | *EntityID* | *TagID* |
+   |             1 |          1 |       1 |
+   |             2 |          1 |       2 |
+   |             3 |          1 |       3 |
+   |             4 |          2 |       1 |
+   |             5 |          2 |       4 |
+   |             6 |          2 |       5 |
+   |             7 |          3 |       2 |
+   |             8 |          3 |       6 |
+   |             9 |          3 |       7 |
+   |            10 |          4 |       2 |
+   |            11 |          4 |       8 |
+
+* The four SQL verbs
+
+  Well, the four main ones.
+
+** SELECT -- Selects rows out of a table
+
+   =SELECT * FROM Entity=
+   
+   (Selects all the columns from the Entity table.)
+
+   =SELECT EntityName FROM Entity=
+
+   (Selects just the name column from the table.)
+
+   #+BEGIN_SRC sql
+     SELECT e.EntityName
+             , COUNT(*) as TagCount  -- Counts rows, requires GROUP BY clause (below)
+         FROM Entity e
+             JOIN EntityTag et ON et.EntityID = e.EntityID
+             JOIN Tag t ON t.TagID = et.TagID
+         WHERE t.Tag IN ('Flying', 'Walking')
+         GROUP BY e.EntityName
+         HAVING TagCount = 2
+   #+END_SRC
+
+   (Or something.  I haven't actually set this up and tested it.  You could probably also do this with an "inner
+   SELECT", but that might be (a lot) less efficient.)
+
+   (Returns the names of all entities that have both 'Flying' and 'Walking' tags.  Here, we're joining all three tables
+   together into one monstrous virtual table and specifying how to match the rows up (otherwise, we'd wind up with a
+   cross-product between all the rows, which is (usually) not what you want.))
+
+   (In general, SQL strings use single quotes.)
+
+   (Technical note: if you were parameterizing this query, you'd probably want to pass the desired tags in as a
+   table-typed parameter (i.e., a collection of strings, not a single string) and have another JOIN clause with the
+   passed-in table of tag names.)
+
+*** Inner SELECT
+
+    #+BEGIN_SRC sql
+      SELECT e.EntityName
+          FROM Entity e
+          WHERE EXISTS (SELECT t.Tag
+                          FROM Tag t
+                              JOIN EntityTag et on et.TagID = t.TagID AND et.EntityID = e.EntityID
+                          WHERE t.Tag = 'Flying')
+              AND EXISTS (SELECT t.Tag
+                          FROM Tag t
+                              JOIN EntityTag et on et.TagID = t.TagID AND et.EntityID = e.EntityID
+                          WHERE t.Tag = 'Walking')
+    #+END_SRC
+
+    The reason this is less efficient is that we get essentially nested loops, where we iterate over the Entity rows,
+    and, for each row, execute two more SELECT statements, querying the database in a loop with different parameters.  A
+    lot of SQL engines can key off the EXISTING keyword and get smart with optimizations, but, still, inner SELECTS can
+    get you into a lot of trouble, performance-wise.
+
+** INSERT -- Inserts rows into a table
+
+   =INSERT Entity (EntityName, EntityBlob) VALUES ('Unicorn', /unicornBlob/)=
+
+** UPDATE -- Updates an existing row in a table
+
+   (Fix a misspelling.)
+   
+   =UPDATE Tag SET Tag = 'Walking' WHERE Tag = 'Wlaking'=
+
+** DELETE -- Deletes a row from a table
+
+   (In real systems, this isn't often used.  Instead, we usually just UPDATE a row to SET a flag to indicate that it's
+   "logically" deleted.)
+
+   =DELETE EntityTag WHERE EntityID = 1 AND TagID = 7=
+
+* Moar Knowledge
+
+  https://www.lynda.com/SQL-training-tutorials/446-0.html?category=developer_50
+
+  Or this, I dunno: https://learntocodewith.me/posts/sql-guide/

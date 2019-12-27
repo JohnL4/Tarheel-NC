@@ -1,12 +1,24 @@
 # -*- mode: org; fill-column: 100; flyspell-mode: 1 -*-
 #+TITLE: Guide to Haskell for the Absolute Beginner
-#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
-#+OPTIONS: author:nil creator:t H:9
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
 #+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
-#+HTML_HEAD: <link rel="stylesheet" href="/org-mode.css" type="text/css"/>
-# #+HTML_HEAD: <link rel="stylesheet" href="/styles/toc.css" type="text/css">
-# #+HTML_HEAD: <script src="/scripts/jquery-3.3.1.js" type="text/javascript"></script>
-# #+HTML_HEAD: <script src="/scripts/toc-manipulation.js" type="text/javascript"></script>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
 #+BEGIN_EXPORT html
 <script type="text/javascript">
   PAGE_URL = "http://tarheel-nc.s3-website-us-east-1.amazonaws.com/Haskell/beginners-guide-to-haskell.html";
@@ -321,7 +333,8 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
     is =ghci=.
 
     You can get started with the entire shebang at https://haskell.org.  Download and install the
-    "Haskell Platform" and you'll be off to the races.
+    "Haskell Platform" and you'll be off to the races.
+
 
 * DONE What is Haskell? (lazy, statically-typed, pure functional)
   CLOSED: [2019-02-18 Mon 22:02]
@@ -542,7 +555,7 @@ Even so, these sorts of things can Make Life Better(tm), so that's another reaso
   being:
 
   #+BEGIN_CENTER
-  $f(x) = x * 1.8 + 32$
+  $f(x) = x \times 1.8 + 32$
   #+END_CENTER
   
   Haskell functions don't have the parentheses.  They just use spaces.  In fact, when you see two

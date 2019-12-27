@@ -1,10 +1,23 @@
 # -*- org -*-
 #+TITLE: Notes on JSPWiki Setup
-#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
 #+OPTIONS: author:nil creator:t H:9 ^:{}
 #+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="org-mode.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
 
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
 
 * Overview 
 
@@ -91,7 +104,6 @@
     See =/etc/init.d=
 
     
-
 * JSPWiki
   
   So, I downloaded jspwiki.war 2.10.2, renamed it to "wiki.war" (because the context path should
@@ -130,100 +142,115 @@
    
    (in catalina.2017-01-08.log)
 
-   I grabbed jspwiki.properties with:
+** =jspwiki-custom-properties= -- Configuration of various filepaths on host system
 
-   : unzip jspwiki-war-2.10.2.jar ini/jspwiki.properties
+    I grabbed jspwiki.properties with:
 
-   renamed it =jspwiki-custom.properties=, modified it as follows:
+    : unzip jspwiki-war-2.10.2.jar ini/jspwiki.properties
 
-   #+BEGIN_EXAMPLE
-     --- jspwiki.properties  2017-01-21 05:51:16.428657332 +0000
-     +++ jspwiki-custom.properties   2017-01-21 05:48:36.894315773 +0000
-     @@ -46,7 +46,7 @@
-      #  Example:
-      #  jspwiki.baseURL = http://jspwiki.apache.org/
-      #
-     -jspwiki.baseURL=http://localhost:8080/JSPWiki/
-     +jspwiki.baseURL=http://web.how-hard-can-it-be.com/wiki/
+    renamed it =jspwiki-custom.properties=, modified it as follows:
 
-      #
-      #  Which page provider class to use.  Possibilities are:
-     @@ -97,7 +97,7 @@
-      #
-      #  Determines where wiki files are kept for FileSystemProvider i.e.:
-      #
-     -#  jspwiki.fileSystemProvider.pageDir = /p/web/www-data/jspwiki/
-     +jspwiki.fileSystemProvider.pageDir = /usr/share/jspwiki/pages
-      #
-      #  If you're using Windows, then you must duplicate the backslashes.
-      #  For example, use:
-     @@ -117,7 +117,7 @@
-      #  The working directory is used to cache things like Lucene search
-      #  results.
-      #
-     -#jspwiki.workDir =
-     +jspwiki.workDir = /usr/share/jspwiki/work
+    #+BEGIN_SRC diff
+      --- jspwiki.properties  2017-01-21 05:51:16.428657332 +0000
+      +++ jspwiki-custom.properties   2017-01-21 05:48:36.894315773 +0000
+      @@ -46,7 +46,7 @@
+       #  Example:
+       #  jspwiki.baseURL = http://jspwiki.apache.org/
+       #
+      -jspwiki.baseURL=http://localhost:8080/JSPWiki/
+      +jspwiki.baseURL=http://web.how-hard-can-it-be.com/wiki/
 
-      #
-      #  ATTACHMENTS:
-     @@ -139,7 +139,7 @@
-      #  If you're using Windows, then you must duplicate the backslashes.
-      #  For example, use:
-      #
-     -#  jspwiki.basicAttachmentProvider.storageDir = C:\\Data\\jspwiki
-     +jspwiki.basicAttachmentProvider.storageDir = /usr/share/jspwiki/attachments
-      #
-      #  If not provided, will default to a "jspwiki-files" directory
-      #  in the user's home folder.
-     @@ -376,6 +376,10 @@
-      jspwiki.specialPage.Preferences = UserPreferences.jsp
-      jspwiki.specialPage.FindPage = FindPage.jsp
+       #
+       #  Which page provider class to use.  Possibilities are:
+      @@ -97,7 +97,7 @@
+       #
+       #  Determines where wiki files are kept for FileSystemProvider i.e.:
+       #
+      -#  jspwiki.fileSystemProvider.pageDir = /p/web/www-data/jspwiki/
+      +jspwiki.fileSystemProvider.pageDir = /usr/share/jspwiki/pages
+       #
+       #  If you're using Windows, then you must duplicate the backslashes.
+       #  For example, use:
+      @@ -117,7 +117,7 @@
+       #  The working directory is used to cache things like Lucene search
+       #  results.
+       #
+      -#jspwiki.workDir =
+      +jspwiki.workDir = /usr/share/jspwiki/work
 
-     +# From docs on AdminPages (https://jspwiki-wiki.apache.org/Wiki.jsp?page=AdminPages):
-     +jspwiki-x.adminui.enable=true
-     +# jspwiki-x.securityconfig.enable=true
-     +
-      #############################################################################
-      #
-      #  Plugin search paths.
-     @@ -600,7 +604,7 @@
-      #  ok to leave this un-set, as long as users know that their groups could
-      #  "disappear" if the wiki app is ever redeployed.
+       #
+       #  ATTACHMENTS:
+      @@ -139,7 +139,7 @@
+       #  If you're using Windows, then you must duplicate the backslashes.
+       #  For example, use:
+       #
+      -#  jspwiki.basicAttachmentProvider.storageDir = C:\\Data\\jspwiki
+      +jspwiki.basicAttachmentProvider.storageDir = /usr/share/jspwiki/attachments
+       #
+       #  If not provided, will default to a "jspwiki-files" directory
+       #  in the user's home folder.
+      @@ -376,6 +376,10 @@
+       jspwiki.specialPage.Preferences = UserPreferences.jsp
+       jspwiki.specialPage.FindPage = FindPage.jsp
 
-     -#jspwiki.xmlGroupDatabaseFile = /etc/tomcat/groupdatabase.xml
-     +jspwiki.xmlGroupDatabaseFile = /etc/jspwiki/groupdatabase.xml
+      +# From docs on AdminPages (https://jspwiki-wiki.apache.org/Wiki.jsp?page=AdminPages):
+      +jspwiki-x.adminui.enable=true
+      +# jspwiki-x.securityconfig.enable=true
+      +
+       #############################################################################
+       #
+       #  Plugin search paths.
+      @@ -600,7 +604,7 @@
+       #  ok to leave this un-set, as long as users know that their groups could
+       #  "disappear" if the wiki app is ever redeployed.
 
-      #  USER DATABASE
-      #  User's wiki profiles are stored in a UserDatabase. The default user database
-     @@ -621,7 +625,7 @@
-      #  ok to leave this un-set, as long as users know that their profiles could
-      #  "disappear" if the wiki app is ever redeployed.
+      -#jspwiki.xmlGroupDatabaseFile = /etc/tomcat/groupdatabase.xml
+      +jspwiki.xmlGroupDatabaseFile = /etc/jspwiki/groupdatabase.xml
 
-     -#jspwiki.xmlUserDatabaseFile = /etc/tomcat/userdatabase.xml
-     +jspwiki.xmlUserDatabaseFile = /etc/jspwiki/userdatabase.xml
+       #  USER DATABASE
+       #  User's wiki profiles are stored in a UserDatabase. The default user database
+      @@ -621,7 +625,7 @@
+       #  ok to leave this un-set, as long as users know that their profiles could
+       #  "disappear" if the wiki app is ever redeployed.
 
-      # You can also use a JDBC database for storing user profiles,
-      # to be configured below in the JDBC section. See the online
-     @@ -880,7 +884,7 @@
-      log4j.appender.FileLog = org.apache.log4j.RollingFileAppender
-      log4j.appender.FileLog.MaxFileSize    = 10MB
-      log4j.appender.FileLog.MaxBackupIndex = 14
-     -log4j.appender.FileLog.File = jspwiki.log
-     +log4j.appender.FileLog.File = /var/log/jspwiki/jspwiki.log
-      log4j.appender.FileLog.layout = org.apache.log4j.PatternLayout
-      log4j.appender.FileLog.layout.ConversionPattern=%d [%t] %p %c %x - %m%n
-   #+END_EXAMPLE
+      -#jspwiki.xmlUserDatabaseFile = /etc/tomcat/userdatabase.xml
+      +jspwiki.xmlUserDatabaseFile = /etc/jspwiki/userdatabase.xml
+
+       # You can also use a JDBC database for storing user profiles,
+       # to be configured below in the JDBC section. See the online
+      @@ -880,7 +884,7 @@
+       log4j.appender.FileLog = org.apache.log4j.RollingFileAppender
+       log4j.appender.FileLog.MaxFileSize    = 10MB
+       log4j.appender.FileLog.MaxBackupIndex = 14
+      -log4j.appender.FileLog.File = jspwiki.log
+      +log4j.appender.FileLog.File = /var/log/jspwiki/jspwiki.log
+       log4j.appender.FileLog.layout = org.apache.log4j.PatternLayout
+       log4j.appender.FileLog.layout.ConversionPattern=%d [%t] %p %c %x - %m%n
+    #+END_SRC 
    
-   and copied it to =/var/lib/tomcat8/webapps/wiki/WEB-INF/classes=.
+    and copied it to =/var/lib/tomcat8/webapps/wiki/WEB-INF/classes=.
 
-   This is all somewhat counterintuitive, but basically (I think), this directory is on the
-   classpath for the webapp, even though it's empty.  (There's also a =lib= directory that has the
-   webapp's .jar files, as opposed to single .class files.)
+    This is all somewhat counterintuitive, but basically (I think), this directory is on the
+    classpath for the webapp, even though it's empty.  (There's also a =lib= directory that has the
+    webapp's .jar files, as opposed to single .class files.)
 
-   *Note the complete pathname for =jspwiki.log= above.*  Now were I to get a permission error on
-   "jspwiki.log", I'd know what path was being attempted.  As it happens, I made the directory
-   read/write by user:group tomcat8:tomcat8, so I get no errors.
+    *Note the complete pathname for =jspwiki.log= above.*  Now were I to get a permission error on
+    "jspwiki.log", I'd know what path was being attempted.  As it happens, I made the directory
+    read/write by user:group tomcat8:tomcat8, so I get no errors.
 
+*** NOTE: Other possible locations for this config file (=jspwiki.properties=)
+
+    #+BEGIN_EXAMPLE
+      =========================== ./jspwiki-builder-2.11.0.M6-source-release.zip ==========================
+           7017  2017-03-14 20:02   jspwiki-builder-2.11.0.M6/jspwiki-util/src/test/resources/ini/jspwiki.properties
+          44895  2019-08-11 18:47   jspwiki-builder-2.11.0.M6/jspwiki-main/src/main/resources/ini/jspwiki.properties
+           7017  2017-03-14 20:02   jspwiki-builder-2.11.0.M6/jspwiki-main/src/test/resources/ini/jspwiki.properties
+      =========================== ./jspwiki-main-2.11.0.M6-sources.jar ==========================
+          43820  2019-12-12 20:45   ini/jspwiki.properties
+      =========================== ./jspwiki-main-2.11.0.M6.jar ==========================
+          43820  2019-12-12 20:49   ini/jspwiki.properties
+    #+END_EXAMPLE
+    
 * =catalina.policy= hijinks
 
   *(NOTE: I am certain this section isn't necessary, or even a good idea, since the specified path
@@ -254,7 +281,7 @@
   (case-sensitive?) via the public "create your own account!" page.  Once that was done, I was able
   to close off the wiki with the following edits.
 
-  #+BEGIN_EXAMPLE
+  #+BEGIN_SRC diff
     --- jspwiki.policy.orig 2017-01-21 04:44:47.490238637 +0000
     +++ jspwiki.policy      2017-01-21 05:22:08.370383295 +0000
     @@ -49,8 +49,8 @@
@@ -298,8 +325,44 @@
     +    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editPreferences";
     +    permission org.apache.wiki.auth.permissions.WikiPermission "*", "editProfile";
      };
-  #+END_EXAMPLE
+  #+END_SRC 
   
+* Upgrading JSPWiki
+
+** Download
+   
+  Use =links= to download .war file (=d= is "Download" keystroke, but you can hit ESC and then
+  select "Download" from the "Link" menu).
+
+** RESEARCH-DONE Backup current data
+   CLOSED: [2019-12-25 Wed 20:58]
+
+   - CLOSING NOTE [2019-12-25 Wed 20:58] \\
+     Found out where the data files are stored.
+     
+   ...which is in the location specified by the following settings in =jspwiki-custom.properties=:
+
+   : jspwiki.fileSystemProvider.pageDir = /usr/share/jspwiki/pages
+   : jspwiki.basicAttachmentProvider.storageDir = /usr/share/jspwiki/attachments
+
+** RESEARCH-TODO Extract config file (TODO: from...?) and modify
+
+*** Change base name to match deployed file (temporarily)
+
+    : jspwiki.baseURL=http://web.how-hard-can-it-be.com/wiki/
+
+*** Might want to change where log entries go, temporarily
+
+    ...so two different processes don't try to write to the same log file (which, at best, might
+    result in some confusing log output):
+
+    : log4j.appender.FileLog.File = /var/log/jspwiki/jspwiki.log
+   
+** Rename .war file and deploy
+
+   Copy in config file modified above and you should have two apps running side by side and editing
+   the same text files and attachments.
+
 * Operations
   :PROPERTIES:
   :CUSTOM_ID: operations

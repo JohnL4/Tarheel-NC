@@ -1,9 +1,23 @@
 # -*- org -*-
 #+TITLE: Notes on Errors Encountered While Trying to Use Newtype to Declare a Type an Instance of Functor
-#+COLUMNS: %8TODO %10WHO %3PRIORITY %3HOURS(HRS) %80ITEM
-#+OPTIONS: author:nil creator:t H:9
-#+HTML_HEAD: <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans" rel="stylesheet">
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
 
 * Definition of Functor
 
