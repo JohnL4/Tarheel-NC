@@ -139,6 +139,14 @@
    table-typed parameter (i.e., a collection of strings, not a single string) and have another JOIN clause with the
    passed-in table of tag names.)
 
+*** Basic SELECT syntax
+
+    Basically, it's:
+
+    =SELECT <columns> FROM <table(s)> [WHERE <condition>] [ORDER BY <columns>]=
+
+    There are lots of variations and clever extra little fillips, as you can see above.
+
 *** Inner SELECT
 
     #+BEGIN_SRC sql
