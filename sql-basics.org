@@ -81,10 +81,11 @@
    |       7 | Slow    |
    |       8 | Green   |
 
-** Gerund/Cross-reference
+** Join/Bridge/Junction/Gerund/Cross-reference Table
 
-   Hard to know what to call these types of tables.  I've seen two different names for them.  This is how you do
-   "many-to-many" relationships (each entity has many tags, and each tag tags many entities).
+   Hard to know what to call these types of tables.  I've seen several different names for them.
+   This is how you do "many-to-many" relationships (each entity has many tags, and each tag tags
+   many entities).
 
    Table name: EntityTag
 
