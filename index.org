@@ -27,6 +27,9 @@
 
   :)
 
+  The source files for this web site are stored at https://github.com/JohnL4/Tarheel-NC, if you're interested in
+  tracking changes over time.
+
 * Stuff Of Interest
 
   (Depending on how you define "interest", of course.)  Most recent at top.

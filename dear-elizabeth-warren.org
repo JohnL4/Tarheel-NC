@@ -1,0 +1,89 @@
+# -*- org -*-
+#+TITLE: Dear Elizabeth Warren
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* Overview 
+
+  My thoughts about how Elizabeth Warren needs to run her campaign.  [TODO: *NOT YET FINISHED*.]
+
+  Yes, yes, I'm a clueless privileged white male, yada yada, but this here is my printing press, set up in the middle of
+  the village green.
+  
+* Dear Elizabeth Warren,
+
+  [TODO: graceful opening.]
+  
+** Racism (and sexism, for that matter)
+
+   Stop saying what wonderful things you're going to do for black people to right past wrongs.  I support it, but you're
+   going to scare the white folks.  Instead, /enlist/ the white folks.  Black folks are going to be smart enough when
+   you speak to the white folks about fairness.
+
+   Lots of white folks have a strong sense of fair play.  Speak to that.  Who wants to win by cheating?  Who wants to be
+   a part of this terrible system we have now?  Why have artificial barriers to equal opportunity for all?  Talk less
+   about what /you're/ going to do, and more about what /we're/ going to do.  We're going to dismantle things.  We're
+   going to give up a little power (we can spare it, and we've done it in the past).
+
+   The benefits to the country will be enormous if we fully utilize everybody's capability.  If we stopped holding women
+   and minorities back in STEM, for instance, imagine how much easier it would be to "find good help".
+
+   If we had more female corporate leadership and less testerone, imagine how much more cooperative corporate culture
+   would be.  (I mean, at the workplace, not in terms of competition between corporations.)  Imagine how much more
+   productivity we'd get out of people who had room in their lives for childcare and eldercare.  Imagine the benefits of
+   quality public daycare.  /Message this./  Less about what /you're/ going to do and more about what /we're/ going to
+   do, in electing you.  (I know, you already say "In a Warren administration...", so maybe I'm misinterpreting, but it
+   sounds like "what /I'm/ going to do is...".)
+
+   If we stopped wasting our resources on racist policing, imagine how much more effective we could be in policing
+   actual crime, both because our resources would be better directed and the citizenry would be more amenable/helpful.
+   Message that.
+
+   +How do we do that?  Put a stop to toxic masculinity in elementary school.  I know there are tons of teachers who
+   already want to do that; maybe we should hire (and retain) more of them.+
+
+   Imagine how much electing a woman president, just by itself, would change the tone of the system (w.r.t. women).
+   That's an "us" thing, not a "you" thing.
+
+*** Past accomplishments by the folks in power at the time
+
+**** Civil War and 13th, 14th, and 15th Amendments
+
+     Not much of an "accomplishment", but white people did go to war over slavery, because it was wrong, plain and
+     simple.
+     
+**** 19th Amendment
+
+     Men gave women the right to vote.
+
+**** Civil Rights
+
+     White people were the deciding factor.  Black people couldn't do it alone.
+
+** Nuclear power
+
+   C'mon, fix the program.  The U.S. nuclear industry is in bad shape, I hear, so fix it; don't pitch it out.  Maybe you
+   weren't serious when you said "we're not going to build nuclear power in this country" (or whatever it was you said),
+   but this is a tribal identification you're aligning yourself with, not good policy.  Break that stereotype, let the
+   anti-nuclear left howl and springboard off of that, more to the center.
+
+** Coattails
+
+   You need to think about 'em.  You can't just win by yourself; you need to sweep a bunch of folks into Congress with
+   you (state/local folks would be nice, too).
