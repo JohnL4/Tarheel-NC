@@ -31,6 +31,9 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:Diaspora][Diaspora]] :: "hard science-fiction role-playing with fate*" (except the new version, still under
+       development as of <2020-01-01 Wed>, doesn't actually use [[https://www.faterpg.com/][Fate]]).
+
   - [[file:sql-basics.org][sql-basics.org]] :: SQL basics, like it says.  Not much to it, at present, but who knows, maybe I'll flesh it out a
        bit later.
 

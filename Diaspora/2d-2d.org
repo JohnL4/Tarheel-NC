@@ -1,0 +1,40 @@
+# -*- org -*-
+#+TITLE: Notes on 2d-2d Die Throws
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* 2d-2d probabilities
+
+  Dumb Python script:
+
+  #+BEGIN_SRC python
+    """
+    Print the value of every possible 2D - 2D throw in Diaspora Anabasis, for "analysis" via 'sort | uniq --count'.
+    """
+    for i in range(1,7):
+        for j in range(1,7):
+            for k in range(1,7):
+                for m in range(1,7):
+                    print( i + j - k - m)
+  #+END_SRC
+
+  [[file:2d-minus-2d-2-sided.svg][file:2d-minus-2d-2-sided.svg]]
+
+  [[file:2d-minus-2d.svg][file:2d-minus-2d.svg]]
+  
