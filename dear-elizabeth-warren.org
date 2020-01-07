@@ -29,6 +29,33 @@
 * Dear Elizabeth Warren,
 
   [TODO: graceful opening.]
+
+  I just sent you some more, so now I get to sound off.
+
+  It's the -isms, not the "economic anxiety".  Racism, sexism, nativism.  Yes, econ anxiety is part of the mix, but: our
+  economy is actually doing ok, and has been since the recovery* after '08.  Yes, people are afraid, but they're afraid
+  for their children, not themselves.  Their fear leads to hoarding behavior along fault lines that coincide with race:
+  More for the white people! Less for the undeserving poor!  The folks who put Trump in office are the "Bass Pro
+  Bourgeoisie" (thanks @RobTaber):  economically comfortable, but they're still afraid.
+
+  I know the recovery has been unbalanced and unfair.  Fewer people hold investments than before, the wealth gap
+  is much worse, we have outrageous work-scheduling algorithms like "clopenings" and 15-minute chunks of scheduling with
+  workers on-call but not paid to be, etc., etc.  That needs fixing, badly.  But I'm not sure those folks on the margins
+  of our economic society are voting for Trump, are they?  Maybe they're staying home, and we need to get them to turn
+  out, but the voters who put Trump in office (separate from the hardcore ones who proudly call themselves "deplorable")
+  are the ones for whom this sort of suffering is less immediate: the ones who have more-or-less comfortable incomes.
+  Joe the Plumber, for instance.
+
+  I think you need to salt your message of economic fairness with an appeal to those
+  comfortable-but-maybe-feeling-kinda-guilty Trump voters, the ones who wanted change but not the kind of chaos and
+  hatred they got with Trump.  If they're kind-hearted and fair-minded (and I think many of them are, really), you need
+  to appeal to that sense in them, and stop scaring them off by activating their old reflexes against "unfair
+  preferential treatment" for people who don't look or sound like them.
+
+  Black people aren't dumb.  They like Biden because they think he's a winner, and they think that because they think
+  white people think that.  The focus is on the white people (still) and that's where the victory is.  (Although, ya
+  know... once you get in office, don't /forget/ your (implied) promises to black people.  We really do need the
+  problems we've created by being racists.)
   
 ** Racism (and sexism, for that matter)
 
@@ -59,7 +86,7 @@
    already want to do that; maybe we should hire (and retain) more of them.+
 
    Imagine how much electing a woman president, just by itself, would change the tone of the system (w.r.t. women).
-   That's an "us" thing, not a "you" thing.
+   That's an "us" thing, not a "you" thing.  (Um, I'm not sure how you message that.)
 
 *** Past accomplishments by the folks in power at the time
 
@@ -70,7 +97,9 @@
      
 **** 19th Amendment
 
-     Men gave women the right to vote.
+     Men gave women the right to vote.  [Except... I just listened to a podcast episode of /Talking Politics/ ([[https://www.talkingpoliticspodcast.com/blog/2020/212-the-15th-and-the-19th][Episode
+     212]]) in which the 19th amendment passed because of appeals to racism and promises to white men that we wouldn't
+     allow black /women/ to vote, so... <shrug/> I dunno... /kinda???/]
 
 **** Civil Rights
 
@@ -78,10 +107,11 @@
 
 ** Nuclear power
 
-   C'mon, fix the program.  The U.S. nuclear industry is in bad shape, I hear, so fix it; don't pitch it out.  Maybe you
-   weren't serious when you said "we're not going to build nuclear power in this country" (or whatever it was you said),
-   but this is a tribal identification you're aligning yourself with, not good policy.  Break that stereotype, let the
-   anti-nuclear left howl and springboard off of that, more to the center.
+   The U.S. nuclear industry is
+   in bad shape, I hear, so fix it; don't pitch it out.  Maybe you weren't serious when you said "we're not going to
+   build nuclear power in this country" (or whatever it was you said), but this is a tribal identification you're
+   aligning yourself with, not good policy.  Break that stereotype, let the anti-nuclear left howl and springboard off
+   of that, more to the center.
 
 ** Coattails
 
