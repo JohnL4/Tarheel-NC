@@ -36,5 +36,7 @@
 
   [[file:2d-minus-2d-2-sided.svg][file:2d-minus-2d-2-sided.svg]]
 
+  In some cases (like to roll for success) we take the absolute value of 2d - 2d, and that looks like this:
+
   [[file:2d-minus-2d.svg][file:2d-minus-2d.svg]]
   
