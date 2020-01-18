@@ -34,6 +34,8 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:Orgzly][Orgzly]] :: Various notes files I generate using http://www.orgzly.com/ and feel like sharing.
+
   - [[file:Diaspora][Diaspora]] :: "hard science-fiction role-playing with fate*" (except the new version, still under
        development as of <2020-01-01 Wed>, doesn't actually use [[https://www.faterpg.com/][Fate]]).
 

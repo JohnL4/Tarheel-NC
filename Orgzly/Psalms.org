@@ -1,0 +1,168 @@
+# -*- org -*-
+#+TITLE: Notes on Psalms
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+# `num:nil' means "don't number sections/subsections".
+#+OPTIONS: author:nil creator:t H:9 ^:{} num:nil
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* The super-short list
+
+  19; 8; 121; 32; 126; 23 (the one everybody quotes)
+
+  (Dark mode: 22, 51, 55, 88, 137 (trigger warning: violence against children).)
+
+  I've been in a confirmation class the last few weeks as a mentor for a confirmand, and the
+  challenge this week (<2020-01-18 Sat>) was to "read some psalms".  I thought I'd make a
+  greatest-hits list for my confirmand and it's been a lot of fun, both reading psalms and trying to
+  figure out a super-short list.  These are the notes I took (using Orgzly), with some fleshing-out
+  (e.g., this section).
+
+* Greatest hits
+
+  ...by my memory, which is gloriously imperfect.
+  
+  Not many of these seem very happy.  I'm not sure if that's because these are the ones I remember,
+  or if Psalms is generally not so happy.  I think it's just my memory.
+
+** 23
+
+   "The Lord is my shepherd"
+   
+** 51
+
+   best sacrifice is a broken and contrite heart, supposedly by David after his first child died
+   
+** 22
+
+   Jesus said the first line of this on the cross
+   
+** 19
+
+   greatness of God; "words of my mouth, meditations of my heart"
+   
+** 55
+
+   betrayal by a friend
+   
+** 139
+
+   God knows us all
+   
+** 137
+
+   Lament in Babylon, with a horrible ending that never gets read in church
+   
+** 121
+
+   protection from God
+
+   I lift up my eyes to the hills....
+
+** 88
+
+   the bleakest, saddest Psalm of all, imo
+   
+* "Psalms Greatest Hits" sermon series at San Ramon Valley UMC
+
+  https://srvumc.org/sermon/sermon-archives/
+
+  Church is about 20 miles east of Oakland.  Some overlap with my "from-memory" list above.
+
+** 22
+
+   Absence.
+
+** 121
+
+   Trust.
+
+** 40 (new)
+
+   Presence.  New orientation.  (U2 set this Psalm to music in "40".)
+
+** 51
+
+   Confession.
+
+** 32 (new)
+
+   Grace.
+
+** 126 (new)
+
+   Joy.
+
+   May those who sow in tears
+       reap with shouts of joy.
+   Those who go out weeping,
+       bearing the seed for sowing,
+   shall come home with shouts of joy,
+       carrying their sheaves.
+
+** 8 (new)
+
+   Wonder.
+
+   what are human beings that you are mindful of them,
+       mortals that you care for them?
+
+** 19:1-6
+
+   Wonder.
+
+* Others at random
+** 1
+** 24
+
+   Seems a little more upbeat.
+
+** 25
+* Moar Random (using https://www.google.com/search?q=random+number)
+** 130
+** 48
+** 54
+** 79
+** 80
+** 109
+** 28
+** 92
+** 86
+** 150
+
+   praise
+   
+** 57
+** 111
+
+   lectionary, congregational praise
+   
+** 4
+** 149
+** 87
+
+   Lyrical praise of Jerusalem
+
+** 75
+** 59
+** 31
+
+   Mental health?
+
+** 15
+** 37
+** 125
