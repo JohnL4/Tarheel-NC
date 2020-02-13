@@ -1,0 +1,52 @@
+# -*- org -*-
+#+TITLE: The Independent Weekly's 2020 Primary Endorsements
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* Overview 
+
+  Endorsements from https://indyweek.com/.
+
+* National
+
+  | *Office*  | *Person*         | *Comments*                                                             |
+  | President | Elizabeth Warren |                                                                        |
+  | Senator   | Cal Cunningham   | straight white male, veteran, moderate, good funding                   |
+  |           | or Erica Smith   | progressive, black woman, no money or organization BUT started earlier |
+  | House     | David Price      |                                                                        |
+
+* State
+
+  | *Office*           | *Person*         | *Comments* |
+  | Gov.               | Roy Cooper       |            |
+  | Lt. Gov.           | Chaz Beasley     |            |
+  | Auditor            | Beth Wood        |            |
+  | Agriculture        | Jenna Wadsworth  |            |
+  | Treasurer          | Matt Leatherman  |            |
+  | Public Instruction | Jennifer Mangrum |            |
+
+* Orange County
+
+  | *Office*                           | *Person*             | *Comments* |
+  | House                              | Verla Insko          |            |
+  | Board of Commissioners, At-Large   | Amy Fowler           |            |
+  | Board of Commissioners, District 1 | Mark Dorosin         |            |
+  |                                    | and Jean Hamilton    |            |
+  | District Court 15B, Seat 3         | Hathaway Pendergrass |            |
+
