@@ -1,0 +1,87 @@
+# -*- org -*-
+#+TITLE: Notes for <Project Foo>
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* Overview 
+
+  Installing Tomcat 9 on Ubuntu Linux 4.4.0-89-generic (Xenial, 16.04LTS).
+
+* Notes
+
+** Download
+
+  Not available via =apt=.  At least, not without adding another repository from somewhere
+  (Apache?).
+
+  Downloaded with wget:
+
+  #+BEGIN_EXAMPLE
+    ip-172-30-0-82$ pwd
+    /home/ubuntu/Downloads
+
+    ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+  #+END_EXAMPLE
+
+** Expand archive
+
+   Into =/usr/share/apache-tomcat-9.0.31=
+
+** Configure init
+
+   See https://www.rosehosting.com/blog/install-tomcat-9-on-an-ubuntu-16-04-vps/
+
+   Or https://javabirder.wordpress.com/2016/02/18/install-tomcat-9-ubuntu/
+
+   : sudo useradd -r tomcat9 --shell /bin/false
+
+   (=-r= is "system user", i.e., no home directory, low uid, etc.)
+
+   I used the javabirder example, but the rosehosting =/etc/default/tomcat9= (I just copied the
+   =tomcat8= version, changed user/group names in the script, pointed to a different =JAVA_HOME=
+   (AdoptOpenJDK 11), set a smaller max heap size (since I already have a JVM running on this
+   machine for my wiki).
+
+   I also had to change one port setting in the =server.xml= config from 8005 to 8095, because I
+   guess it was colliding with my wiki tomcat instance.
+
+   It works (on port 8080), when testing locally (via =elinks http://localhost:8080=), but I can't
+   hit that port from outside the machine, I guess because of the firewall rules.
+
+** Configure AWS firewall rules to allow connections on ports 8080, 8443
+
+   Looks I'll need to create a new security group that allows those ports, and then apply that group
+   to the EC2 instance in question.
+
+   So: AWS Console | EC2 | Network & Security | Security Groups
+
+   Looks like there's something called "quicklaunch-1" that has what we want (plus another port,
+   9990, for whatever reason -- is that a common experimental port?).  Unfortunately, I can't attach
+   it to the existing network interface for my instance.  I guess I'd have to create a new network
+   interface, but then I worry that my IP address would change and drive dyndns nuts (my DNS
+   provider, dyn.com)
+
+   So, I just looked at my EC2 instance to see what networking security group was currently
+   configured, and it turns out I can edit that group on the fly, and it works.
+
+** TODO Allow access to manager GUIs from remote address
+
+   
+
+   
