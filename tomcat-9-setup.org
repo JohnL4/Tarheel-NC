@@ -1,5 +1,5 @@
 # -*- org -*-
-#+TITLE: Notes for <Project Foo>
+#+TITLE: Notes on Setting up Tomcat 9 on Java 11 (AdoptOpenJDK) on Ubuntu 16.04 Alongside Tomcat 8 on Java 8
 #+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
 # #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
 # Pandoc needs H:9; default is H:3.
@@ -21,8 +21,8 @@
 
 * Overview 
 
-  Installing Tomcat 9 on Ubuntu Linux 4.4.0-89-generic (Xenial, 16.04LTS).
-
+  As the title says, these are my notes on installing Tomcat 9 on Ubuntu Linux 4.4.0-89-generic (Xenial, 16.04LTS),
+  running on Java 11 from AdoptOpenJDK to run in parallel with an existing Tomcat 8 installation running on Java 8.
 
 * Getting Java 11 from AdoptOpenJDK.net
 
@@ -132,6 +132,7 @@
    #+BEGIN_SRC bash
      sudo groupadd -r sysport
      sudo usermod tomcat9 -a -G sysport
+     sudo usermod tomcat8 -a -G sysport
    #+END_SRC
 
 ** Authbind by group
