@@ -93,6 +93,9 @@
 
 * DONE Allow access to manager GUIs from remote address
   CLOSED: [2020-03-15 Sun 19:16]
+  :PROPERTIES:
+  :CUSTOM_ID: aws-firewall
+  :END:
 
   Update =context.xml= for two webapps:
 
@@ -123,11 +126,49 @@
    I need a common group that multiple accounts can share, that allows opening of low-numbered
    ports.
 
-   Maybe create a new group, say =sysport=.
+   Create a new group, say =sysport=.  (Could also have used =www-data=, a pre-existing group, but, eh.  No telling how
+   that's going to get repurposed by other software.)
 
    #+BEGIN_SRC bash
      sudo groupadd -r sysport
      sudo usermod tomcat9 -a -G sysport
    #+END_SRC
 
-   
+** Authbind by group
+
+   =/etc/authbind/byport/n=, where /n/ is the port number (80, 90, 443, 453, 8080, 8443)
+
+   You can create empty files (with =touch=), =chgrp= them to =sysport=, =chmod= them to make them group-executable, and
+   you should be off to the races.
+
+   (Will also need to allow access in AWS, see [[#aws-firewall][Allow access to manager GUIs from remote address]].)
+
+   *CRUCIAL POINT* that I somehow missed earlier: not only must you configure authbind properly, you need to actually
+    /run/ it.  It does not automagically run somehow.
+
+    #+BEGIN_SRC bash
+      sudo -E -u tomcat9 /usr/bin/authbind --deep sh -x /usr/share/apache-tomcat-9.0.31/bin/startup.sh
+    #+END_SRC 
+
+    (Note the invocation of =authbind=.)
+
+** Shutdown port 8095 conflict with Tomcat8
+
+   I have two instances of Tomcat running on my dinky AWS EC2 server, and both Tomcat8 and Tomcat9 want to grab port
+   8095 to receive the shutdown command (and others?).
+
+   It's not enough to change the config for the port in =server.xml= (right? right?).  Maybe I'm wrong, though?
+
+   This might shed some light: https://docs.openkm.com/kcenter/view/okm-6.4/configuring-tomcat-port.html
+
+   Documentation is here: https://tomcat.apache.org/tomcat-9.0-doc/config/server.html
+
+   I modified the shutdown port as follows:
+
+   #+BEGIN_SRC xml
+     <Server port="8105" shutdown="SHUTDOWN">
+   #+END_SRC 
+
+** Might also need to configure an AJP port at some point in the future, but for now...
+
+   For now, we're good.
