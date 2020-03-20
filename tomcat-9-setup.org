@@ -23,65 +23,111 @@
 
   Installing Tomcat 9 on Ubuntu Linux 4.4.0-89-generic (Xenial, 16.04LTS).
 
-* Notes
 
-** Download
+* Getting Java 11 from AdoptOpenJDK.net
 
-  Not available via =apt=.  At least, not without adding another repository from somewhere
-  (Apache?).
+  Follow the instructions at [[https://adoptopenjdk.net/installation.html?variant=openjdk11&jvmVariant=hotspot#linux-pkg][AdoptOpenJDK.net]], except for Java /whatever-version-you-want/.  You're
+  basically adding a new repository to apt, and from then on, it should be pretty easy to keep it
+  up to date (if the EC2 instance doesn't automaticaly keep itself up to date).
 
-  Downloaded with wget:
+* Download
 
-  #+BEGIN_EXAMPLE
-    ip-172-30-0-82$ pwd
-    /home/ubuntu/Downloads
+ Not available via =apt=.  At least, not without adding another repository from somewhere
+ (Apache?).
 
-    ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
-  #+END_EXAMPLE
+ Downloaded with wget:
 
-** Expand archive
+ #+BEGIN_EXAMPLE
+   ip-172-30-0-82$ pwd
+   /home/ubuntu/Downloads
 
-   Into =/usr/share/apache-tomcat-9.0.31=
+   ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+ #+END_EXAMPLE
 
-** Configure init
+* Expand archive
 
-   See https://www.rosehosting.com/blog/install-tomcat-9-on-an-ubuntu-16-04-vps/
+  Into =/usr/share/apache-tomcat-9.0.31=
 
-   Or https://javabirder.wordpress.com/2016/02/18/install-tomcat-9-ubuntu/
+* Configure Tomcat to start
 
-   : sudo useradd -r tomcat9 --shell /bin/false
+  Not super hard.  Your basic goal is to set the environment variables =JAVA_HOME= and
+  =CATALINA_HOME= (at least) before firing up the supplied startup scripts.  I basically copied my
+  tomcat8 =/etc/default= script to a tomcat9 version and tinkered a bit.
 
-   (=-r= is "system user", i.e., no home directory, low uid, etc.)
+* Configure init
 
-   I used the javabirder example, but the rosehosting =/etc/default/tomcat9= (I just copied the
-   =tomcat8= version, changed user/group names in the script, pointed to a different =JAVA_HOME=
-   (AdoptOpenJDK 11), set a smaller max heap size (since I already have a JVM running on this
-   machine for my wiki).
+  See https://www.rosehosting.com/blog/install-tomcat-9-on-an-ubuntu-16-04-vps/
 
-   I also had to change one port setting in the =server.xml= config from 8005 to 8095, because I
-   guess it was colliding with my wiki tomcat instance.
+  Or https://javabirder.wordpress.com/2016/02/18/install-tomcat-9-ubuntu/
 
-   It works (on port 8080), when testing locally (via =elinks http://localhost:8080=), but I can't
-   hit that port from outside the machine, I guess because of the firewall rules.
+  : sudo useradd -r tomcat9 --shell /bin/false
 
-** Configure AWS firewall rules to allow connections on ports 8080, 8443
+  (=-r= is "system user", i.e., no home directory, low uid, etc.)
 
-   Looks I'll need to create a new security group that allows those ports, and then apply that group
-   to the EC2 instance in question.
+  I used the javabirder example, but the rosehosting =/etc/default/tomcat9= (I just copied the
+  =tomcat8= version, changed user/group names in the script, pointed to a different =JAVA_HOME=
+  (AdoptOpenJDK 11), set a smaller max heap size (since I already have a JVM running on this
+  machine for my wiki).
 
-   So: AWS Console | EC2 | Network & Security | Security Groups
+  I also had to change one port setting in the =server.xml= config from 8005 to 8095, because I
+  guess it was colliding with my wiki tomcat instance.
 
-   Looks like there's something called "quicklaunch-1" that has what we want (plus another port,
-   9990, for whatever reason -- is that a common experimental port?).  Unfortunately, I can't attach
-   it to the existing network interface for my instance.  I guess I'd have to create a new network
-   interface, but then I worry that my IP address would change and drive dyndns nuts (my DNS
-   provider, dyn.com)
+  It works (on port 8080), when testing locally (via =elinks http://localhost:8080=), but I can't
+  hit that port from outside the machine, I guess because of the firewall rules.
 
-   So, I just looked at my EC2 instance to see what networking security group was currently
-   configured, and it turns out I can edit that group on the fly, and it works.
+* Configure AWS firewall rules to allow connections on ports 8080, 8443
 
-** TODO Allow access to manager GUIs from remote address
+  Looks I'll need to create a new security group that allows those ports, and then apply that group
+  to the EC2 instance in question.
 
-   
+  So: AWS Console | EC2 | Network & Security | Security Groups
+
+  Looks like there's something called "quicklaunch-1" that has what we want (plus another port,
+  9990, for whatever reason -- is that a common experimental port?).  Unfortunately, I can't attach
+  it to the existing network interface for my instance.  I guess I'd have to create a new network
+  interface, but then I worry that my IP address would change and drive dyndns nuts (my DNS
+  provider, dyn.com)
+
+  So, I just looked at my EC2 instance to see what networking security group was currently
+  configured, and it turns out I can edit that group on the fly, and it works.
+
+* DONE Allow access to manager GUIs from remote address
+  CLOSED: [2020-03-15 Sun 19:16]
+
+  Update =context.xml= for two webapps:
+
+  - manager
+  - host-manager
+
+  Which, in my initial naive install, are in =/usr/share/apache-tomcat-9.0.31/webapps= (in their
+  respective =META-INF= subdirectories).
+
+  Just comment out the following lines in each:
+
+  #+BEGIN_SRC xml
+      <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+             allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+  #+END_SRC
+
+  (Yikes!  Regular expressions!  Well, I guess it's better against IP addresses than domain names.)
+
+* Allow tomcat to open ports < 1024
+
+  Problems with authbind.  Maybe put all tomcat users (8,9) in a "tomcat" group, and assign that
+  group permission to open low-numbered ports via authbind?
+
+  Need to figure this out for tomcat9.  Tomcat8 not having any trouble.
+
+** Add both tomcat users to a common group and give that group permission to open ports
+
+   I need a common group that multiple accounts can share, that allows opening of low-numbered
+   ports.
+
+   Maybe create a new group, say =sysport=.
+
+   #+BEGIN_SRC bash
+     sudo groupadd -r sysport
+     sudo usermod tomcat9 -a -G sysport
+   #+END_SRC
 
    

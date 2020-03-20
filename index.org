@@ -34,6 +34,9 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:tomcat-9-setup.org][tomcat-9-setup.org]] :: How I got Tomcat 9 running on on Java 11 on my AWS EC2 instance that's
+       already running Tomcat 8 to host my wiki.
+
   - [[file:2020-primaries.org][2020-primaries.org]] :: Summarization of the [[https://indyweek.com][The Independent]]'s endorsements for the 2020 (U.S.)
        primary election.
 
