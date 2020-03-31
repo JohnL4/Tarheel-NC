@@ -9,3 +9,4 @@ template.html
 **/*.aux
 **/*.html
 /.DS_Store
+/web-app-journal.org

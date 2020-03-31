@@ -34,6 +34,12 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:web-app-journal.org][web-app-journal.org]] :: (symbolic link to) My journey of (re-) discovery as I (re-) learn what it
+       takes to develop a "real" web app with a Java back-end.  This journal is maintained as part
+       of my experience in developing the [[https://github.com/JohnL4/LayLeadership][Lay Leadership]] app.  If this link becomes broken (i.e.,
+       turned into a real file instead of a symlink), it may get out of date, so try checking the
+       version in its GitHub repository.
+
   - [[file:tomcat-9-setup.org][tomcat-9-setup.org]] :: How I got Tomcat 9 running on on Java 11 on my AWS EC2 instance that's
        already running Tomcat 8 to host my wiki.
 
