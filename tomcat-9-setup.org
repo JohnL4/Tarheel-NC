@@ -55,6 +55,9 @@
   tomcat8 =/etc/default= script to a tomcat9 version and tinkered a bit.
 
 * Configure init
+  :PROPERTIES:
+  :CUSTOM_ID: configure-init
+  :END:
 
   See https://www.rosehosting.com/blog/install-tomcat-9-on-an-ubuntu-16-04-vps/
 
@@ -173,3 +176,61 @@
 ** Might also need to configure an AJP port at some point in the future, but for now...
 
    For now, we're good.
+* Make tomcat run at system startup (and shut down gracefully on halt/reboot)
+
+  So, there's this thing called =update-rc.d=, and it writes all the =/etc/rcN.d= scripts, where /N/
+  is a Unix "run level", given to the =init= command when the system starts up or shuts down.
+
+  Run levels are documented here: https://en.wikipedia.org/wiki/Runlevel, but really, there's not a
+  lot to know.  The rc/N/.d scripts run when leaving a run level and entering a new one.
+
+  So, for example, when booting from power-off straight into run level 3 (normal multiuser w/no
+  GUI), all the startup scripts in rc3.d will be run.
+
+  When running at run level 3, if somebody shuts down the system (run level 0), all the shutdown
+  scripts in rc3.d will be run, and then all the startup scripts in rc0.d will be run (there
+  probably won't be any).
+
+  It does get a little complicated when services depend on each other (like, say, a web server like
+  Tomcat would depend on networking services being up; otherwise, what's the point?).
+
+  So, you can write an init script and put some header info in to specify when it should run, and
+  hand it off to =update-rc.d=, which then populates the various rc/N/.d directories.
+
+  This is what's done in the javabirder site mentioned in [[#configure-init][Configure init]], above.
+
+  Header info is as follows:
+
+  #+BEGIN_SRC bash
+    #!/bin/bash
+    ### BEGIN INIT INFO
+    # Provides: tomcat9
+    # Required-Start: $network
+    # Required-Stop: $network
+    # Default-Start: 2 3 4 5
+    # Default-Stop: 0 1 6
+    # Short-Description: Start/Stop Tomcat server
+    ### END INIT INFO
+  #+END_SRC 
+
+  So, we need the network to be up if the web server will be up (duh), and we'll run it all the
+  multi-user run levels.  (Not sure why we run it at runlevel 2, which is explicitly a "no network",
+  but oh well.  We'll probably never use that run level anyway.)
+
+  And, we'll stop it at run levels 0, 1, and 6.
+
+  When we run it, we get this:
+
+  #+BEGIN_EXAMPLE
+    ip-172-30-0-82# sudo update-rc.d -n tomcat9 defaults
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc0.d/K01tomcat9
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc1.d/K01tomcat9
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc2.d/S01tomcat9
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc3.d/S01tomcat9
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc4.d/S01tomcat9
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc5.d/S01tomcat9
+    insserv: enable service ../init.d/tomcat9 -> /etc/init.d/../rc6.d/K01tomcat9
+    insserv: dryrun, not creating .depend.boot, .depend.start, and .depend.stop
+  #+END_EXAMPLE 
+
+  ...and when we reboot the system, Tomcat 9 comes back up!  (Eventually.)
