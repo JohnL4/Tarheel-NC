@@ -103,7 +103,6 @@
 
     See =/etc/init.d=
 
-    
 * JSPWiki
   
   So, I downloaded jspwiki.war 2.10.2, renamed it to "wiki.war" (because the context path should

@@ -34,6 +34,11 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:migrating-from-DynDNS-to-Route53.org][migrating-from-DynDNS-to-Route53.org]] :: Migrating from Oracle DynDNS to AWS Route 53, since Dyn
+    1) is expensive; and
+    2) doesn't have the capability I want to route a subdomain elsewhere without (probably) an
+       expensive upgrade (about $50/year above what I'm already paying, which is... $60/year).
+
   - [[file:web-app-journal.org][web-app-journal.org]] :: (symbolic link to) My journey of (re-) discovery as I (re-) learn what it
        takes to develop a "real" web app with a Java back-end.  This journal is maintained as part
        of my experience in developing the [[https://github.com/JohnL4/LayLeadership][Lay Leadership]] app.  If this link becomes broken (i.e.,
