@@ -234,3 +234,11 @@
   #+END_EXAMPLE 
 
   ...and when we reboot the system, Tomcat 9 comes back up!  (Eventually.)
+* Operations
+
+** Stop/start/restart tomcat
+
+   #+BEGIN_SRC bash
+     sudo /etc/init.d/tomcat[89] restart
+   #+END_SRC
+   
