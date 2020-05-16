@@ -193,6 +193,16 @@
 
   Also, use =ncdu= to see what's taking up so much space.
 
+** Connecting with SSH
+
+   Log on to your AWS console, and go to your EC2 instance.  Hit "Connect".  You'll get instructions
+   on how to connect using a standalone SSH client.
+
+   You'll need to specify the location of your private key (=*.pem=) file properly, plus the IP
+   address of your instance, but it'll work.
+
+   Pretty sure I documented elsewhere that you do need to download that .pem file and save it.
+
 * App Development
 
 ** Git

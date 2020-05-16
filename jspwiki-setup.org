@@ -84,7 +84,7 @@
   I also installed =authbind=, in order to bind to ports < 1023 without running as root.  Can't
   remember where I saw this, but it's pretty much everywhere.
        
-* Upgrading Tomcat from 8.0 to 8.5
+* TODO Upgrading Tomcat from 8.0 to 8.5
 
   As of <2019-06-03 Mon>, Tomcat 8.5 does not seem to be available on aptitude/get-apt, so we'll
   have to install by hand.
@@ -361,6 +361,10 @@
 
    Copy in config file modified above and you should have two apps running side by side and editing
    the same text files and attachments.
+
+* TODO TLS/SSL Certificate
+
+  At some point, I should get me some https.
 
 * Operations
   :PROPERTIES:
