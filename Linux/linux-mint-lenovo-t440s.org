@@ -90,7 +90,47 @@
 
   Probably similar to the above for Alt-ESC.
   
+* Brave browser
 
-    
+  Stupid Brave repository keeps going offline or whatever.  Brave people can't seem to manage it
+  properly and I get "unable to update"-type messages from Mint Update or Aptitude or whatever.
 
-  
+  So... repository management.  See below ([[#software-repository-management][Software package repository management]]).
+
+** Installation
+   
+   Brave install commands ([2021-03-27 Sat]):
+
+   #+BEGIN_EXAMPLE
+     sudo apt install apt-transport-https curl gnupg
+
+     curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+
+     echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+
+     sudo apt update
+
+     sudo apt install brave-browser
+   #+END_EXAMPLE 
+
+** Shortcut/applet on task bar
+
+   ...still trying to remember how to do this...
+   
+* Software package repository management
+  :PROPERTIES:
+  :CUSTOM_ID: software-repository-management
+  :END:
+
+  Use one of:
+
+  - Mint Updates (system software)
+  - Synaptic (GUI)
+  - aptitude (cmd-line)
+
+** Packages installed (PPAs, additional repos)
+
+   - ichthyo/zeug :: For Electric Sheep.  Upgrades apparently require building from scratch?
+   - Brave :: There is a repo, under Mint Update | Edit | Software Sources | Additional Repos.
+
+              
