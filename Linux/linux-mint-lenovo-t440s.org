@@ -136,3 +136,11 @@
    - Brave :: There is a repo, under Mint Update | Edit | Software Sources | Additional Repos.
 
               
+* Big titlebar icons
+
+  Default icons are too small to use on a 13" T440s, so I googled.  Found this:
+
+  https://forums.linuxmint.com/viewtopic.php?f=208&t=272414&hilit=metacity
+
+  "VBB" /window borders/ (as opposed to "controls") seem to do the trick.  Yay.
+  
