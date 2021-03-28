@@ -115,7 +115,9 @@
 
 ** Shortcut/applet on task bar
 
-   ...still trying to remember how to do this...
+   Just kind of magically showed up after installation and logout/login, /BUT/... maybe right-click
+   on app icon (in system menu, where installation puts it) and selecting "Add to Panel" had
+   something to do with it.
    
 * Software package repository management
   :PROPERTIES:
