@@ -135,12 +135,27 @@
    - ichthyo/zeug :: For Electric Sheep.  Upgrades apparently require building from scratch?
    - Brave :: There is a repo, under Mint Update | Edit | Software Sources | Additional Repos.
 
-              
 * Big titlebar icons
 
-  Default icons are too small to use on a 13" T440s, so I googled.  Found this:
+  Default icons are too small to use on a 14" T440s, so I googled.  Found this:
 
   https://forums.linuxmint.com/viewtopic.php?f=208&t=272414&hilit=metacity
 
   "VBB" /window borders/ (as opposed to "controls") seem to do the trick.  Yay.
+  
+  Quoting from the above link, in cae it disappears:
+
+  #+BEGIN_QUOTE
+  *Installation*
+
+  Open a terminal (Ctrl-Alt-T) and enter the following commands
+
+  #+BEGIN_EXAMPLE 
+  cd /tmp
+  wget https://github.com/smurphos/Window_Borders_Mint_19/releases/download/v.0.8/metacity_for_mint19_cinn.zip
+  unzip -o metacity_for_mint19_cinn.zip -d ~/.themes
+  #+END_EXAMPLE 
+
+  Open the Themes app and the new Window Border's themes should be available for selection.
+  #+END_QUOTE
   
