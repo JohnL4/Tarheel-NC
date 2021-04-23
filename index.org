@@ -144,6 +144,8 @@
   - More info than you ever cared for: https://orgmode.org
   - If you truly want to go down the rabbit hole: https://melpa.org/#/?q=org-mode
 
+  [2021-04-22 Thu]: dumb piece of test text, investigating GitHub interface under emacs 27 on Linux Mint 19
+
 ** Maintaining this file without emacs
    :PROPERTIES:
    :CUSTOM_ID: maintaining-this-file
