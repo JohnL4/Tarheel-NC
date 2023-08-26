@@ -2,9 +2,13 @@
 ;; up-to-date copy of it there.
 
 (cond ((eq system-type 'windows-nt)
-       (setq my-home "C:/Users/j6l")  ;Corporate home dir.  Emacs on Windows may have a different idea of home than the
-                                      ;O/S itself.  NOTE: these paths may be case-sensitive (even on Windows), so get
-                                      ;'em right.
+       (setq my-home (format "%s%s" (getenv "HOMEDRIVE") (getenv "HOMEPATH")))
+       ;; (cond ((eq system-name "Oberon") setq my-home "C:/Users/John")
+       ;;       (t
+       ;;        (setq my-home "C:/Users/j6l") ;Corporate home dir.  Emacs on Windows may have a different idea of home than the
+       ;;                                  ;O/S itself.  NOTE: these paths may be case-sensitive (even on Windows), so get
+       ;;                                  ;'em right.
+       ;;        ))
        )
       ((eq system-type 'darwin)
        (setq my-home "~")

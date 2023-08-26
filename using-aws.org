@@ -19,6 +19,11 @@
 #+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
 #+HTML_HEAD: </style>
 
+* Overall Notes
+
+  Most of this page was built when I set up my first instance, around 2018-19.  For more recent changes, look for
+  "2023".
+
 * Setting up an AWS instance
 
   http://aws.amazon.com/
@@ -50,6 +55,148 @@
    
    Spot pricing is cheapest, but arbitrary startup/shutdown issues make it more complex, along with
    the fact that your users simply might not tolerate your web app being down "for a while".
+
+*** 2023
+
+    The options are more greater.  Plus, I want to connect a clone of elastic storage drive from my first instance from
+    lo these many years ago.
+
+**** Pricing
+
+     I think I still want an EC2 reserved instance savings plan.
+
+     Amazon, however, say, "We recommend Savings Plans (over Reserved Instances)."
+
+     I think I want an EC2 Instance savings plan (not reserved instance; although I'm not yet sure of the difference).
+
+     Their recommendation page
+     (https://us-east-1.console.aws.amazon.com/cost-management/home?region=us-east-1#/savings-plans/recommendations?lookbackPeriodInDays=SIXTY_DAYS&paymentOption=ALL_UPFRONT&scope=PAYER&spType=EC2_INSTANCE_SP&termInYears=THREE_YEAR&tokens=%5B%5D)
+     shows no recommendations.  I think because my usage is < $0.10/hour?  I think I paid something like $120 for a
+     t2.micro instance for 3 years, which amounts to (/ 120.0 (* 3 365 24)) $0.005/hour.
+
+     I think my region is US-East (N. Virginia).  Current node is in Availability Zone "us-east-1a".  Answer:
+     yes, N. Virginia.  See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html.
+
+     There's a Compute pricing page here: https://aws.amazon.com/savingsplans/compute-pricing/.
+
+     On-demand instance pricing appears to be here: https://aws.amazon.com/ec2/pricing/on-demand/
+
+     | *Pick* | *Instance name* | *Hourly rate* | *vCPUs* | *Memory* | *Always-on Total* | *Comments*                   |
+     |  <c>   |                 |               |         |          |                   |                              |
+     |        | t3.micro        | $0.0104       |       2 | 1 GiB    | $274.06           |                              |
+     |        | t3a.micro       | $0.0094       |       2 | 1 GiB    | $247.71           | AMD, fewer FLOPS             |
+     |        | t2.micro        | $0.0116       |       1 | 1 GiB    | $305.68           | More expensive!              |
+     |   X    | t4g.micro       | $0.0084       |       2 | 1 GiB    | $221.36           | ARM-based AWS Graviton2 CPUs |
+
+     Always-on calc: (* 3 366 24 0.0084)
+
+     Comments on t4g [[*t4g -- wacky chip][below]].
+
+     The m-series is also general-purpose, but
+     
+     #+ATTR_HTML: :class lower-alpha
+     a) doesn't go below size "medium",
+     b) doesn't appear to be burstable,
+     c) has more memory/cpu,
+     d) and the cheapest one is almost ten times a comparable-ish t-series.
+
+     So, basically, they're more for larger-scale systems, which I am not.
+
+     Savings plans compute pricing (use the "EC2 Instance Savings Plans" tab):
+     https://aws.amazon.com/savingsplans/compute-pricing/
+
+     Us-east-1 t3.micro 3 yrs Linux shared tenancy all up front = $102.77 ($0.0039 multiplied out).
+
+     Which is $2.85/month (/ (* 0.0039 3 366 24) 36)
+
+***** RESEARCH-DONE Tenancy
+      CLOSED: [2023-08-20 Sun 12:39]
+
+      What's tenancy?  Options are:
+
+      - Dedicated instance :: Instance runs on single-tenant hardware.
+      - Dedicated host :: Instance runs on a physical server.  (Not sure how that's different from dedicated instance.)
+      - Shared :: This is the default.  Multiple accounts on the same physical hardware.  Which, fine, so long as it
+        looks like one host to me.  https://theithollow.com/2017/10/16/understanding-aws-tenancy/ recommends shared.
+
+**** DONE Instance configuration
+     CLOSED: [2023-08-21 Mon 11:17]
+
+     - CLOSING NOTE [2023-08-21 Mon 11:17] \\
+       I think this is done, and the instance is up, and now I need to connect a volume from a snapshot of the old instance
+       before continuing to configure.  See [[*Creating and mounting an Elastic Block Store volume from an existing snapshot (2023)][Creating and mounting an Elastic Block Store volume from an existing snapshot (2023)]]
+***** "jammy" vs. "focal" builds (tl;dr: major version number difference)
+
+      Two choices for Ubuntu 22.04 LTS, hvm virtualization, ENA enabled, root device type ebs: "jammy" build, "focal"
+      build.  What's the difference?
+
+      Ah, I see, I missed the version number difference.  Jammy is *22*.04, while Focal is *20*.04.
+
+***** t3 vs. t3a vs. t4g
+
+      t3a instances use AMD chips, look less optimized for floating-point ops and are slightly cheaper.  I'm not doing
+      intense FP calcs, maybe I should use t3a instead of t3.
+
+****** t4g -- wacky chip
+       
+       t4g uses another weird chip, an ARM-based AWS Graviton2 processor.  It's cheaper, nice, but how well will my
+       workload (Java, Go) run on it?  https://en.wikipedia.org/wiki/AWS_Graviton
+
+       Amazon claims their Corretto JVM runs fine on Graviton:
+       https://github.com/aws/aws-graviton-getting-started/blob/main/java.md#:~:text=Java%20on%20Graviton&text=Java%20is%20well%20supported%20and,)%20supports%20Graviton%2Dpowered%20instances.
+
+       And it looks like Go runs fine, too:
+       https://aws.amazon.com/blogs/compute/making-your-go-workloads-up-to-20-faster-with-go-1-18-and-aws-graviton/. 
+
+******* Does Amazon give back to Java w/their Corretto JVM?
+
+        Apparently, yes, at least some.      
+
+***** Firewall (security groups)
+
+      Current group seems to be launch-wizard-1.
+
+      Current config:
+
+      | *Name*                | *Security group rule ID* | *IP version* | *Type* | *Protocol* | *Port range* | *Source*  | *Description* |
+      | sgr-08642cbf72bac1cb1 | IPv4                     | SSH          | TCP    | 22         |    0.0.0.0/0 | –         |               |
+      | sgr-0af3b8d6607c6cdcb | IPv4                     | Custom       | TCP    | TCP        |         8443 | 0.0.0.0/0 | HTTPS         |
+      | sgr-0145f40c7b5f3bb85 | IPv4                     | Custom       | TCP    | TCP        |         8080 | 0.0.0.0/0 | HTTP          |
+      | sgr-0c95244b206ed9bda | IPv4                     | HTTP         | TCP    | 80         |    0.0.0.0/0 | –         |               |
+      | sgr-00788c1ae28c5b690 | IPv4                     | HTTPS        | TCP    | 443        |    0.0.0.0/0 | –         |               |
+      | sgr-0836297035b643dbf | IPv4                     | Custom       | TCP    | TCP        |          453 | 0.0.0.0/0 | HTTPS         |
+      | sgr-01041fa45d0603774 | IPv4                     | Custom       | TCP    | TCP        |           90 | 0.0.0.0/0 | HTTP          |
+
+***** Storage 
+
+****** gp2 vs. gp3
+
+       See https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-plan-storage-compare-volume-types.html.
+
+       Hard to tell the difference, but...
+
+       |                               | *gp3*           | *gp2*                                             |
+       | *Default/baseline IOPS*       | 3,000           | 3/GiB (minimum 100 IOPS). Can burst to 3,000 IOPS |
+       | *Default/baseline throughput* | 125 MiB/s       | 128-250 MiB/s, depending on volume size           |
+       | *Max throughput*              | 1,000 MiB/s     | 250 MiB/s                                         |
+       | *Price*                       | $0.08/GiB/month | $0.10/GiB/month                                   |
+
+       I think gp3 is the play.
+
+****** DONE Adding new volume created from snapshot of old instance
+       CLOSED: [2023-08-21 Mon 13:22]
+
+       - CLOSING NOTE [2023-08-21 Mon 13:22] \\
+         See [[#create-mount-vol-from-snapshot][Creating and mounting an Elastic Block Store volume from an existing snapshot (2023)]]
+
+       So, at this point, I have a naked Linux instance.
+
+       Still need to install Java, Tomcat, JspWiki.  I wonder if I can just slap on a new volume created from a snapshot
+       of the previous instance's root volume and go from there.
+
+***** Advanced Details -- I don't think this is needed
+
+      Header says it.
 
 ** Launch and connect simple instance
 
@@ -103,6 +250,24 @@
 
    Consider allocating an Elastic IP address and using your DNS solution (dyndns.org, in my case) to
    map it to a particular hostname.
+
+*** Or use =ddclient=, command-line DynDNS interface
+
+    (Note: don't forget the long-term plan to move to Route53, which will completely invalidate this approach.)
+
+    Install from DynDNS.org.  https://help.dyn.com/ddclient/
+
+    If you're lucky, Past You already did this and set it up in =/etc/init.d/ddclient= (start/stop script attached to
+    booting the instance), and configured it at =/etc/ddclient.conf=.
+
+    If you're slightly less lucky, Past You changed the DynDNS password at some point and you need to go update the
+    config.  Use quotes if the password has spaces or other shell-special characters.
+
+    You can always generate a new config at https://account.dyn.com/tools/clientconfig.html.
+
+    : sudo /etc/init.d/ddclient restart
+
+    to restart after fixing the config.  Check log output in =/var/log/syslog=.
 
 ** Software installation and configuration
 
@@ -180,6 +345,173 @@
        /opt/WildFly/wildfly-8.0.0.Alpha4/bin
        sudo ./standalone.sh
      #+END_SRC 
+
+*** Amazon Corretto (OpenJDK implementation that runs on tg4 (ARM))
+
+    See https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/generic-linux-install.html.
+
+*** Aptitude -- curses-based apt client
+
+    : apt install aptitude
+    : sudo apt install aptitude
+
+*** Tomcat (2023)
+
+    See:
+
+    - [[file:jspwiki-setup.org::#tomcat8-initial-setup][Initial Setup: Tomcat 8]]
+    - [[file:tomcat-9-setup.org]]
+
+    As of JSPWiki v2.12.0, Tomcat 10 is *NOT* supported, only Tomcat 9.  You can live adventurously, if you want, and
+    try the Tomcat migration tool(s), but I choose not to at this time.
+
+    Also, there are no prompts on /where/ to install tomcat9 when you use =aptitude= (or, presumably, =apt-get=).  Might
+    be better to download and expand in a custom directory on the "user" drive.
+
+*** TODO Creating fixed user and group ids (2023)
+    :PROPERTIES:
+    :CUSTOM_ID: fixed-user-group-ids
+    :END:
+
+    Might need to move the user/data volume to another VM at some point in the future, and it would be useful to be able
+    to create users (e.g., "tomcat") and groups (e.g., "sysport") with fixed ids (e.g., 200) so the previous user volume
+    can simply be dropped into the new VM.
+
+    Note the following on my old instance:
+
+    #+BEGIN_EXAMPLE
+       ls -l server.xml
+      -rw-r----- 1 root tomcat8 6567 Mar  6  2017 server.xml
+
+      ls -ln server.xml
+      -rw-r----- 1 0 116 6567 Mar  6  2017 server.xml
+    #+END_EXAMPLE
+
+    So, group 116 is tomcat8 there.
+
+    However, when I snapshot the volume and create a new volume from the snapshot and mount it on the new VM, I see the
+    following, when examing the same files (mounted on a new mountpoint):
+
+    #+BEGIN_EXAMPLE
+      ls -l server.xml
+      -rw-r----- 1 root landscape 6567 Mar  6  2017 server.xml
+
+      ls -ln server.xml
+      -rw-r----- 1 0 116 6567 Mar  6  2017 server.xml
+    #+END_EXAMPLE
+
+    So, the group id (116) came across just fine, but on the VM, it corresponds to group "landscape" (whatever that is),
+    instead of "tomcat8".
+
+** DONE Creating and mounting an Elastic Block Store volume from an existing snapshot (2023)
+   CLOSED: [2023-08-21 Mon 13:08]
+   :PROPERTIES:
+   :CUSTOM_ID: create-mount-vol-from-snapshot
+   :END:
+
+   I snapshotted the root drive (apparently, that was the only EBS volume I had attached to the old instance).
+
+   Looks like the general advice seems to be to have an "o/s" (a.k.a. "root") sort of volume and a "user" sort of
+   volume, so when the o/s needs a big upgrade (e.g., 16 --> 22), you can just spin up a new VM w/the new o/s, and
+   attach the previous "user" volume at the same mount point and be in business.  Hopefully.
+
+   Since I wound up creating a t4g instance (ARM chip), I just installed Apache Corretto using =apt=, and it wound up on
+   the "o/s" drive.  Possibly I should have installed Corretto manually to get it on the "user" drive I (eventually)
+   wound up mounting, but oh well, there it is.  From now on, though, all higher layers of software (Tomcat, JSPWiki)
+   are going on the "user" drive.
+
+   Amazon's best practice recommendations are here:
+   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html.
+
+   Even if I do this, it won't be a simple drop-in situation when I create a new VM and attach the volume because
+   user and group ids may change across instances (e.g., "tomcat9" and "sysport" may wind up with different user and
+   group ids).  So we'll need to find a way to create these ids with constant values.  See [[#fixed-user-group-ids][Creating fixed user and group ids (2023)]].
+
+   -----------------------------
+
+   Looks like I originally created it as a gp2 type, but now I think maybe a gp3 type would be better.  Can't really
+   tell; I think the EBS volumes show up under "EC2-Other", so who knows?
+
+*** How to mount a new volume
+
+**** First, find it after attaching
+
+     (Note that "attaching" is not the same as "mounting".)
+
+     Ok, I created it, and attached it, but I don't see it.  It's supposed to be attached as =/dev/sdf= or =/dev/xvdf=,
+     I think.
+
+     Note that the root volume is supposed to be =/dev/sda1=.
+
+     =findmnt= shows / is the mount point for =/dev/nvme0n1p1=, with filesystem type of ext4.  I don't see any other
+     ext4 devices mounted.
+
+     https://aws.amazon.com/blogs/compute/how-to-mount-linux-volume-and-keep-mount-point-consistency/
+
+     ssh to the machine and...
+
+     : lsblk
+
+     Aha, there it is, =nvme1n1= with one partition (=nvme1n1p1=).
+
+     #+BEGIN_QUOTE 
+     t3 and, I guess, t4g, systems use NVMe block devices built on Nitro.  When googling NVMe, StackOverflow has a hit
+     that says the data goes away when the instance is stopped (not just terminated), but this is discussing /instance
+     stores/, not EBS volumes.  Here's Amazon's documentation on EBS and NVMe:
+     https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html. 
+     #+END_QUOTE 
+
+     =findmnt= (=mount= being obsolete now) tells me that =nvme0n1p1=, the main partition on the volume created with this
+     snapshot, is mounted on =/=.  (There's another partition, =nvme0n1p15=, that appears to be a 99 MB boot partition.)
+
+**** Mount it
+     
+     So, we just need to mount the new volume somewhere, I think.
+
+     =sudo file -s /dev/nvme1n1p1= reports to me, if I'm reading the output correctly
+
+     : /dev/nvme1n1p1: Linux rev 1.0 ext4 filesystem data, UUID=45131f33-7efa-487c-a104-839d87a3f3ea, volume name "cloudimg-rootfs" (extents) (large files) (huge files)
+
+     that this volume has an ext4 filesystem on it (as opposed to just being a blank volume ready for formatting).
+
+     =blkid -o export /dev/nvme1n1p1= yields the following (note that we're querying the /partition/):
+
+     #+BEGIN_EXAMPLE
+       DEVNAME=/dev/nvme1n1p1
+       LABEL=cloudimg-rootfs
+       UUID=45131f33-7efa-487c-a104-839d87a3f3ea
+       BLOCK_SIZE=4096
+       TYPE=ext4
+     #+END_EXAMPLE
+
+     The UUID will be constant for this volume.
+
+     #+BEGIN_QUOTE 
+     *Important note:*
+
+     Current =/etc/fstab= contains the following:
+
+     #+BEGIN_EXAMPLE
+       LABEL=cloudimg-rootfs   /        ext4   discard,errors=remount-ro       0 1
+       LABEL=UEFI      /boot/efi       vfat    umask=0077      0 1
+     #+END_EXAMPLE 
+
+     Note that the current root volume has a label of =cloudimg-rootfs=, which is the same as the volume we want to
+     attach.  That will cause a name collision if we modify =fstab= to mount them both at boot time, so I think we need
+     to change the spec for the root volume to go by UUID, not label.
+     #+END_QUOTE
+
+     =findmnt= reports the root partition mounted with the following options: =rw,relatime,discard,errors=remount-ro=.
+
+     I think we can use the same options for the new volume.  So, new line added to =/etc/fstab=:
+
+     : UUID=45131f33-7efa-487c-a104-839d87a3f3ea       /mnt/1  ext4    discard,errors=remount-ro       0 2
+
+     ...and it works!  (So far.)
+
+     Next steps are to install Corretto, tomcat and jspwiki, probably on the additional volume.  Old wiki pages will be
+     found at =/mnt/1/usr/share/jspwiki=.  See [[file:jspwiki-setup.org::#jspwiki-custom-properties][=jspwiki-custom-properties= -- Configuration of various filepaths on host
+     system]]. 
 
 * Server Updates
 

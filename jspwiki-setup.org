@@ -31,6 +31,9 @@
   See [[#operations][Operations]] for info on things you can do once it's installed and running.
 
 * Initial Setup: Tomcat 8
+  :PROPERTIES:
+  :CUSTOM_ID: tomcat8-initial-setup
+  :END:
 
 ** Directory Structure
   
@@ -142,6 +145,9 @@
    (in catalina.2017-01-08.log)
 
 ** =jspwiki-custom-properties= -- Configuration of various filepaths on host system
+   :PROPERTIES:
+   :CUSTOM_ID: jspwiki-custom-properties
+   :END:
 
     I grabbed jspwiki.properties with:
 
