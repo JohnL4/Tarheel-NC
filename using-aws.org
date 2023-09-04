@@ -355,6 +355,10 @@
     : apt install aptitude
     : sudo apt install aptitude
 
+*** Authbind
+
+    You'll need this to allow non-root processes to open ports < 1024.
+
 *** Tomcat (2023)
 
     See:
@@ -365,43 +369,69 @@
     As of JSPWiki v2.12.0, Tomcat 10 is *NOT* supported, only Tomcat 9.  You can live adventurously, if you want, and
     try the Tomcat migration tool(s), but I choose not to at this time.
 
-    Also, there are no prompts on /where/ to install tomcat9 when you use =aptitude= (or, presumably, =apt-get=).  Might
-    be better to download and expand in a custom directory on the "user" drive.
+    Also, there are no prompts on /where/ to install tomcat9 when you use =aptitude= (or, presumably, =apt-get=).
 
-*** TODO Creating fixed user and group ids (2023)
+*** DONE Creating fixed user and group ids (2023)
+    CLOSED: [2023-09-04 Mon 13:38]
     :PROPERTIES:
     :CUSTOM_ID: fixed-user-group-ids
     :END:
 
-    Might need to move the user/data volume to another VM at some point in the future, and it would be useful to be able
-    to create users (e.g., "tomcat") and groups (e.g., "sysport") with fixed ids (e.g., 200) so the previous user volume
-    can simply be dropped into the new VM.
+**** Problem
+     
+     Might need to move the user/data volume to another VM at some point in the future, and it would be useful to be able
+     to create users (e.g., "tomcat") and groups (e.g., "sysport") with fixed ids (e.g., 200) so the previous user volume
+     can simply be dropped into the new VM.
 
-    Note the following on my old instance:
+     Note the following on my old instance:
 
-    #+BEGIN_EXAMPLE
+     #+BEGIN_EXAMPLE
        ls -l server.xml
-      -rw-r----- 1 root tomcat8 6567 Mar  6  2017 server.xml
+       -rw-r----- 1 root tomcat8 6567 Mar  6  2017 server.xml
 
-      ls -ln server.xml
-      -rw-r----- 1 0 116 6567 Mar  6  2017 server.xml
-    #+END_EXAMPLE
+       ls -ln server.xml
+       -rw-r----- 1 0 116 6567 Mar  6  2017 server.xml
+     #+END_EXAMPLE
 
-    So, group 116 is tomcat8 there.
+     So, group 116 is tomcat8 there.
 
-    However, when I snapshot the volume and create a new volume from the snapshot and mount it on the new VM, I see the
-    following, when examing the same files (mounted on a new mountpoint):
+     However, when I snapshot the volume and create a new volume from the snapshot and mount it on the new VM, I see the
+     following, when examing the same files (mounted on a new mountpoint):
 
-    #+BEGIN_EXAMPLE
-      ls -l server.xml
-      -rw-r----- 1 root landscape 6567 Mar  6  2017 server.xml
+     #+BEGIN_EXAMPLE
+       ls -l server.xml
+       -rw-r----- 1 root landscape 6567 Mar  6  2017 server.xml
 
-      ls -ln server.xml
-      -rw-r----- 1 0 116 6567 Mar  6  2017 server.xml
-    #+END_EXAMPLE
+       ls -ln server.xml
+       -rw-r----- 1 0 116 6567 Mar  6  2017 server.xml
+     #+END_EXAMPLE
 
-    So, the group id (116) came across just fine, but on the VM, it corresponds to group "landscape" (whatever that is),
-    instead of "tomcat8".
+     So, the group id (116) came across just fine, but on the VM, it corresponds to group "landscape" (whatever that is),
+     instead of "tomcat8".
+
+**** DONE Solution
+     CLOSED: [2023-09-04 Mon 13:38]
+
+     : adduser --uid <n>
+     : addgroup --gid <n>
+
+     (along with other options).
+
+     To find a good id...
+
+     Users sorted by uid:
+
+     : cat /etc/passwd | awk -F: '{printf "%5d\t%5d\t%s\n", $3,$4,$1 }' | sort -k 1n
+
+     Groups sorted by gid:
+
+     : cat /etc/group | awk -F: '{printf "%5d\t%s\n", $3, $1}' | sort -k 1n
+
+     Maybe 300 is a good user id, and 80 is a good group id?  Or 300 for both?  Looks like =apt= creates =tomcat= user
+     and group, so what I did is install it, uninstall it, then modify the user/group as follows, then re-install it.
+
+     : sudo groupmod -g 300 tomcat
+     : sudo usermod -u 300 -g 300 tomcat
 
 ** DONE Creating and mounting an Elastic Block Store volume from an existing snapshot (2023)
    CLOSED: [2023-08-21 Mon 13:08]
@@ -416,9 +446,8 @@
    attach the previous "user" volume at the same mount point and be in business.  Hopefully.
 
    Since I wound up creating a t4g instance (ARM chip), I just installed Apache Corretto using =apt=, and it wound up on
-   the "o/s" drive.  Possibly I should have installed Corretto manually to get it on the "user" drive I (eventually)
-   wound up mounting, but oh well, there it is.  From now on, though, all higher layers of software (Tomcat, JSPWiki)
-   are going on the "user" drive.
+   the "o/s" drive.  I think the decision procedure should be: if there's an apt package, go ahead and run it; but if
+   there's not and the install starts by extracting files to some arbitrary path, put that stuff on the user/data drive.
 
    Amazon's best practice recommendations are here:
    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html.
