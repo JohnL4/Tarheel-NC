@@ -36,7 +36,7 @@
   problem.)  [[https://google.com][Link to Google]] (although just pasting in a URL works fine, too (see "more info",
   below)).
 
-  Subscript: H_{2}O (depending on the options at the top of the file, don't paste in =code_with_underscores= w/out surrounding it with ='s).  (Superscript: E = mc^2.)
+  Subscript: H_{2}O (depending on the options at the top of the file, don't paste in =code_with_underscores= w/out surrounding it with ='s).  (Superscript: E = mc^{2}.)
 
   : one-line code sample
   : ok, maybe two lines
