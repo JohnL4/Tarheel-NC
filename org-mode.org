@@ -31,13 +31,12 @@
 * Org-mode explainer
 
   Text markup.  More stars means lower-level items.  Blank lines between paragraphs.  Indentation
-  doesn't matter (except for lists).  *bold* /italic/ ~code~ =verbatim= (probably should use ~code~
-  instead of =verbatim=).  [[#maintaining-this-file][Internal link]].  (You can also do it by just pointing to a section title,
+  doesn't matter (except for lists).  *bold* /italic/ ~code~ =verbatim= (probably should use =verbatim= instead of ~code~).  [[#maintaining-this-file][Internal link]].  (You can also do it by just pointing to a section title,
   as is done below in one instance, but if you do, then changing the section title becomes a
   problem.)  [[https://google.com][Link to Google]] (although just pasting in a URL works fine, too (see "more info",
   below)).
 
-  Subscript: H_{2}O (so don't paste in ~code_with_underscores~ w/out surrounding it with ~'s).  (Superscript: E = mc^2.)
+  Subscript: H_{2}O (depending on the options at the top of the file, don't paste in =code_with_underscores= w/out surrounding it with ='s).  (Superscript: E = mc^2.)
 
   : one-line code sample
   : ok, maybe two lines
