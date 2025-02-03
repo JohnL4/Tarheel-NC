@@ -26,7 +26,51 @@
 
 ** 2023 Update
    
-   In 2023, I did this on a new VM running Ubuntu 22.04 LTS, and tomcat 9 was the only version on the system.
+   In 2023, I did this on a new VM running Ubuntu 22.04 LTS, and tomcat 9 was the only version on the system.  Search
+   this file for "2023".
+
+** 2025 Restart (Update)
+   :PROPERTIES:
+   :CUSTOM_ID: overview-2025
+   :END:
+
+   In January of 2025, I restarted this update effort, since I didn't make any progress in 2023, and things have
+   probably changed since then.
+
+   Versions, as of <2025-01-04 Sat>:
+
+   | *Description*         | *Version (LTS)* | *Requires* | *Comments*                   |
+   | Latest stable Ubuntu  |           24.04 |            | See [[file:using-aws.org][Amazon instance setup]].   |
+   | Latest JDK (Corretto) |              21 |            | Ubuntu is a Debian-based OS. |
+   | Latest Tomcat         |               9 | JDK 17+    | See notes below.             |
+   | Latest JspWiki        |          2.12.2 | Tomcat 9+  |                              |
+
+   - Note that, due to the transition from javaee.* to jakartaee.*, which requires source code changes, Tomcat 9 will be
+     maintained indefinitely to keep up with later versions of Tomcat, at least for security if not for features.
+   - JspWiki only runs on Tomcat9 (at the moment).
+   - Tomcat9 is not in the standard reposity for Ubuntu 24.04, so requires manual install/config.
+
+   Copying files downloaded to your local machine to the remote VM:
+
+   #+BEGIN_SRC powershell
+     gcm scp
+
+     # Yields:
+     # CommandType     Name                                               Version    Source
+     # -----------     ----                                               -------    ------
+     # Application     scp.exe                                            9.5.2.1    C:\Windows\System32\OpenSSH\scp.exe
+
+     cd C:\Users\John\Downloads\Linux\Tomcat9
+     scp -i C:\Users\John\Downloads\john-lusk.amazon-aws-keypair.20250106.pem * ubuntu@3.84.44.43:/home/ubuntu/Downloads
+   #+END_SRC 
+
+   Verifying SHA-512 checksums:
+
+   #+BEGIN_SRC bash
+     cd ~/Downloads/
+     sha512sum *
+     if [ "xxx" == "xxx" ]; then echo "match"; else echo "NO MATCH"; fi
+   #+END_SRC 
 
 * Getting Java 11 from AdoptOpenJDK.net
 
@@ -53,22 +97,70 @@
   - /var/lib/tomcat9
 
 * Download
+  
+  (2025: See [[#overview-2025][2025 Restart (Update)]] to learn about copying files from your local machine using =scp=.)
 
- Not available via =apt=.  At least, not without adding another repository from somewhere
- (Apache?).
+  Not available via =apt=.  At least, not without adding another repository from somewhere
+  (Apache?).
 
- Downloaded with wget:
+  Downloaded with wget:
 
- #+BEGIN_EXAMPLE
-   ip-172-30-0-82$ pwd
-   /home/ubuntu/Downloads
+  #+BEGIN_EXAMPLE
+    ip-172-30-0-82$ pwd
+    /home/ubuntu/Downloads
 
-   ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
- #+END_EXAMPLE
+    ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+  #+END_EXAMPLE
+
+* IN-PROGRESS 2025: Installation HOWTOs
+
+  See:
+  - https://www.hostinger.com/tutorials/how-to-install-tomcat-on-ubuntu/
+
+  For the above instruction, I modified systemd service unit pathnames to match actual pathnames on the system.
+
+  (service unit: =/etc/systemd/system/tomcat.service=.
+
+  I also modified the path for security to =/dev/urandom=, because that entry seems to exist on my system.
+
+  <2025-02-02 Sun 17:56> Current status: systemd service unit configured but won't start.  Need to diagnose.  Possibly
+  need to point to jdk instead of jre (=/usr/lib/jvm/java-17-amazon-corretto=, maybe?)
+
+  <2025-02-03 Mon 18:30> Actually, I just needed to point =JAVA_HOME= to =/usr= instead of =/usr/bin=.
+
+  A key thing is the =JAVA_OPTS= environment variable, which was royally screwed up in the above hostinger page:
+  
+  #+BEGIN_EXAMPLE 
+    Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/'
+  #+END_EXAMPLE
+
+  Useful =systemctl= commands:
+
+  #+BEGIN_SRC bash
+    sudo systemctl daemon-reload    # Reload whatever edits you made to the service unit
+    sudo systemctl restart tomcat   # Restart the thing
+    systemctl status tomcat.service # Check status (duh)
+    journalctl -xeu tomcat.service  # Moar detailed status and startup log.
+  #+END_SRC 
+
+* Create =tomcat= user and group
+
+  #+BEGIN_SRC bash
+    sudo groupadd tomcat
+    sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat      # Choose the right home directory.
+  #+END_SRC
+
+  Note that home directory should probably be updated if you ever update tomcat, since it'll probably be
+  version-specific.
+
+  I =chown='d the =/opt= directories (tomcat + docs) to =tomcat:tomcat= recursively.  I guess we'll see in future
+  whether some of that stuff should have remained owned by root.
 
 * Expand archive (if expanding/configuring manually, as opposed to using =apt get=)
 
   Into =/usr/share/apache-tomcat-9.0.31=
+
+  2025: note that Ubuntu 24.04 seems to come (from Amazon, at least) with an empty =/opt= directory.
 
 * Configure Tomcat to start
 
@@ -119,6 +211,7 @@
 
    - https://vegastack.com/tutorials/how-to-install-tomcat-9-on-ubuntu-22-04/
    - https://www.rosehosting.com/blog/how-to-install-tomcat-on-ubuntu-22-04/
+   - https://www.hostinger.com/tutorials/how-to-install-tomcat-on-ubuntu/ (2025)
 
    I think the following is required to allow tomcat to write the pid file to =/usr/share/tomcat9/tomcat.pid=:
 

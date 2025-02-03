@@ -22,7 +22,7 @@
 * Overall Notes
 
   Most of this page was built when I set up my first instance, around 2018-19.  For more recent changes, look for
-  "2023".
+  "2023".  See also notes for 2025.
 
 * Setting up an AWS instance
 
@@ -168,6 +168,12 @@
       | sgr-01041fa45d0603774 | IPv4                     | Custom       | TCP    | TCP        |           90 | 0.0.0.0/0 | HTTP          |
 
 ***** Storage 
+
+      Space:  existing instances, root drive:
+
+      | original | /dev/sda1 | 8 GiB  |
+      | web 2    | /dev/sda1 | 12 GiB |
+      | web 3    | /dev/sda1 | 12 GiB |
 
 ****** gp2 vs. gp3
 
