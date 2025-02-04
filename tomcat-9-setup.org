@@ -120,7 +120,7 @@
 
   For the above instruction, I modified systemd service unit pathnames to match actual pathnames on the system.
 
-  (service unit: =/etc/systemd/system/tomcat.service=.
+  (service unit: =/etc/systemd/system/tomcat.service=.)
 
   I also modified the path for security to =/dev/urandom=, because that entry seems to exist on my system.
 
@@ -132,7 +132,7 @@
   A key thing is the =JAVA_OPTS= environment variable, which was royally screwed up in the above hostinger page:
   
   #+BEGIN_EXAMPLE 
-    Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/'
+    Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/urandom'
   #+END_EXAMPLE
 
   Useful =systemctl= commands:
