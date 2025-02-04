@@ -98,7 +98,8 @@
 
 * Download
   
-  (2025: See [[#overview-2025][2025 Restart (Update)]] to learn about copying files from your local machine using =scp=.)
+  (2025: See [[#overview-2025][2025 Restart (Update)]] to learn about copying files from your local machine using =scp=.  That way you can
+  download with a nice web browser on your local machine and you don't have to install =elinks= or whatever on the VM.)
 
   Not available via =apt=.  At least, not without adding another repository from somewhere
   (Apache?).
@@ -112,8 +113,31 @@
     ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
   #+END_EXAMPLE
 
-* DONE 2025: Installation HOWTOs
+* Create =tomcat= user and group
+
+  #+BEGIN_SRC bash
+    sudo groupadd tomcat
+    sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat      # Choose the right home directory.
+  #+END_SRC
+
+  Note that home directory should probably be updated if you ever update tomcat, since it'll probably be
+  version-specific.
+
+  I =chown='d the =/opt= directories (tomcat + docs) to =tomcat:tomcat= recursively.  I guess we'll see in future
+  whether some of that stuff should have remained owned by root.
+
+* Expand archive (if expanding/configuring manually, as opposed to using =apt get=)
+
+  Into =/usr/share/apache-tomcat-9.0.31=
+
+  2025: note that Ubuntu 24.04 seems to come (from Amazon, at least) with an empty =/opt= directory, so that's what I
+  used. 
+
+* DONE 2025: =systemd= HOWTOs
   CLOSED: [2025-02-03 Mon 19:07]
+  :PROPERTIES:
+  :CUSTOM_ID: 2025-systemd-howtos
+  :END:
 
   See:
   - https://www.hostinger.com/tutorials/how-to-install-tomcat-on-ubuntu/
@@ -143,25 +167,6 @@
     systemctl status tomcat.service # Check status (duh)
     journalctl -xeu tomcat.service  # Moar detailed status and startup log.
   #+END_SRC 
-
-* Create =tomcat= user and group
-
-  #+BEGIN_SRC bash
-    sudo groupadd tomcat
-    sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat      # Choose the right home directory.
-  #+END_SRC
-
-  Note that home directory should probably be updated if you ever update tomcat, since it'll probably be
-  version-specific.
-
-  I =chown='d the =/opt= directories (tomcat + docs) to =tomcat:tomcat= recursively.  I guess we'll see in future
-  whether some of that stuff should have remained owned by root.
-
-* Expand archive (if expanding/configuring manually, as opposed to using =apt get=)
-
-  Into =/usr/share/apache-tomcat-9.0.31=
-
-  2025: note that Ubuntu 24.04 seems to come (from Amazon, at least) with an empty =/opt= directory.
 
 * Configure Tomcat to start
 
@@ -206,6 +211,8 @@
    - CLOSING NOTE [2023-09-04 Mon 14:04] \\
      This is done, but tomcat is failing b/c it can't open server.xml.
      
+   See also [[#2025-systemd-howtos][2025: =systemd= HOWTOs]].
+
    *NOTE:*  This is not needed when you use =apt= to install tomcat.  See above ([[*Installing via =apt= (aptitude)][Installing via =apt= (aptitude)]]).
 
    Two different websites say to create a SystemD service unit (=/etc/systemd/system/tomcat.service=):
