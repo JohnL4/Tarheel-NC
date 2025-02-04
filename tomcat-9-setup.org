@@ -112,7 +112,8 @@
     ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
   #+END_EXAMPLE
 
-* IN-PROGRESS 2025: Installation HOWTOs
+* DONE 2025: Installation HOWTOs
+  CLOSED: [2025-02-03 Mon 19:07]
 
   See:
   - https://www.hostinger.com/tutorials/how-to-install-tomcat-on-ubuntu/

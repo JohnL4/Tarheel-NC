@@ -102,6 +102,8 @@
     (On Linux, =cat ~/.aws/credentials= will tell you what credentials are available on your system,
     in case you forgot (like I do, all the time).)
 
+    (On Windows (PowerShell), try =cat ~\.aws\credentials=)
+
 ***** DONE Test
       CLOSED: [2018-12-09 Sun 12:40]
 
