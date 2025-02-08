@@ -43,7 +43,7 @@
    | Latest stable Ubuntu  |           24.04 |            | See [[file:using-aws.org][Amazon instance setup]].   |
    | Latest JDK (Corretto) |              21 |            | Ubuntu is a Debian-based OS. |
    | Latest Tomcat         |               9 | JDK 17+    | See notes below.             |
-   | Latest JspWiki        |          2.12.2 | Tomcat 9+  |                              |
+   | Latest JspWiki        |          2.12.2 | Tomcat 9   |                              |
 
    - Note that, due to the transition from javaee.* to jakartaee.*, which requires source code changes, Tomcat 9 will be
      maintained indefinitely to keep up with later versions of Tomcat, at least for security if not for features.
@@ -417,6 +417,7 @@
 ** Might also need to configure an AJP port at some point in the future, but for now...
 
    For now, we're good.
+* TODO Configure Tomcat to run on port 80 (or 90, say)
 * Make tomcat run at system startup (and shut down gracefully on halt/reboot)
 
   So, there's this thing called =update-rc.d=, and it writes all the =/etc/rcN.d= scripts, where /N/
