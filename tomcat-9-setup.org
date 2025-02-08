@@ -196,6 +196,7 @@
 
   #+BEGIN_SRC bash
     sudo systemctl daemon-reload    # Reload whatever edits you made to the service unit
+    sudo systemctl enable tomcat    # Cause service to start on boot
     sudo systemctl restart tomcat   # Restart the thing
     systemctl status tomcat.service # Check status (duh)
     journalctl -xeu tomcat.service  # Moar detailed status and startup log.
@@ -335,8 +336,7 @@
   So, I just looked at my EC2 instance to see what networking security group was currently
   configured, and it turns out I can edit that group on the fly, and it works.
 
-* DONE Allow access to manager GUIs from remote address
-  CLOSED: [2020-03-15 Sun 19:16]
+* TODO Allow access to manager GUIs from remote address
   :PROPERTIES:
   :CUSTOM_ID: aws-firewall
   :END:
@@ -358,7 +358,7 @@
 
   (Yikes!  Regular expressions!  Well, I guess it's better against IP addresses than domain names.)
 
-* Allow tomcat to open ports < 1024
+* TODO Allow tomcat to open ports < 1024
 
   Problems with authbind.  Maybe put all tomcat users (8,9) in a "tomcat" group, and assign that
   group permission to open low-numbered ports via authbind?
