@@ -90,7 +90,9 @@
   - /etc/logrotate.d/tomcat9
   - /lib/systemd/system/tomcat9.service (Q:  so, no need for explicit systemd config shown below?  A:  apparently not.
     The only thing I had to do was modify =/etc/default/tomcat9= to set =JAVA_HOME=/usr= after installing Corretto.) --
-    Looks like this one sets CATALINA_HOME to =/usr/share/tomcat9=, but CATALINA_BASE to =/var/lib/tomcat9=.
+    Looks like this one sets
+    - CATALINA_HOME to =/usr/share/tomcat9=, but
+    - CATALINA_BASE to =/var/lib/tomcat9=.
 
   - /usr/share/tomcat9
   - /usr/share/tomcat9-root
@@ -262,9 +264,10 @@
   CLOSED: [2023-09-04 Mon 15:18]
 
   - CLOSING NOTE [2023-09-04 Mon 15:18] \\
-    Purged everything and re-installed via =apt=, paying attention to where everything went.  After that, it turns out we
-    don't need a systemd service unit and we don't (yet) need to worry about =server.xml=, since it seems to have been
-    configured properly already.  See the section above on installing with =apt=.
+    Purged everything and re-installed via =apt=, paying attention to where everything went.  After that, it turns out
+    we don't need a systemd service unit (at least, not one we have to create ourselves) and we don't (yet) need to
+    worry about =server.xml=, since it seems to have been configured properly already.  See the section above on
+    installing with =apt=.
 
   Now that we've gotten the thing to /start/ we need to it to not fail.  It's looking for =server.xml= with path
   =/usr/share/tomcat9/conf/server.xml=, because =CATALINA_HOME= (configured for systemd) is =/usr/share/tomcat9=.
