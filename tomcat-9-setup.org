@@ -161,7 +161,38 @@
     Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/urandom'
   #+END_EXAMPLE
 
-  Useful =systemctl= commands:
+** Final service unit:
+
+   #+BEGIN_EXAMPLE
+     [Unit]
+     Description=Apache Tomcat Web Application Container
+     After=network.target
+
+     [Service]
+     Type=forking
+
+     Environment=JAVA_HOME=/usr
+     Environment=CATALINA_PID=/opt/apache-tomcat-9.0.98/temp/tomcat.pid
+     Environment=CATALINA_Home=/opt/apache-tomcat-9.0.98
+     Environment=CATALINA_BASE=/opt/apache-tomcat-9.0.98
+     Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+     Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/urandom'
+
+     ExecStart=/opt/apache-tomcat-9.0.98/bin/startup.sh
+     ExecStop=/opt/apache-tomcat-9.0.98/bin/shutdown.sh
+
+     User=tomcat
+     Group=tomcat
+     UMask=0007
+     RestartSec=10
+     Restart=always
+
+     [Install]
+
+     WantedBy=multi-user.target
+   #+END_EXAMPLE 
+
+** Useful =systemctl= commands
 
   #+BEGIN_SRC bash
     sudo systemctl daemon-reload    # Reload whatever edits you made to the service unit
@@ -169,6 +200,22 @@
     systemctl status tomcat.service # Check status (duh)
     journalctl -xeu tomcat.service  # Moar detailed status and startup log.
   #+END_SRC 
+
+** DONE Configure to start automatically after reboot
+   CLOSED: [2025-02-08 Sat 15:32]
+
+   Turns out this is just one command away.  See
+   https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
+
+   #+BEGIN_SRC bash
+     sudo systemctl enable tomcat
+   #+END_SRC
+
+   Which results in output:
+
+   #+BEGIN_EXAMPLE
+     Created symlink /etc/systemd/system/multi-user.target.wants/tomcat.service → /etc/systemd/system/tomcat.service.
+   #+END_EXAMPLE 
 
 * Configure Tomcat to start
 
