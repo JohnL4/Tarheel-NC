@@ -34,6 +34,10 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:evil-retail-companies.org][evil-retail-companies.org]] :: Retail companies I don't like, for various reasons
+
+  - [[file:bad-decisions.org][bad-decisions.org]] :: Bad decisions throughout history (mostly 20th century and later)
+
   - [[file:migrating-from-DynDNS-to-Route53.org][migrating-from-DynDNS-to-Route53.org]] :: Migrating from Oracle DynDNS to AWS Route 53, since Dyn
     1) is expensive; and
     2) doesn't have the capability I want to route a subdomain elsewhere without (probably) an
