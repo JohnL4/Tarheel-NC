@@ -336,6 +336,7 @@
   So, I just looked at my EC2 instance to see what networking security group was currently
   configured, and it turns out I can edit that group on the fly, and it works.
 
+* TODO Require authentication/authorization to access manager GUIs
 * TODO Allow access to manager GUIs from remote address
   :PROPERTIES:
   :CUSTOM_ID: aws-firewall
