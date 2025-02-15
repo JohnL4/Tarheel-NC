@@ -336,16 +336,37 @@
   So, I just looked at my EC2 instance to see what networking security group was currently
   configured, and it turns out I can edit that group on the fly, and it works.
 
-* TODO Require authentication/authorization to access manager GUIs
-* TODO Allow access to manager GUIs from remote address
+* DONE Allow acccess to /docs url
+  CLOSED: [2025-02-15 Sat 14:58]
+
+  =/docs= is, by default, only accessible from localhost.
+
+  The access-denied error pages returned when I tried to access =/docs= in the browser were actually helpful.
+
+  - *Allow access from the web at large:*
+    - Edit =webapps/docs/META-INF/context.xml= and comment out the =Valve= element that filters on remote address.
+
+  This worked without restarting anything.  I guess Tomcat is monitoring these files for changes.
+
+* DONE Require authentication/authorization to access manager GUIs
+  CLOSED: [2025-02-15 Sat 14:59]
+
+  +Looks like I need to enable access to the manager app, according to Google's AI+ Does not appear correct or helpful.
+
+  - *Configure user with manager-gui role.*  This role is built in, so I didn't need to add the role itself, just a user
+    having the role.
+    - Edit =conf/tomcat-users.xml= to add a user with =manager-gui= access.
+
+* DONE Allow access to manager GUIs from remote address
+  CLOSED: [2025-02-15 Sat 14:59]
   :PROPERTIES:
   :CUSTOM_ID: aws-firewall
   :END:
 
   Update =context.xml= for two webapps:
 
-  - manager
-  - host-manager
+  - manager (For Tomcat 9, requires =manager-gui= role assigned to user in =/conf/tomcat-users.xml=)
+  - host-manager (For Tomcat 9, requires =admin-gui= role assigned to user in =/conf/tomcat-users.xml=)
 
   Which, in my initial naive install, are in =/usr/share/apache-tomcat-9.0.31/webapps= (in their
   respective =META-INF= subdirectories).
@@ -359,7 +380,7 @@
 
   (Yikes!  Regular expressions!  Well, I guess it's better against IP addresses than domain names.)
 
-* TODO Allow tomcat to open ports < 1024
+* IN-PROGRESS Allow tomcat to open ports < 1024
 
   Problems with authbind.  Maybe put all tomcat users (8,9) in a "tomcat" group, and assign that
   group permission to open low-numbered ports via authbind?

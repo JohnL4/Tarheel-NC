@@ -1,0 +1,64 @@
+# -*- org -*-
+#+TITLE: Notes on 5calls.org
+#+COLUMNS: %12TODO %10WHO %3PRIORITY(PRI) %3HOURS(HRS){est+} %85ITEM
+# #+INFOJS_OPT: view:showall toc:t ltoc:nil path:../org-info.js mouse:#B3F2E3
+# Pandoc needs H:9; default is H:3.
+# `^:nil' means raw underscores and carets are not interpreted to mean sub- and superscript.  (Use {} to force interpretation.)
+#+OPTIONS: author:nil creator:t H:9 ^:{}
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i,600,600i|IBM+Plex+Sans:400,400i,600,600i|IBM+Plex+Serif:400,400i,600,600i">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/org-mode.css" />
+
+# Generates "up" and "home" links ("." is "current directory").  Can comment one out.
+#+HTML_LINK_UP: .
+#+HTML_LINK_HOME: /index.html
+
+# Use ``#+ATTR_HTML: :class lower-alpha'' on line before list to use the following class.
+# See https://emacs.stackexchange.com/a/18943/17421
+# 
+#+HTML_HEAD: <style type="text/css">
+#+HTML_HEAD:  ol.lower-alpha { list-style-type: lower-alpha; }
+#+HTML_HEAD: </style>
+
+* Overview 
+
+  https://5calls.org is a website that makes it easy to call your representative.
+
+* Log
+
+** Earlier
+
+   - Oppose Tulsi Gabbard
+   - Oppose RFK Jr.
+   - Oppose Pete Hegseth
+   - Defend USAID
+
+** <2025-02-10 Mon>
+
+   - *Defend Consumer Financial Protection Bureau*
+     - This is clearly the job of government -- accumulate reports of fraud and prosecute, on behalf of the taxpayers.
+     - Why should my representative be on the side of fraud?
+     - When people get ripped off and have no recourse, they'll remember.
+
+   - *Oppose the SAVE Act*
+     - Women who changed their names when they got married will have trouble with this
+     - People who have moved from the state they were born in will have trouble
+     - People born on military bases that have since closed may have trouble
+     - Citizens of color are three times more likely not to have required documents, even though they are indeed
+       citizens.  Is that the plan?  It seems hard to deny that it is.
+     - Kansas already tried this in 2011 and it was a fiasco.
+
+** <2025-02-11 Tue>
+
+   - *Against National Abortion Ban (H.R. 722)*
+
+   - *EPA:  Protect the mission*
+     - NC has a lot of rivers and lakes and a lot of people fish and paddle in them
+     - We have issues with coal ash
+     - Coal plants to the west of us blow fine particulate matter over to us and that's an interstate issue.
+     - Finally, climate change is not something the free market can handle.  Only the government can.
+       
+** <2025-02-13 Thu> (or so)
+
+   - *Holy cow, constitutional crisis, straight-up!*
+
+   - Also, email to my representative about town halls (not via 5calls, but, still).
