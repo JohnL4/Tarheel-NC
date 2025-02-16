@@ -380,7 +380,8 @@
 
   (Yikes!  Regular expressions!  Well, I guess it's better against IP addresses than domain names.)
 
-* IN-PROGRESS Allow tomcat to open ports < 1024
+* DONE Allow tomcat to open ports < 1024
+  CLOSED: [2025-02-16 Sun 15:17]
 
   2025: Looks like =authbind= is still the way to go.  It lives in package =authbind=, which you'll need to install.
 
@@ -454,7 +455,12 @@
 
    For now, we're good.
 
-* TODO Configure Tomcat to run on port 80 (or 90, say)
+* DONE Configure Tomcat to run on port 80 (or 90, say)
+  CLOSED: [2025-02-16 Sun 15:23]
+
+  Need to adjust Connector setting in =conf/server.xml=.  Different port.  Maybe copy the existing element, comment it
+  out, and make changes on the copy.
+
 * Make tomcat run at system startup (and shut down gracefully on halt/reboot)
 
   So, there's this thing called =update-rc.d=, and it writes all the =/etc/rcN.d= scripts, where /N/
