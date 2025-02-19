@@ -252,7 +252,7 @@
     you try, it'll just respawn).  If you want to kill it, you'll have to cancel the spot request
     itself.
 
-** Routing www2.how-hard-can-it-be.com to the AWS instance
+** TODO Routing www2.how-hard-can-it-be.com to the AWS instance
 
    Consider allocating an Elastic IP address and using your DNS solution (dyndns.org, in my case) to
    map it to a particular hostname.
