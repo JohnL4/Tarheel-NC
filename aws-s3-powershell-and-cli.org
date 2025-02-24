@@ -84,6 +84,9 @@
     (Note: on Linux, credentials are in text file: =~/.aws/credentials=.)
     
 *** Choose a credential for the current session (will expire, so you'll have to do it again the next day)
+    :PROPERTIES:
+    :CUSTOM_ID: choose-credential
+    :END:
     
     : Set-AWSCredential -ProfileName JohnS3
 
@@ -98,6 +101,8 @@
 
     (On Linux, =cat ~/.aws/credentials= will tell you what credentials are available on your system,
     in case you forgot (like I do, all the time).)
+
+    (On Windows (PowerShell), try =cat ~\.aws\credentials=)
 
 ***** DONE Test
       CLOSED: [2018-12-09 Sun 12:40]

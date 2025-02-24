@@ -24,29 +24,199 @@
   As the title says, these are my notes on installing Tomcat 9 on Ubuntu Linux 4.4.0-89-generic (Xenial, 16.04LTS),
   running on Java 11 from AdoptOpenJDK to run in parallel with an existing Tomcat 8 installation running on Java 8.
 
+** 2023 Update
+   
+   In 2023, I did this on a new VM running Ubuntu 22.04 LTS, and tomcat 9 was the only version on the system.  Search
+   this file for "2023".
+
+** 2025 Restart (Update)
+   :PROPERTIES:
+   :CUSTOM_ID: overview-2025
+   :END:
+
+   In January of 2025, I restarted this update effort, since I didn't make any progress in 2023, and things have
+   probably changed since then.
+
+   Versions, as of <2025-01-04 Sat>:
+
+   | *Description*         | *Version (LTS)* | *Requires* | *Comments*                   |
+   | Latest stable Ubuntu  |           24.04 |            | See [[file:using-aws.org][Amazon instance setup]].   |
+   | Latest JDK (Corretto) |              21 |            | Ubuntu is a Debian-based OS. |
+   | Latest Tomcat         |               9 | JDK 17+    | See notes below.             |
+   | Latest JspWiki        |          2.12.2 | Tomcat 9   |                              |
+
+   - Note that, due to the transition from javaee.* to jakartaee.*, which requires source code changes, Tomcat 9 will be
+     maintained indefinitely to keep up with later versions of Tomcat, at least for security if not for features.
+   - JspWiki only runs on Tomcat9 (at the moment).
+   - Tomcat9 is not in the standard reposity for Ubuntu 24.04, so requires manual install/config.
+
+   Copying files downloaded to your local machine to the remote VM:
+
+   #+BEGIN_SRC powershell
+     gcm scp
+
+     # Yields:
+     # CommandType     Name                                               Version    Source
+     # -----------     ----                                               -------    ------
+     # Application     scp.exe                                            9.5.2.1    C:\Windows\System32\OpenSSH\scp.exe
+
+     cd C:\Users\John\Downloads\Linux\Tomcat9
+     scp -i C:\Users\John\Downloads\john-lusk.amazon-aws-keypair.20250106.pem * ubuntu@3.84.44.43:/home/ubuntu/Downloads
+   #+END_SRC 
+
+   Verifying SHA-512 checksums:
+
+   #+BEGIN_SRC bash
+     cd ~/Downloads/
+     sha512sum *
+     if [ "xxx" == "xxx" ]; then echo "match"; else echo "NO MATCH"; fi
+   #+END_SRC 
+
 * Getting Java 11 from AdoptOpenJDK.net
 
   Follow the instructions at [[https://adoptopenjdk.net/installation.html?variant=openjdk11&jvmVariant=hotspot#linux-pkg][AdoptOpenJDK.net]], except for Java /whatever-version-you-want/.  You're
   basically adding a new repository to apt, and from then on, it should be pretty easy to keep it
   up to date (if the EC2 instance doesn't automaticaly keep itself up to date).
 
+  2023:  Installed Amazon Corretto via =apt=.
+
+* DONE Installing via =apt= (aptitude)
+  CLOSED: [2023-09-04 Mon 15:18]
+
+  When installing via =apt=, tomcat9 seems to land in:
+
+  - /etc/tomcat9
+  - /etc/default/tomcat9 (shell variables)
+  - /etc/logrotate.d/tomcat9
+  - /lib/systemd/system/tomcat9.service (Q:  so, no need for explicit systemd config shown below?  A:  apparently not.
+    The only thing I had to do was modify =/etc/default/tomcat9= to set =JAVA_HOME=/usr= after installing Corretto.) --
+    Looks like this one sets
+    - CATALINA_HOME to =/usr/share/tomcat9=, but
+    - CATALINA_BASE to =/var/lib/tomcat9=.
+
+  - /usr/share/tomcat9
+  - /usr/share/tomcat9-root
+  - /var/lib/tomcat9
+
 * Download
+  
+  (2025: See [[#overview-2025][2025 Restart (Update)]] to learn about copying files from your local machine using =scp=.  That way you can
+  download with a nice web browser on your local machine and you don't have to install =elinks= or whatever on the VM.)
 
- Not available via =apt=.  At least, not without adding another repository from somewhere
- (Apache?).
+  Not available via =apt=.  At least, not without adding another repository from somewhere
+  (Apache?).
 
- Downloaded with wget:
+  Downloaded with wget:
 
- #+BEGIN_EXAMPLE
-   ip-172-30-0-82$ pwd
-   /home/ubuntu/Downloads
+  #+BEGIN_EXAMPLE
+    ip-172-30-0-82$ pwd
+    /home/ubuntu/Downloads
 
-   ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
- #+END_EXAMPLE
+    ip-172-30-0-82$ wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+  #+END_EXAMPLE
 
-* Expand archive
+* Create =tomcat= user and group
+
+  #+BEGIN_SRC bash
+    sudo groupadd tomcat
+    sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat      # Choose the right home directory.
+  #+END_SRC
+
+  Note that home directory should probably be updated if you ever update tomcat, since it'll probably be
+  version-specific.
+
+  I =chown='d the =/opt= directories (tomcat + docs) to =tomcat:tomcat= recursively.  I guess we'll see in future
+  whether some of that stuff should have remained owned by root.
+
+* Expand archive (if expanding/configuring manually, as opposed to using =apt get=)
 
   Into =/usr/share/apache-tomcat-9.0.31=
+
+  2025: note that Ubuntu 24.04 seems to come (from Amazon, at least) with an empty =/opt= directory, so that's what I
+  used. 
+
+* DONE 2025: =systemd= HOWTOs
+  CLOSED: [2025-02-03 Mon 19:07]
+  :PROPERTIES:
+  :CUSTOM_ID: 2025-systemd-howtos
+  :END:
+
+  See:
+  - https://www.hostinger.com/tutorials/how-to-install-tomcat-on-ubuntu/
+
+  For the above instruction, I modified systemd service unit pathnames to match actual pathnames on the system.
+
+  (service unit: =/etc/systemd/system/tomcat.service=.)
+
+  I also modified the path for security to =/dev/urandom=, because that entry seems to exist on my system.
+
+  <2025-02-02 Sun 17:56> Current status: systemd service unit configured but won't start.  Need to diagnose.  Possibly
+  need to point to jdk instead of jre (=/usr/lib/jvm/java-17-amazon-corretto=, maybe?)
+
+  <2025-02-03 Mon 18:30> Actually, I just needed to point =JAVA_HOME= to =/usr= instead of =/usr/bin=.
+
+  A key thing is the =JAVA_OPTS= environment variable, which was royally screwed up in the above hostinger page:
+  
+  #+BEGIN_EXAMPLE 
+    Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/urandom'
+  #+END_EXAMPLE
+
+** Final service unit:
+
+   #+BEGIN_EXAMPLE
+     [Unit]
+     Description=Apache Tomcat Web Application Container
+     After=network.target
+
+     [Service]
+     Type=forking
+
+     Environment=JAVA_HOME=/usr
+     Environment=CATALINA_PID=/opt/apache-tomcat-9.0.98/temp/tomcat.pid
+     Environment=CATALINA_Home=/opt/apache-tomcat-9.0.98
+     Environment=CATALINA_BASE=/opt/apache-tomcat-9.0.98
+     Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+     Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:///dev/urandom'
+
+     ExecStart=/opt/apache-tomcat-9.0.98/bin/startup.sh
+     ExecStop=/opt/apache-tomcat-9.0.98/bin/shutdown.sh
+
+     User=tomcat
+     Group=tomcat
+     UMask=0007
+     RestartSec=10
+     Restart=always
+
+     [Install]
+
+     WantedBy=multi-user.target
+   #+END_EXAMPLE 
+
+** Useful =systemctl= commands
+
+  #+BEGIN_SRC bash
+    sudo systemctl daemon-reload    # Reload whatever edits you made to the service unit
+    sudo systemctl enable tomcat    # Cause service to start on boot
+    sudo systemctl restart tomcat   # Restart the thing
+    systemctl status tomcat.service # Check status (duh)
+    journalctl -xeu tomcat.service  # Moar detailed status and startup log.
+  #+END_SRC 
+
+** DONE Configure to start automatically after reboot
+   CLOSED: [2025-02-08 Sat 15:32]
+
+   Turns out this is just one command away.  See
+   https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
+
+   #+BEGIN_SRC bash
+     sudo systemctl enable tomcat
+   #+END_SRC
+
+   Which results in output:
+
+   #+BEGIN_EXAMPLE
+     Created symlink /etc/systemd/system/multi-user.target.wants/tomcat.service → /etc/systemd/system/tomcat.service.
+   #+END_EXAMPLE 
 
 * Configure Tomcat to start
 
@@ -54,29 +224,101 @@
   =CATALINA_HOME= (at least) before firing up the supplied startup scripts.  I basically copied my
   tomcat8 =/etc/default= script to a tomcat9 version and tinkered a bit.
 
+  2023:  This section and the next (init) are replaced by a SystemD service file ([[*2023: systemd][2023: systemd]]).
+
 * Configure init
   :PROPERTIES:
   :CUSTOM_ID: configure-init
   :END:
 
-  See https://www.rosehosting.com/blog/install-tomcat-9-on-an-ubuntu-16-04-vps/
+** Prior to 2023
 
-  Or https://javabirder.wordpress.com/2016/02/18/install-tomcat-9-ubuntu/
+   See https://www.rosehosting.com/blog/install-tomcat-9-on-an-ubuntu-16-04-vps/
 
-  : sudo useradd -r tomcat9 --shell /bin/false
+   Or https://javabirder.wordpress.com/2016/02/18/install-tomcat-9-ubuntu/
 
-  (=-r= is "system user", i.e., no home directory, low uid, etc.)
+   : sudo useradd -r tomcat9 --shell /bin/false
 
-  I used the javabirder example, but the rosehosting =/etc/default/tomcat9= (I just copied the
-  =tomcat8= version, changed user/group names in the script, pointed to a different =JAVA_HOME=
-  (AdoptOpenJDK 11), set a smaller max heap size (since I already have a JVM running on this
-  machine for my wiki).
+   (=-r= is "system user", i.e., no home directory, low uid, etc.)
 
-  I also had to change one port setting in the =server.xml= config from 8005 to 8095, because I
-  guess it was colliding with my wiki tomcat instance.
+   I used the javabirder example, but the rosehosting =/etc/default/tomcat9= (I just copied the
+   =tomcat8= version, changed user/group names in the script, pointed to a different =JAVA_HOME=
+   (AdoptOpenJDK 11), set a smaller max heap size (since I already have a JVM running on this
+   machine for my wiki).
 
-  It works (on port 8080), when testing locally (via =elinks http://localhost:8080=), but I can't
-  hit that port from outside the machine, I guess because of the firewall rules.
+   I also had to change one port setting in the =server.xml= config from 8005 to 8095, because I
+   guess it was colliding with my wiki tomcat instance.
+
+   It works (on port 8080), when testing locally (via =elinks http://localhost:8080=), but I can't
+   hit that port from outside the machine, I guess because of the firewall rules.
+
+** DONE 2023: systemd
+   CLOSED: [2023-09-04 Mon 14:04]
+   :PROPERTIES:
+   :CUSTOM_ID: tomcat-systemd-service-unit
+   :END:
+
+   - CLOSING NOTE [2023-09-04 Mon 14:04] \\
+     This is done, but tomcat is failing b/c it can't open server.xml.
+     
+   See also [[#2025-systemd-howtos][2025: =systemd= HOWTOs]].
+
+   *NOTE:*  This is not needed when you use =apt= to install tomcat.  See above ([[*Installing via =apt= (aptitude)][Installing via =apt= (aptitude)]]).
+
+   Two different websites say to create a SystemD service unit (=/etc/systemd/system/tomcat.service=):
+
+   - https://vegastack.com/tutorials/how-to-install-tomcat-9-on-ubuntu-22-04/
+   - https://www.rosehosting.com/blog/how-to-install-tomcat-on-ubuntu-22-04/
+   - https://www.hostinger.com/tutorials/how-to-install-tomcat-on-ubuntu/ (2025)
+
+   I think the following is required to allow tomcat to write the pid file to =/usr/share/tomcat9/tomcat.pid=:
+
+   : sudo chown -R tomcat:tomcat /usr/share/tomcat9 /usr/share/tomcat9-root
+
+   If you have problems, look at =$CATALINA_OUT= (should be =/var/log/tomcat/catalina.out=).
+
+   Service unit looks like this:
+
+   #+BEGIN_EXAMPLE
+     [Unit]
+     Description=Apache Tomcat
+     After=network.target
+
+     [Service]
+     Type=forking
+
+     User=tomcat
+     Group=tomcat
+
+     Environment=JAVA_HOME=/usr
+     Environment=CATALINA_PID=/usr/share/tomcat9/tomcat.pid
+     Environment=CATALINA_HOME=/usr/share/tomcat9
+     Environment=CATALINA_OUT=/var/log/tomcat9/catalina.out
+     # Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+
+     ExecStart=/usr/share/tomcat9/bin/startup.sh
+     ExecStop=/usr/share/tomcat9/bin/shutdown.sh
+
+     ExecReload=/bin/kill $MAINPID
+     RemainAfterExit=yes
+
+     [Install]
+     WantedBy=multi-user.target
+   #+END_EXAMPLE 
+
+   Currently stuck on =server.xml=, but that's expected at this point.
+
+* DONE =server.xml=
+  CLOSED: [2023-09-04 Mon 15:18]
+
+  - CLOSING NOTE [2023-09-04 Mon 15:18] \\
+    Purged everything and re-installed via =apt=, paying attention to where everything went.  After that, it turns out
+    we don't need a systemd service unit (at least, not one we have to create ourselves) and we don't (yet) need to
+    worry about =server.xml=, since it seems to have been configured properly already.  See the section above on
+    installing with =apt=.
+
+  Now that we've gotten the thing to /start/ we need to it to not fail.  It's looking for =server.xml= with path
+  =/usr/share/tomcat9/conf/server.xml=, because =CATALINA_HOME= (configured for systemd) is =/usr/share/tomcat9=.
 
 * Configure AWS firewall rules to allow connections on ports 8080, 8443
 
@@ -94,16 +336,37 @@
   So, I just looked at my EC2 instance to see what networking security group was currently
   configured, and it turns out I can edit that group on the fly, and it works.
 
+* DONE Allow acccess to /docs url
+  CLOSED: [2025-02-15 Sat 14:58]
+
+  =/docs= is, by default, only accessible from localhost.
+
+  The access-denied error pages returned when I tried to access =/docs= in the browser were actually helpful.
+
+  - *Allow access from the web at large:*
+    - Edit =webapps/docs/META-INF/context.xml= and comment out the =Valve= element that filters on remote address.
+
+  This worked without restarting anything.  I guess Tomcat is monitoring these files for changes.
+
+* DONE Require authentication/authorization to access manager GUIs
+  CLOSED: [2025-02-15 Sat 14:59]
+
+  +Looks like I need to enable access to the manager app, according to Google's AI+ Does not appear correct or helpful.
+
+  - *Configure user with manager-gui role.*  This role is built in, so I didn't need to add the role itself, just a user
+    having the role.
+    - Edit =conf/tomcat-users.xml= to add a user with =manager-gui= access.
+
 * DONE Allow access to manager GUIs from remote address
-  CLOSED: [2020-03-15 Sun 19:16]
+  CLOSED: [2025-02-15 Sat 14:59]
   :PROPERTIES:
   :CUSTOM_ID: aws-firewall
   :END:
 
   Update =context.xml= for two webapps:
 
-  - manager
-  - host-manager
+  - manager (For Tomcat 9, requires =manager-gui= role assigned to user in =/conf/tomcat-users.xml=)
+  - host-manager (For Tomcat 9, requires =admin-gui= role assigned to user in =/conf/tomcat-users.xml=)
 
   Which, in my initial naive install, are in =/usr/share/apache-tomcat-9.0.31/webapps= (in their
   respective =META-INF= subdirectories).
@@ -117,7 +380,10 @@
 
   (Yikes!  Regular expressions!  Well, I guess it's better against IP addresses than domain names.)
 
-* Allow tomcat to open ports < 1024
+* DONE Allow tomcat to open ports < 1024
+  CLOSED: [2025-02-16 Sun 15:17]
+
+  2025: Looks like =authbind= is still the way to go.  It lives in package =authbind=, which you'll need to install.
 
   Problems with authbind.  Maybe put all tomcat users (8,9) in a "tomcat" group, and assign that
   group permission to open low-numbered ports via authbind?
@@ -133,7 +399,8 @@
    that's going to get repurposed by other software.)
 
    #+BEGIN_SRC bash
-     sudo groupadd -r sysport
+     sudo groupadd -r sysport                # '-r' creates a "system" group, presumably with a lower gid.  Not sure how
+                                             # important that is, actually.
      sudo usermod tomcat9 -a -G sysport
      sudo usermod tomcat8 -a -G sysport
    #+END_SRC
@@ -147,7 +414,9 @@
 
    (Will also need to allow access in AWS, see [[#aws-firewall][Allow access to manager GUIs from remote address]].)
 
-   *CRUCIAL POINT* that I somehow missed earlier: not only must you configure authbind properly, you need to actually
+*** Must use =authbind= in invocation of process
+
+    *CRUCIAL POINT* that I somehow missed earlier: not only must you configure authbind properly, you need to actually
     /run/ it.  It does not automagically run somehow.
 
     #+BEGIN_SRC bash
@@ -155,6 +424,15 @@
     #+END_SRC 
 
     (Note the invocation of =authbind=.)
+
+**** In systemd service unit:
+
+     #+BEGIN_EXAMPLE
+       ExecStart=/usr/bin/authbind --deep /opt/apache-tomcat-9.0.98/bin/startup.sh
+       ExecStop=/usr/bin/authbind --deep /opt/apache-tomcat-9.0.98/bin/shutdown.sh
+     #+END_EXAMPLE
+
+     Note: no quotes and full pathnames.
 
 ** Shutdown port 8095 conflict with Tomcat8
 
@@ -176,6 +454,13 @@
 ** Might also need to configure an AJP port at some point in the future, but for now...
 
    For now, we're good.
+
+* DONE Configure Tomcat to run on port 80 (or 90, say)
+  CLOSED: [2025-02-16 Sun 15:23]
+
+  Need to adjust Connector setting in =conf/server.xml=.  Different port.  Maybe copy the existing element, comment it
+  out, and make changes on the copy.
+
 * Make tomcat run at system startup (and shut down gracefully on halt/reboot)
 
   So, there's this thing called =update-rc.d=, and it writes all the =/etc/rcN.d= scripts, where /N/
@@ -234,6 +519,10 @@
   #+END_EXAMPLE 
 
   ...and when we reboot the system, Tomcat 9 comes back up!  (Eventually.)
+* Configuring admin user able to access manager-gui and admin-gui (for deploying apps like JspWiki)
+
+  Need to edit =/etc/tomcat9/tomcat-users.xml= to include a user having both the above roles.
+
 * Operations
 
 ** Stop/start/restart tomcat

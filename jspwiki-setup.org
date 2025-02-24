@@ -31,6 +31,9 @@
   See [[#operations][Operations]] for info on things you can do once it's installed and running.
 
 * Initial Setup: Tomcat 8
+  :PROPERTIES:
+  :CUSTOM_ID: tomcat8-initial-setup
+  :END:
 
 ** Directory Structure
   
@@ -53,6 +56,12 @@
 
   (For good measure, I chown'd a bunch of directories from root to tomcat8:tomcat8. Basically,
   whatever I thought the Tomcat process would need to have write permission for.)
+
+  Tomcat (9, at this time of writing, see [[file:tomcat-9-setup.org][file:tomcat-9-setup.org]]) seems to organize itself into three main directories:
+
+  - /etc/tomcat9
+  - /usr/share/tomcat9
+  - /var/lib/tomcat9
   
   Here's a breakdown of directory contents, as far as I can tell:
 
@@ -84,7 +93,7 @@
   I also installed =authbind=, in order to bind to ports < 1023 without running as root.  Can't
   remember where I saw this, but it's pretty much everywhere.
        
-* Upgrading Tomcat from 8.0 to 8.5
+* TODO Upgrading Tomcat from 8.0 to 8.5
 
   As of <2019-06-03 Mon>, Tomcat 8.5 does not seem to be available on aptitude/get-apt, so we'll
   have to install by hand.
@@ -142,6 +151,9 @@
    (in catalina.2017-01-08.log)
 
 ** =jspwiki-custom-properties= -- Configuration of various filepaths on host system
+   :PROPERTIES:
+   :CUSTOM_ID: jspwiki-custom-properties
+   :END:
 
     I grabbed jspwiki.properties with:
 
@@ -361,6 +373,10 @@
 
    Copy in config file modified above and you should have two apps running side by side and editing
    the same text files and attachments.
+
+* TODO TLS/SSL Certificate
+
+  At some point, I should get me some https.
 
 * Operations
   :PROPERTIES:

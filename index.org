@@ -34,6 +34,13 @@
 
   (Depending on how you define "interest", of course.)  Most recent at top.
 
+  - [[file:5calls.org][5calls.org]] :: How to call your representative.  Log of my activity (as long as I can remember where I put this
+    stupid file.)
+
+  - [[file:evil-retail-companies.org][evil-retail-companies.org]] :: Retail companies I don't like, for various reasons
+
+  - [[file:bad-decisions.org][bad-decisions.org]] :: Bad decisions throughout history (mostly 20th century and later)
+
   - [[file:migrating-from-DynDNS-to-Route53.org][migrating-from-DynDNS-to-Route53.org]] :: Migrating from Oracle DynDNS to AWS Route 53, since Dyn
     1) is expensive; and
     2) doesn't have the capability I want to route a subdomain elsewhere without (probably) an
@@ -144,6 +151,8 @@
   
   - More info than you ever cared for: https://orgmode.org
   - If you truly want to go down the rabbit hole: https://melpa.org/#/?q=org-mode
+
+  [2021-04-22 Thu]: dumb piece of test text, investigating GitHub interface under emacs 27 on Linux Mint 19
 
 ** Maintaining this file without emacs
    :PROPERTIES:
